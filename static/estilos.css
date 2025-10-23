@@ -1,0 +1,120 @@
+/* estilos.css */
+
+body {
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f6f9fc;
+    color: #333;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 40px;
+    background-color: #ffffff;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.logo {
+    height: 80px;
+}
+
+nav {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.menu-icon, .user-icon {
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.user-icon a {
+    text-decoration: none;
+    color: #5f4b8b;
+}
+
+main {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 30px;
+    padding: 40px;
+    align-items: center;
+}
+
+.info {
+    grid-column: 1 / 2;
+}
+
+.info h1 {
+    font-size: 2.8em;
+    line-height: 1.2;
+    margin-bottom: 10px;
+}
+
+.azul {
+    color: #007bff;
+}
+
+.sub {
+    font-weight: 600;
+}
+
+.contacto {
+    margin-top: 15px;
+    font-weight: bold;
+    color: #d63384;
+}
+
+.imagen {
+    grid-column: 2 / 3;
+    text-align: center;
+}
+
+.imagen img {
+    width: 100%;
+    max-width: 400px;
+    border-radius: 15px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.formulario {
+    grid-column: 3 / 4;
+    background-color: #007bff;
+    color: white;
+    padding: 25px;
+    border-radius: 20px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+.formulario h3,
+.formulario h2 {
+    margin: 0 0 15px;
+}
+
+.formulario input {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+}
+
+.formulario button {
+    width: 100%;
+    padding: 12px;
+    background-color: #000;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.formulario button:hover {
+    background-color: #444;
+}

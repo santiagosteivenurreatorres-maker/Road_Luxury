@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Ruta Libre</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='estilos.css') }}">
+</head>
+<body>
+    <header>
+        <!-- Imagen de logo actualizada con ruta Flask -->
+        <img src="{{ url_for('static', filename='img/logo_rl.jpg') }}" alt="Ruta Libre" class="logo">
+        <nav>
+            <div class="menu-icon">
+                <span>&#9776;</span>
+            </div>
+            <div class="user-icon">
+                <!-- Ruta a login HTML usando Flask -->
+                <a href="{{ url_for('login') }}" title="Iniciar sesión">&#128100;</a>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section class="info">
+            <h1><span class="azul">Ruta Libre</span><br><span class="sub">Crea tu Aventura</span></h1>
+            <p>En RutaLibre te ofrecemos el vehículo perfecto para cada necesidad. Desde carros familiares hasta camiones de carga. Reserva en minutos, sin complicaciones.</p>
+            <a href="{{ url_for('solicita_reserva') }}" class="contacto-btn">📞 Contáctanos</a>
+        </section>
+
+        <section class="imagen">
+            <img src="{{ url_for('static', filename='img/ImagenPrincipal.jpg') }}" alt="Vehículo moderno">
+        </section>
+
+        <section class="formulario">
+            <h3>Alquiler de Vehículos</h3>
+            <h2>Cotiza tu vehículo a alquilar</h2>
+            <form action="{{ url_for('login') }}" method="get">
+                <input type="text" placeholder="Lugar de recogida" required>
+                <input type="text" placeholder="Lugar de entrega" required>
+                <input type="email" placeholder="Correo electrónico" required>
+                <input type="text" placeholder="Número de contacto" required>
+                <button type="submit">Solicitar Cotización</button>
+            </form>
+        </section>
+    </main>
+</body>
+</html>

@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Iniciar Sesión - Ruta Libre</title> 
+  <link rel="stylesheet" href="{{ url_for('static', filename='estilos.css') }}">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(to right, #74ebd5, #ACB6E5);
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .login-container {
+      background-color: white;
+      padding: 30px 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      width: 100%;
+      max-width: 350px;
+      text-align: center;
+    }
+
+    .login-container h2 {
+      margin-bottom: 20px;
+      color: #333;
+    }
+
+    .login-container input {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+    }
+
+    .login-container button.login-btn {
+      width: 100%;
+      padding: 12px;
+      background-color: #007bff;
+      border: none;
+      color: white;
+      font-size: 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    .login-container button.login-btn:hover {
+      background-color: #0056b3;
+    }
+
+    .login-container .link {
+      display: block;
+      margin: 15px 0 5px;
+      color: #007bff;
+      text-decoration: none;
+      font-size: 14px;
+    }
+
+    .login-container .link:hover {
+      text-decoration: underline;
+    }
+
+    .login-container .divider {
+      margin: 15px 0;
+      border-top: 1px solid #ddd;
+    }
+
+    .login-container .register-btn {
+      width: 80%;
+      padding: 12px;
+      background-color: #28a745;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .login-container .register-btn:hover {
+      background-color: #218838;
+    }
+
+    .error-msg {
+      color: red;
+      font-size: 14px;
+      margin-bottom: 10px;
+      background-color: #ffe6e6;
+      padding: 10px;
+      border: 1px solid red;
+      border-radius: 8px;
+    }
+
+    .retry-btn {
+      background-color: #ffc107;
+      color: #333;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 8px;
+      font-size: 14px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    .retry-btn:hover {
+      background-color: #e0a800;
+    }
+  </style>
+</head>
+<body>
+  <div class="login-container">
+    <h2>Iniciar Sesión</h2>
+
+    {% if error %}
+      <div class="error-msg">{{ error }}</div>
+      <form action="{{ url_for('login') }}">
+        <button class="retry-btn" type="submit">Volver a intentar</button>
+      </form>
+    {% else %}
+      <form action="{{ url_for('login') }}" method="post">
+        <input type="text" name="usuario" placeholder="Usuario" required />
+        <input type="password" name="contraseña" placeholder="Contraseña" required />
+        <button type="submit" class="login-btn">Entrar</button>
+      </form>
+    {% endif %}
+
+    <div class="divider"></div>
+
+    <form action="{{ url_for('registro') }}">
+      <button type="submit" class="register-btn">regístrate</button>
+    </form>
+    <a class="link" href="{{ url_for('index') }}">←</a>
+  </div>
+</body>
+</html>

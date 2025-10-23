@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Registro - Ruta Libre</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='estilos.css') }}">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(to right, #ACB6E5, #74ebd5);
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .main-container {
+      display: flex;
+      background-color: white;
+      border-radius: 15px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      overflow: hidden;
+      max-width: 900px;
+      width: 100%;
+    }
+
+    .image-side {
+      background-color: #e6f0ff;
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .image-side img {
+      max-width: 90%;
+    }
+
+    .registro-container {
+      padding: 30px 25px;
+      flex: 1;
+      text-align: center;
+    }
+
+    .registro-container h2 {
+      margin-bottom: 20px;
+      color: #333;
+    }
+
+    .registro-container input {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+    }
+
+    .registro-container button {
+      width: 100%;
+      padding: 12px;
+      background-color: #28a745;
+      border: none;
+      color: white;
+      font-size: 16px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .registro-container button:hover {
+      background-color: #218838;
+    }
+
+    .registro-container .link {
+      display: block;
+      margin-top: 15px;
+      color: #007bff;
+      text-decoration: none;
+    }
+
+    .registro-container .link:hover {
+      text-decoration: underline;
+    }
+
+    .error-message {
+      color: red;
+      font-size: 14px;
+      margin-top: 10px;
+    }
+
+    @media (max-width: 768px) {
+      .main-container {
+        flex-direction: column;
+      }
+
+      .image-side {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="main-container">
+    <div class="image-side">
+      <img src="../static/imagen login.jpg" alt="Registro">  
+    </div>
+
+    <div class="registro-container">
+      <h2>Crear Cuenta</h2>
+      <form action="{{ url_for('registro') }}" method="post">
+        <input type="text" name="usuario" placeholder="Nombre de usuario" required />
+        <input type="email" name="correo" placeholder="Correo electrónico" required />
+        <input type="password" name="contraseña" placeholder="Contraseña" required />
+        <button type="submit">Registrarse</button>
+      </form>
+
+      {% if mensaje %}
+        <div class="error-message">{{ mensaje }}</div>
+      {% endif %}
+
+      <a class="link" href="{{ url_for('login') }}">¿Ya tienes cuenta? Inicia sesión</a>
+      <a class="link" href="{{ url_for('index') }}">← Volver al inicio</a>
+    </div>
+  </div>
+</body>
+</html>
+
+

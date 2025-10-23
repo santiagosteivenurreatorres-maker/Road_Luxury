@@ -1,0 +1,1236 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ruta Libre - Medium Car Rental Colombia</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #000000 0%, #1e3a8a 25%, #1e40af 50%, #2563eb 75%, #000000 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(37, 99, 235, 0.3);
+            backdrop-filter: blur(10px);
+            border: 2px solid #2563eb;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            position: relative;
+        }
+
+        .colombia-flag {
+            display: inline-block;
+            margin-right: 10px;
+            font-size: 2rem;
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            color: #000000;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(37, 99, 235, 0.3);
+        }
+
+        .brand-highlight {
+            color: #2563eb;
+            font-weight: bold;
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            color: #1a1a1a;
+            margin-bottom: 20px;
+        }
+
+        .header .location {
+            font-size: 1rem;
+            color: #2563eb;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+        }
+
+        .filters {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .filter-btn {
+            padding: 12px 24px;
+            border: 2px solid #2563eb;
+            border-radius: 25px;
+            background: linear-gradient(45deg, #ffffff, #f8f8f8);
+            color: #000000;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .filter-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(37, 99, 235, 0.3);
+            background: linear-gradient(45deg, #2563eb, #3b82f6);
+            color: #ffffff;
+        }
+
+        .filter-btn.active {
+            background: linear-gradient(45deg, #2563eb, #3b82f6);
+            color: #ffffff;
+            border-color: #000000;
+        }
+
+        .search-container {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .search-input {
+            padding: 12px 20px;
+            border: 2px solid #2563eb;
+            border-radius: 25px;
+            font-size: 16px;
+            width: 250px;
+            transition: all 0.3s ease;
+            background: white;
+            color: #000000;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #000000;
+            box-shadow: 0 0 10px rgba(37, 99, 235, 0.5);
+        }
+
+        .price-range {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #000000;
+            font-weight: bold;
+        }
+
+        .price-range input {
+            padding: 8px 15px;
+            border: 2px solid #2563eb;
+            border-radius: 15px;
+            width: 120px;
+            background: white;
+            color: #000000;
+        }
+
+        .vehicles-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .vehicle-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            position: relative;
+            border: 2px solid #2563eb;
+        }
+
+        .vehicle-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(37, 99, 235, 0.3);
+            border-color: #000000;
+        }
+
+        .vehicle-image {
+            width: 100%;
+            height: 200px;
+            position: relative;
+            overflow: hidden;
+            background: #f8f8f8;
+        }
+
+        .vehicle-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .vehicle-card:hover .vehicle-image img {
+            transform: scale(1.05);
+        }
+
+        .luxury-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: linear-gradient(45deg, #2563eb, #3b82f6);
+            color: #ffffff;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            z-index: 2;
+            border: 1px solid #000000;
+        }
+
+        .vehicle-info {
+            padding: 20px;
+        }
+
+        .vehicle-name {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #000000;
+            margin-bottom: 10px;
+        }
+
+        .vehicle-details {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            color: #1a1a1a;
+        }
+
+        .vehicle-specs {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+
+        .spec {
+            background: #f8f8f8;
+            padding: 5px 10px;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            color: #000000;
+            border: 1px solid #2563eb;
+        }
+
+        .price-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .price {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #2563eb;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+        }
+
+        .price-label {
+            font-size: 0.9rem;
+            color: #1a1a1a;
+        }
+
+        .rent-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(45deg, #000000, #1a1a1a);
+            color: white;
+            border: 2px solid #2563eb;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .rent-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(37, 99, 235, 0.3);
+            background: linear-gradient(45deg, #2563eb, #3b82f6);
+            color: #ffffff;
+        }
+
+        .rent-btn:disabled {
+            background: #cccccc;
+            cursor: not-allowed;
+            transform: none;
+            border-color: #999999;
+        }
+
+        .total-calculator {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.98);
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            min-width: 320px;
+            transform: translateX(100%);
+            transition: transform 0.3s ease;
+            border: 2px solid #2563eb;
+        }
+
+        .total-calculator.active {
+            transform: translateX(0);
+        }
+
+        .calculator-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .calculator-header h3 {
+            color: #000000;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .close-calculator {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #2563eb;
+        }
+
+        .calculator-content {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .calculator-input {
+            padding: 10px;
+            border: 2px solid #2563eb;
+            border-radius: 10px;
+            font-size: 16px;
+            background: white;
+            color: #000000;
+        }
+
+        .calculator-result {
+            background: linear-gradient(45deg, #2563eb, #3b82f6);
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #ffffff;
+            margin-top: 10px;
+            border: 1px solid #000000;
+        }
+
+        .availability-status {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            z-index: 2;
+        }
+
+        .available {
+            background: #2563eb;
+            color: #ffffff;
+            border: 1px solid #000000;
+        }
+
+        .limited {
+            background: #1a1a1a;
+            color: white;
+            border: 1px solid #2563eb;
+        }
+
+        .unavailable {
+            background: #000000;
+            color: white;
+            border: 1px solid #2563eb;
+        }
+
+        .city-info {
+            background: rgba(37, 99, 235, 0.1);
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            border-left: 4px solid #2563eb;
+        }
+
+        .city-info h4 {
+            color: #000000;
+            margin-bottom: 5px;
+        }
+
+        .city-info p {
+            color: #1a1a1a;
+            font-size: 0.9rem;
+        }
+
+        .colombia-badge {
+            background: linear-gradient(45deg, #2563eb, #3b82f6);
+            color: #ffffff;
+            padding: 3px 8px;
+            border-radius: 10px;
+            font-size: 0.7rem;
+            font-weight: bold;
+            margin-left: 10px;
+            border: 1px solid #000000;
+        }
+
+        .image-placeholder {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, #f8f8f8, #ffffff);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #000000;
+            font-size: 1.2rem;
+            font-weight: bold;
+            text-align: center;
+            padding: 20px;
+            border: 2px dashed #2563eb;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .filters {
+                justify-content: center;
+            }
+
+            .filter-btn {
+                padding: 10px 20px;
+                font-size: 0.9rem;
+            }
+
+            .search-container {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .search-input {
+                width: 100%;
+                max-width: 300px;
+            }
+
+            .vehicles-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .total-calculator {
+                position: static;
+                transform: none;
+                margin-top: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1><span class="colombia-flag">🇨🇴</span><span class="brand-highlight">Ruta Libre</span> - Car Rental Colombia</h1>
+            <p>Vehículos de lujo premium en Colombia - Experimenta la elegancia en cada kilómetro</p>
+            <div class="location">
+                📍 Bogotá, Medellín, Cali, Cartagena y principales ciudades
+            </div>
+        </div>
+
+        <div class="city-info">
+            <h4>🏢 Disponibilidad por Ciudades</h4>
+            <p>Entrega y recogida en aeropuertos principales: El Dorado (BOG), José María Córdova (MDE), Alfonso Bonilla Aragón (CLO), Rafael Núñez (CTG)</p>
+        </div>
+
+        <div class="filters">
+            <button class="filter-btn active" data-category="all">Todos los Vehículos</button>
+            <button class="filter-btn" data-category="Eco">Ecomonicos</button>
+            <button class="filter-btn" data-category="cami">Camionetas</button>
+            <button class="filter-btn" data-category="Util">Utilitarios</button>
+            <button class="filter-btn" data-category="luxury">Lujo Ejecutivo</button>
+            <button class="filter-btn" data-category="sports">Deportivos</button>
+            <button class="filter-btn" data-category="convertible">Convertibles</button>
+        </div>
+
+        <div class="search-container">
+            <input type="text" class="search-input" placeholder="Buscar vehículo..." id="searchInput">
+            <div class="price-range">
+                <span>Precio: $</span>
+                <input type="number" id="minPrice" placeholder="Min">
+                <span>-</span>
+                <input type="number" id="maxPrice" placeholder="Max">
+                <span>COP/día</span>
+            </div>
+        </div>
+
+        <div class="vehicles-grid" id="vehiclesGrid">
+            <!-- Los vehículos se generarán dinámicamente -->
+        </div>
+    </div>
+
+    <div class="total-calculator" id="calculator">
+        <div class="calculator-header">
+            <h3>🧮 Calculadora de Alquiler</h3>
+            <button class="close-calculator" onclick="closeCalculator()">×</button>
+        </div>
+        <div class="calculator-content">
+            <input type="text" class="calculator-input" id="selectedVehicle" placeholder="Vehículo seleccionado" readonly>
+            <input type="number" class="calculator-input" id="rentalDays" placeholder="Número de días" min="1" value="1">
+            <div class="calculator-result" id="totalPrice">
+                Total: $0 COP
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Base de datos de vehículos premium con imágenes
+        const vehicles = [
+            {
+                id: 1,
+                name: "Chevrolet Spark GT",
+                category: "Eco",
+                year: 2020,
+                engine: "1.2L 4 cilindros",
+                power: "81 HP",
+                transmission: "Manual 5 velocidades",
+                fuel: "Gasolina",
+                price: 95000,
+                availability: "available",
+                specs: ["Aire acondicionado, 4 puertas, Bluetooth, Vidrios eléctricos"],
+                image: "https://static.retail.autofact.cl/blog/c_img_740x370.cvjss81jr0wzn2k.jpg"
+            },
+            {
+                id: 2,
+                name: "Renault Kwid",
+                category: "Eco",
+                year: 2022,
+                engine: "1.0L 3 cilindros",
+                power: "66 HP",
+                transmission: "Manual 5 velocidades",
+                fuel: "Gasolina",
+                price: 100000,
+                availability: "available",
+                specs: ["Elevavidrios eléctricos, ABS, Cámara de reversa, Consumo eficiente"],
+                image: "https://cdn.group.renault.com/ren/master/renault-new-cars/product-plans/kwid/bbb-kwid/bbb-kwid-ph2/latam/renault-kwid-overview-desktop-001-2.jpg.ximg.large.jpg/98910d9d24.jpg"
+            },
+            {
+                id: 3,
+                name: "Kia Picanto",
+                category: "Eco",
+                year: 2021,
+                engine: "1.0L",
+                power: "69 HP",
+                transmission: "Manual o automática",
+                fuel: "Gasolina",
+                price: 105000,
+                availability: "available",
+                specs: ["Aire acondicionado, Bluetooth, Frenos ABS, Bajo consumo"],
+                image: "https://www.kia.com/content/dam/kwcms/kme/global/en/assets/vehicles/ja/picanto-my25/discover/kia-picanto-my25-video-keyvisual-m.jpg"
+            },
+            {
+                id: 4,
+                name: "Hyundai i10",
+                category: "Eco",
+                year: 2020,
+                engine: "1.2L",
+                power: "86 HP",
+                transmission: "Manual",
+                fuel: "Gasolina",
+                price: 110000,
+                availability: "available",
+                specs: ["Pantalla táctil, Aire acondicionado, Buen rendimiento, Bluetoot"],
+                image: "https://fuelcarmagazine.com/wp-content/uploads/2024/08/Hyundai-i10-taxi-Colombia.jpg"
+            },
+            {
+                id: 5,
+                name: "Renault Logan",
+                category: "Fami",
+                year: 2022,
+                engine: "1.6L",
+                power: "111 HP",
+                transmission: "Manual",
+                fuel: "Gasolina",
+                price: 125000,
+                availability: "available",
+                specs: ["Gran espacio interior, Baúl amplio, Pantalla táctil, Sensores de reversa"],
+                image: "https://www.elcarrocolombiano.com/wp-content/uploads/2018/08/20180816-RENAULT-LOGAN-STEPWAY-01.jpg.webp"
+            },
+            {
+                id: 6,
+                name: "Chevrolet Sail",
+                category: "Fami",
+                year: 2021,
+                engine: "1.5L",
+                power: "103 HP",
+                transmission: "Manual",
+                fuel: "Gasolina",
+                price: 120000,
+                availability: "available",
+                specs: ["Interior cómodo, Buen equipamiento, Ideal para viajes"],
+                image: "https://acnews.blob.core.windows.net/imgnews/large/NAZ_ec3491fab5344d369f9859b19a9705ac.jpg"
+            },
+            {
+                id: 7,
+                name: "Hyundai Accent",
+                category: "Fami",
+                year: 2021,
+                engine: "1.6L",
+                power: "121 HP",
+                transmission: "Automática o manual",
+                fuel: "Gasolina",
+                price: 140000,
+                availability: "available",
+                specs: ["Interior cómodo, Buen equipamiento, Ideal para viajes"],
+                image: "https://www.altorque.com/wp-content/uploads/2020/10/Hyundai-Accent-2021-1024x718.jpg"
+            },
+            {
+                id: 8,
+                name: "Nissan Versa",
+                category: "Fami",
+                year: 2020,
+                engine: "1.6L",
+                power: "118 HP",
+                transmission: "Automática CVT",
+                fuel: "Gasolina",
+                price: 150000,
+                availability: "available",
+                specs: ["Amplio espacio, Buen confort, Cámara de reversa, Control crucero"],
+                image: "https://movicentro.co/wp-content/uploads/2023/11/1-52-798x466.jpeg"
+            },
+            {
+                id: 9,
+                name: "Chevrolet N300",
+                category: "Util",
+                year: 2020,
+                engine: "1.2L",
+                power: "81 HP",
+                transmission: "Manual",
+                fuel: "Gasolina",
+                price: 150000,
+                availability: "available",
+                specs: ["Ideal para carga, Compacto, Bajo consumo, Espacio de carga amplio"],
+                image: "https://elcarrocolombiano.com/wp-content/uploads/2017/08/20170802-CHEVROLET-N300-LATIN-NCAP-COMUNICADO-GM-ANDINA-02.jpg"
+            },
+            {
+                id: 10,
+                name: "Renault Kangoo Express",
+                category: "Util",
+                year: 2021,
+                engine: "1.6L 16V",
+                power: "105 HP",
+                transmission: "Manual",
+                fuel: "Gasolina",
+                price: 170000,
+                availability: "available",
+                specs: ["Capacidad de carga amplia, Ideal para negocios, Fácil mantenimiento"],
+                image: "https://www.elcarrocolombiano.com/wp-content/uploads/2020/11/20201112-RENAULT-KANGOO-2021-06-750x518.png"
+            },
+            {
+                id: 11,
+                name: "Changan Star",
+                category: "Util",
+                year: 2021,
+                engine: "1.2L ",
+                power: "90 HP",
+                transmission: "Manual",
+                fuel: "Gasolina",
+                price: 130000,
+                availability: "available",
+                specs: ["Económico, Ideal para fletes, Bajo consumo, Espacio útil"],
+                image: "https://ichelabamotor.com/wp-content/uploads/2024/02/Changan-Star-5-600x600.jpg"
+            },
+            {
+                id: 12,
+                name: "Mazda 3 Touring ",
+                category: "Pre",
+                year: 2021,
+                engine: "2.0L Skyactiv-G",
+                power: "153 HP",
+                transmission: "Automática",
+                fuel: "Gasolina",
+                price: 500000,
+                availability: "limited",
+                specs: ["Luces LED, Cámara de reversa, Interior en tela premium, Control crucero"],
+                image: "https://www.elcarrocolombiano.com/wp-content/uploads/2021/03/20210305-MAZDA-3-2022-COLOMBIA-PRECIO-CARACTERISTICAS-VERSIONES-NOVEDADES-02.jpg"
+            },
+            {
+                id: 13,
+                name: "Kia Cerato",
+                category: "Pre",
+                year: 2021,
+                engine: "2.0L ",
+                power: "147 HP",
+                transmission: "Automática",
+                fuel: "Gasolina",
+                price: 450000,
+                availability: "available",
+                specs: ["Diseño moderno, Pantalla táctil, Sensor de parqueo, Aire acondicionado digitalr"],
+                image: "https://eurekarentacar.com.pe/wp-content/uploads/2023/07/kia-cerato.webp"
+            },
+            {
+                id: 14,
+                name: "Renault Arkana",
+                category: "Pre",
+                year: 2022,
+                engine: "1.3L Turbo",
+                power: "154 HP",
+                transmission: "CVT Automática",
+                fuel: "Gasolina",
+                price: 490000,
+                availability: "available",
+                specs: ["SUV coupé, Cámara 360°, Pantalla multimedia, Estilo deportivo"],
+                image: "https://agenciauto.com/wp-content/uploads/2024/09/negro-metalico.jpg"
+            },
+            {
+                id: 15,
+                name: "Volkswagen Virtus",
+                category: "Pre",
+                year: 2021,
+                engine: "1.6L MSI",
+                power: "110 HP",
+                transmission: "Automática Tiptronic",
+                fuel: "Gasolina",
+                price: 600000,
+                availability: "available",
+                specs: ["Diseño elegante, Asistente de arranque en pendiente, Control de estabilidad"],
+                image: "https://cdn.motor1.com/images/mgl/LeO3m/s1/lanzamiento-volkswagen-virtus-2022.webp"
+            },
+            {
+                id: 16,
+                name: "Mercedes-Benz S-Class",
+                category: "luxury",
+                year: 2023,
+                engine: "V8 4.0L Biturbo",
+                power: "463 HP",
+                transmission: "Automática 9G-TRONIC",
+                fuel: "Gasolina",
+                price: 850000,
+                availability: "available",
+                specs: ["Masaje asientos", "Suspensión neumática", "4 asientos", "Lujo máximo"],
+                image: "https://hips.hearstapps.com/hmg-prod/images/2022-mercedes-benz-s500-4matic-123-1642184026.jpg?crop=0.458xw:0.387xh;0.316xw,0.418xh&resize=2048:*"
+            },
+            {
+                id: 17,
+                name: "BMW Serie 7",
+                category: "luxury",
+                year: 2023,
+                engine: "V8 4.4L TwinTurbo",
+                power: "523 HP",
+                transmission: "Automática Steptronic",
+                fuel: "Gasolina",
+                price: 800000,
+                availability: "available",
+                specs: ["Ejecutivo", "Pantallas traseras", "4 asientos", "Confort supremo"],
+                image: "https://www.bmw.es/content/dam/bmw/common/all-models/m-series/m760e-xdrive/2023/highlights/bmw-7-series-i7-m70-sd-bmw-individual-01.jpg"
+            },
+            {
+                id: 18,
+                name: "Audi A8 L",
+                category: "luxury",
+                year: 2023,
+                engine: "V6 3.0L TFSI",
+                power: "340 HP",
+                transmission: "Automática Tiptronic",
+                fuel: "Gasolina",
+                price: 750000,
+                availability: "limited",
+                specs: ["Quattro AWD", "Versión larga", "4 asientos", "Tecnología avanzada"],
+                image: "https://cdn.motor1.com/images/mgl/WBxv3/s1/2022-audi-a8-l-horch.jpg"
+            },
+            {
+                id: 19,
+                name: "Porsche Cayenne Turbo",
+                category: "cami",
+                year: 2023,
+                engine: "V8 4.0L Biturbo",
+                power: "541 HP",
+                transmission: "PDK Automática",
+                fuel: "Gasolina",
+                price: 900000,
+                availability: "available",
+                specs: ["0-100: 3.9s", "AWD", "5 asientos", "Deportivo"],
+                image: "https://a.ccdn.es/cnet/vehicles/16936224/75260c22-2c02-4857-bb59-ef15b0f908f6.jpg/374x281cut/"
+            },
+            {
+                id: 20,
+                name: "Range Rover Vogue",
+                category: "cami",
+                year: 2023,
+                engine: "V8 5.0L Supercharged",
+                power: "525 HP",
+                transmission: "Automática ZF",
+                fuel: "Gasolina",
+                price: 800000,
+                availability: "available",
+                specs: ["Terrain Response", "AWD", "5 asientos", "Lujo británico"],
+                image: "https://res.cloudinary.com/unix-center/image/upload/c_limit,dpr_3.0,f_auto,fl_progressive,g_center,h_580,q_75,w_906/dupt9zg2yrovmb8phw0v.jpg"
+            },
+            {
+                id: 21,
+                name: "BMW X7 M50i",
+                category: "cami",
+                year: 2023,
+                engine: "V8 4.4L TwinTurbo",
+                power: "523 HP",
+                transmission: "Automática Steptronic",
+                fuel: "Gasolina",
+                price: 850000,
+                availability: "limited",
+                specs: ["xDrive AWD", "7 asientos", "Deportivo", "Familiar premium"],
+                image: "https://www.truck1.com.co/img/auto/fullview/8746/8746_7820505395802.jpg"
+            },
+            {
+                id: 22,
+                name: "Lexus LS 500",
+                category: "luxury",
+                year: 2023,
+                engine: "V6 3.5L Twin-Turbo",
+                power: "416 HP",
+                transmission: "Automática 10AT",
+                fuel: "Gasolina",
+                price: 700000,
+                availability: "available",
+                specs: ["Híbrido disponible", "AWD", "4 asientos", "Confiabilidad japonesa"],
+                image: "https://www.lexus.com.vn/content/dam/lexus-v3-blueprint/models/sedan/ls/ls-500/my21/overview/ls500-overview.jpg.jpg"
+            },
+            {
+                id: 23,
+                name: "Jaguar F-PACE SVR",
+                category: "cami",
+                year: 2023,
+                engine: "V8 5.0L Supercharged",
+                power: "550 HP",
+                transmission: "Automática ZF",
+                fuel: "Gasolina",
+                price: 950000,
+                availability: "limited",
+                specs: ["0-100: 4.1s", "AWD", "5 asientos", "Deportivo británico"],
+                image: "https://www.elcarrocolombiano.com/wp-content/uploads/2022/06/01062022-PORTADA-Jaguar-F-Pace-SVR-Edition-1988.jpg"
+            },
+            {
+                id: 24,
+                name: "Genesis G90",
+                category: "luxury",
+                year: 2023,
+                engine: "V6 3.3L Twin-Turbo",
+                power: "365 HP",
+                transmission: "Automática 8AT",
+                fuel: "Gasolina",
+                price: 650000,
+                availability: "available",
+                specs: ["AWD", "Lujo coreano", "4 asientos", "Excelente valor"],
+                image: "https://media.ed.edmunds-media.com/genesis/g90/2025/oem/2025_genesis_g90_sedan_35t-e-supercharger_fq_oem_1_1280.jpg"
+            },
+            {
+                id: 25,
+                name: "Maserati Levante",
+                category: "cami",
+                year: 2023,
+                engine: "V6 3.0L Twin-Turbo",
+                power: "350 HP",
+                transmission: "Automática ZF",
+                fuel: "Gasolina",
+                price: 800000,
+                availability: "available",
+                specs: ["AWD", "Estilo italiano", "5 asientos", "Deportivo elegante"],
+                image: "https://upload.wikimedia.org/wikipedia/commons/5/5f/Maserati_Levante_S_%2801%29.jpg"
+            },
+            {
+                id: 26,
+                name: "BMW M4 Convertible",
+                category: "convertible",
+                year: 2023,
+                engine: "I6 3.0L Twin-Turbo",
+                power: "473 HP",
+                transmission: "Automática M Steptronic",
+                fuel: "Gasolina",
+                price: 1200000,
+                availability: "limited",
+                specs: ["Convertible", "RWD", "4 asientos", "M Performance"],
+                image: "https://i.blogs.es/eb2738/captura-de-pantalla-2024-11-22-a-la-s-21.45.47/1366_2000.png"
+            },
+            {
+                id: 27,
+                name: "Mercedes-AMG C63 S Cabriolet",
+                category: "convertible",
+                year: 2023,
+                engine: "V8 4.0L Biturbo",
+                power: "503 HP",
+                transmission: "Automática AMG SPEEDSHIFT",
+                fuel: "Gasolina",
+                price: 1300000,
+                availability: "limited",
+                specs: ["Convertible", "RWD", "4 asientos", "AMG Performance"],
+                image: "https://media.whichcar.com.au/uploads/2025/02/34ac566e-mercedes-amg-c63-cabriolet-lead.jpg"
+            },
+            {
+                id: 28,
+                name: "Audi RS5 Sportback",
+                category: "sports",
+                year: 2023,
+                engine: "V6 2.9L TFSI",
+                power: "444 HP",
+                transmission: "Automática Tiptronic",
+                fuel: "Gasolina",
+                price: 1100000,
+                availability: "available",
+                specs: ["0-100: 3.9s", "Quattro AWD", "5 asientos", "Deportivo familiar"],
+                image: "https://i.ytimg.com/vi/-vOmRpnbFM4/maxresdefault.jpg"
+            },
+            {
+                id: 29,
+                name: "Porsche Panamera 4S",
+                category: "sports",
+                year: 2023,
+                engine: "V6 2.9L Twin-Turbo",
+                power: "440 HP",
+                transmission: "PDK Automática",
+                fuel: "Gasolina",
+                price: 1200000,
+                availability: "available",
+                specs: ["0-100: 4.2s", "AWD", "4 asientos", "Gran turismo"],
+                image: "https://images-porsche.imgix.net/-/media/730FE3C58C394077ACAF4990A20B0B61_BACDF254ED004E75B738EAA1D6532F25_PA24P5AOX0001-panamera-turbo-e-hybrid-front?w=2560&h=1440&q=45&crop=faces%2Centropy%2Cedges&auto=format"
+            },
+            {
+                id: 30,
+                name: "Volvo XC90 T8",
+                category: "cami",
+                year: 2023,
+                engine: "I4 2.0L Hybrid",
+                power: "400 HP",
+                transmission: "Automática Geartronic",
+                fuel: "Híbrido",
+                price: 700000,
+                availability: "available",
+                specs: ["Híbrido plug-in", "AWD", "7 asientos", "Seguridad sueca"],
+                image: "https://www.elcarrocolombiano.com/wp-content/uploads/2023/10/20231005-Volvo-XC90-T8-01.jpg"
+            },
+            {
+                id: 31,
+                name: "Cadillac Escalade",
+                category: "cami",
+                year: 2023,
+                engine: "V8 6.2L",
+                power: "420 HP",
+                transmission: "Automática 10L80",
+                fuel: "Gasolina",
+                price: 950000,
+                availability: "limited",
+                specs: ["AWD", "8 asientos", "Pantalla OLED", "Lujo americano"],
+                image: "https://trinityrental.com/_next/image?url=https%3A%2F%2Fstorage.googleapis.com%2Ftrinityrental-e51d5.appspot.com%2Fcadillac_escalade_luxary_937c898434%2Fcadillac_escalade_luxary_937c898434.jpg&w=3840&q=75"
+            },
+            {
+                id: 32,
+                name: "Infiniti QX80",
+                category: "cami",
+                year: 2023,
+                engine: "V8 5.6L",
+                power: "400 HP",
+                transmission: "Automática 7AT",
+                fuel: "Gasolina",
+                price: 750000,
+                availability: "available",
+                specs: ["AWD", "8 asientos", "Remolque 8500 lbs", "Familiar premium"],
+                image: "https://www.infiniti-cdn.net/content/dam/Infiniti/infinitilatam/thumbs-new-cars/mx/2025/QX80/infiniti-2025-sensory-qx807p.png.ximg.l_12_m.smart.png"
+            },
+            {
+                id: 33,
+                name: "Acura MDX Type S",
+                category: "cami",
+                year: 2023,
+                engine: "V6 3.0L Turbo",
+                power: "355 HP",
+                transmission: "Automática 10AT",
+                fuel: "Gasolina",
+                price: 700000,
+                availability: "available",
+                specs: ["SH-AWD", "7 asientos", "Deportivo", "Confiabilidad japonesa"],
+                image: "https://www.acura.com/platform/api/v4/images/Exterior/03?config=M:YE1H9SKNW$EC:R-568P$IC:EN%26width=880"
+            },
+            {
+                id: 34,
+                name: "Lamborghini Huracán EVO",
+                category: "sports",
+                year: 2024,
+                engine: "V10 5.2L Aspirado",
+                power: "631 HP",
+                transmission: "Automática LDF",
+                fuel: "Gasolina Premium",
+                price: 7200000,
+                availability: "available",
+                specs: ["RWD", "Suspensión adaptativa", "Modo pista", "Escape deportivo"],
+                image: "https://i.ytimg.com/vi/ipZS7F8KaTk/hq720.jpg?sqp=-oaymwEhCK4FEIIDSFryq4qpAxMIARUAAAAAGAElAADIQj0AgKJD&rs=AOn4CLD_tcyniy-VvfRFy-LIup-mOjdj-w"
+            },
+            {
+                id: 35,
+                name: "Ferrari 296 GTB",
+                category: "sports",
+                year: 2024,
+                engine: "V6 3.0L Twin-Turbo Hybrid",
+                power: "818 HP",
+                transmission: "Automática F1 DCT",
+                fuel: "Híbrido",
+                price: 8800000,
+                availability: "available",
+                specs: ["RWD", "Modo eléctrico", "Suspensión adaptativa", "Frenos Brembo"],
+                image: "https://bocamafrapremium.com.br/wp-content/uploads/2024/12/6451b0feb3ba48c3a2fd02155abc2095_1717005946494.jpg"
+            },
+            {
+                id: 36,
+                name: "McLaren 720S",
+                category: "sports",
+                year: 2024,
+                engine: "V8 4.0L Twin-Turbo",
+                power: "710 HP",
+                transmission: "Automática SSG",
+                fuel: "Gasolina Premium",
+                price: 7800000,
+                availability: "maintenance",
+                specs: ["RWD", "Fibra de carbono", "Suspensión adaptativa", "Puertas mariposa"],
+                image: "https://cdn.motor1.com/images/mgl/krMYM/s1/mclaren-720s-spider-by-mso.jpg"
+            },
+            {
+                id: 37,
+                name: "Rolls-Royce Cullinan",
+                category: "cami",
+                year: 2024,
+                engine: "V12 6.75L Twin-Turbo",
+                power: "563 HP",
+                transmission: "Automática 8 velocidades",
+                fuel: "Gasolina Premium",
+                price: 6600000,
+                availability: "available",
+                specs: ["AWD", "Suspensión neumática", "Asientos masajeadores", "Techo estrellado"],
+                image: "https://images1.autocasion.com/actualidad/wp-content/uploads/2024/04/3sumauto_014.jpg"
+            },
+            {
+                id: 38,
+                name: "Bugatti Chiron",
+                category: "sports",
+                year: 2024,
+                engine: "W16 8.0L Quad-Turbo",
+                power: "1479 HP",
+                transmission: "Automática DSG 7 velocidades",
+                fuel: "Gasolina Premium",
+                price: 15000000,
+                availability: "available",
+                specs: ["AWD", "Fibra de carbono", "Velocidad máxima 420 km/h", "Interior artesanal francés"],
+                image:"https://media.gq.com.mx/photos/64dd510051be22c2d963222c/16:9/w_2992,h_1683,c_limit/Bugatti_Chiron_Super_Sport_Golden_Era.jpg"
+            },
+            {
+                id: 39,
+                name: "Pagani Huayra Roadster BC",
+                category: "convertible",
+                year: 2024,
+                engine: "V12 6.0L Twin-Turbo AMG",
+                power: "791 HP",
+                transmission: "Automática AMT 7 velocidades",
+                fuel: "Gasolina Premium",
+                price: 12000000,
+                availability: "available",
+               specs: ["RWD", "Fibra de carbono Carbo-Titanium", "Techo removible", "Interior artesanal italiano"],
+               image:"https://img.remediosdigitales.com/f8a65c/pagani-huayra-roadster-bc-22-p/1366_2000.jpg"
+            },
+
+            
+        ];
+
+        let currentVehicles = [...vehicles];
+        let selectedVehicle = null;
+
+        // Función para formatear precios en pesos colombianos
+        function formatPrice(price) {
+            return new Intl.NumberFormat('es-CO', {
+                style: 'currency',
+                currency: 'COP',
+                minimumFractionDigits: 0
+            }).format(price);
+        }
+
+        // Función para manejar errores de carga de imágenes
+        function handleImageError(img) {
+            img.style.display = 'none';
+            img.nextElementSibling.style.display = 'flex';
+        }
+
+        // Función para renderizar vehículos
+        function renderVehicles(vehiclesToRender = currentVehicles) {
+            const grid = document.getElementById('vehiclesGrid');
+            grid.innerHTML = '';
+
+            vehiclesToRender.forEach(vehicle => {
+                const card = document.createElement('div');
+                card.className = 'vehicle-card';
+                card.innerHTML = `
+                    <div class="vehicle-image">
+                        <div class="availability-status ${vehicle.availability}">
+                            ${vehicle.availability === 'available' ? 'Disponible' : 
+                              vehicle.availability === 'limited' ? 'Limitado' : 'No disponible'}
+                        </div>
+                        <div class="luxury-badge">Premium<span class="colombia-badge">🇨🇴</span></div>
+                        <img src="${vehicle.image}" alt="${vehicle.name}" onerror="handleImageError(this)">
+                        <div class="image-placeholder" style="display: none;">
+                            <div>
+                                <div style="font-size: 2rem; margin-bottom: 10px;">🚗</div>
+                                <div>${vehicle.name}</div>
+                                <div style="font-size: 0.9rem; margin-top: 5px;">Imagen no disponible</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="vehicle-info">
+                        <div class="vehicle-name">${vehicle.name}</div>
+                        <div class="vehicle-details">
+                            <span>${vehicle.year}</span>
+                            <span>${vehicle.engine}</span>
+                            <span>${vehicle.power}</span>
+                        </div>
+                        <div class="vehicle-specs">
+                            ${vehicle.specs.map(spec => `<span class="spec">${spec}</span>`).join('')}
+                        </div>
+                        <div class="price-section">
+                            <div>
+                                <div class="price">${formatPrice(vehicle.price)}</div>
+                                <div class="price-label">por día</div>
+                            </div>
+                        </div>
+                        <button class="rent-btn" onclick="selectVehicle(${vehicle.id})" 
+                                ${vehicle.availability === 'unavailable' ? 'disabled' : ''}>
+                            ${vehicle.availability === 'unavailable' ? 'No Disponible' : 'Calcular Alquiler'}
+                        </button>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        // Función para filtrar por categoría
+        function filterByCategory(category) {
+            const buttons = document.querySelectorAll('.filter-btn');
+            buttons.forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+
+            if (category === 'all') {
+                currentVehicles = [...vehicles];
+            } else {
+                currentVehicles = vehicles.filter(vehicle => vehicle.category === category);
+            }
+            renderVehicles(currentVehicles);
+        }
+
+        // Función para buscar vehículos
+        function searchVehicles() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const minPrice = parseInt(document.getElementById('minPrice').value) || 0;
+            const maxPrice = parseInt(document.getElementById('maxPrice').value) || Infinity;
+
+            const filteredVehicles = currentVehicles.filter(vehicle => 
+                vehicle.name.toLowerCase().includes(searchTerm) &&
+                vehicle.price >= minPrice &&
+                vehicle.price <= maxPrice
+            );
+
+            renderVehicles(filteredVehicles);
+        }
+
+        // Función para seleccionar vehículo
+        function selectVehicle(vehicleId) {
+            selectedVehicle = vehicles.find(v => v.id === vehicleId);
+            document.getElementById('selectedVehicle').value = selectedVehicle.name;
+            document.getElementById('calculator').classList.add('active');
+            calculateTotal();
+        }
+
+        // Función para calcular total
+        function calculateTotal() {
+            if (!selectedVehicle) return;
+            
+            const days = parseInt(document.getElementById('rentalDays').value) || 1;
+            const subtotal = selectedVehicle.price * days;
+            const seguro = subtotal * 0.15; // 15% seguro
+            const iva = subtotal * 0.19; // 19% IVA
+            const total = subtotal + seguro + iva;
+            
+            document.getElementById('totalPrice').innerHTML = `
+                <div style="text-align: left; font-size: 1rem;">
+                    <div><strong>Vehículo:</strong> ${selectedVehicle.name}</div>
+                    <div><strong>Días:</strong> ${days}</div>
+                    <div><strong>Precio/día:</strong> ${formatPrice(selectedVehicle.price)}</div>
+                    <hr style="margin: 10px 0; border: 1px solid #2c3e50;">
+                    <div><strong>Subtotal:</strong> ${formatPrice(subtotal)}</div>
+                    <div><strong>Seguro (15%):</strong> ${formatPrice(seguro)}</div>
+                    <div><strong>IVA (19%):</strong> ${formatPrice(iva)}</div>
+                </div>
+                <div style="margin-top: 15px; font-size: 1.5rem; text-align: center; color: #2c3e50;">
+                    <strong>TOTAL: ${formatPrice(total)}</strong>
+                </div>
+            `;
+        }
+
+        // Función para cerrar calculadora
+        function closeCalculator() {
+            document.getElementById('calculator').classList.remove('active');
+            selectedVehicle = null;
+        }
+
+        // Event listeners
+        document.addEventListener('DOMContentLoaded', function() {
+            renderVehicles();
+
+            // Filtros por categoría
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    filterByCategory(this.dataset.category);
+                });
+            });
+
+            // Búsqueda
+            document.getElementById('searchInput').addEventListener('input', searchVehicles);
+            document.getElementById('minPrice').addEventListener('input', searchVehicles);
+            document.getElementById('maxPrice').addEventListener('input', searchVehicles);
+
+            // Calculadora
+            document.getElementById('rentalDays').addEventListener('input', calculateTotal);
+        });
+    </script>
+</body>
+</html>
