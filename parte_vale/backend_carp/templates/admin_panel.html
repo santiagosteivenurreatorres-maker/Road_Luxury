@@ -1,0 +1,296 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel del Administrador</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            background-color: #fff;
+            color: #000;
+        }
+
+        .container {
+            display: flex;
+            height: 100vh;
+        }
+
+        /* ----- BARRA LATERAL ----- */
+        .sidebar {
+            background-color: #000;
+            color: #fff;
+            width: 260px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            box-shadow: 3px 0 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .logo-container {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .logo {
+            width: 90px;
+            margin-bottom: 10px;
+        }
+
+        .sidebar h2 {
+            font-size: 1.3em;
+            color: #d4af37;
+            margin: 0;
+            font-weight: 700;
+        }
+
+        .sidebar nav ul {
+            list-style: none;
+            padding: 0;
+            width: 100%;
+        }
+
+        .sidebar nav ul li {
+            margin: 15px 0;
+        }
+
+        .sidebar nav ul li a {
+            text-decoration: none;
+            color: #fff;
+            padding: 10px 20px;
+            display: block;
+            border-radius: 8px;
+            transition: 0.3s ease;
+            font-weight: 500;
+        }
+
+        .sidebar nav ul li a:hover {
+            background-color: #d4af37;
+            color: #000;
+        }
+
+        .logout {
+            background-color: #d4af37;
+            color: #000;
+            font-weight: 600;
+            border-radius: 8px;
+            padding: 10px 20px;
+            display: block;
+            text-align: center;
+            margin-top: 40px;
+            text-decoration: none;
+        }
+
+        .logout:hover {
+            background-color: #fff;
+            color: #000;
+        }
+
+        /* ----- CONTENIDO PRINCIPAL ----- */
+        .main-content {
+            flex-grow: 1;
+            background-color: #fff;
+            padding: 40px;
+            overflow-y: auto;
+        }
+
+        header h1 {
+            color: #000;
+            margin-bottom: 30px;
+            border-bottom: 3px solid #d4af37;
+            display: inline-block;
+            padding-bottom: 8px;
+        }
+
+        .dashboard {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+        }
+
+        .card {
+            background-color: #f9f9f9;
+            border: 2px solid #d4af37;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(212, 175, 55, 0.3);
+            padding: 20px;
+            text-align: center;
+            transition: 0.2s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 12px rgba(212, 175, 55, 0.4);
+        }
+
+        .card h3 {
+            color: #000;
+            font-weight: 600;
+        }
+
+        .card p {
+            color: #d4af37;
+            font-size: 1.6em;
+            font-weight: bold;
+        }
+
+        /* ----- TABLA VEHÍCULOS ----- */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 40px;
+        }
+
+        th, td {
+            padding: 10px;
+            border-bottom: 1px solid #ccc;
+            text-align: center;
+        }
+
+        th {
+            background-color: #d4af37;
+            color: #000;
+        }
+
+        td img {
+            width: 80px;
+            border-radius: 6px;
+        }
+
+        .btn {
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-block;
+            margin: 2px;
+        }
+
+        .btn-agregar {
+            background-color: #d4af37;
+            color: #000;
+            padding: 10px 18px;
+            border-radius: 8px;
+            font-weight: bold;
+            margin-top: 20px;
+            display: inline-block;
+        }
+
+        .btn-editar {
+            background-color: #f0ad4e;
+            color: #fff;
+        }
+
+        .btn-eliminar {
+            background-color: #d9534f;
+            color: #fff;
+        }
+
+        .btn-editar:hover, .btn-eliminar:hover {
+            opacity: 0.8;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+
+        <!-- SIDEBAR -->
+        <aside class="sidebar">
+            <div class="logo-container">
+                <img src="{% static 'img/imagen_login.jpg' %}" alt="logo" class="logo">
+                <h2>Administrador</h2>
+            </div>
+
+            <nav>
+                <ul>
+                    <li><a href="#usuarios">Gestión de Usuarios</a></li>
+                    <li><a href="#reservas">Reservas</a></li>
+                    <li><a href="#pagos">Pagos</a></li>
+                    <li><a href="#vehiculos">Vehículos</a></li>
+                    <li><a href="#reportes">Reportes</a></li>
+                </ul>
+            </nav>
+
+            <a href="{% url 'logout' %}" class="logout">Cerrar Sesión</a>
+        </aside>
+
+        <!-- CONTENIDO PRINCIPAL -->
+        <main class="main-content">
+            <header>
+                <h1>Panel de Administración</h1>
+            </header>
+
+            <!-- TARJETAS -->
+            <section class="dashboard">
+                <div class="card">
+                    <h3>Usuarios</h3>
+                    <p>{{ usuarios }}</p>
+                </div>
+                <div class="card">
+                    <h3>Reservas Activas</h3>
+                    <p>{{ reservas.count }}</p>
+                </div>
+                <div class="card">
+                    <h3>Vehículos</h3>
+                    <p>{{ vehiculos.count }}</p>
+                </div>
+                <div class="card">
+                    <h3>Pagos Pendientes</h3>
+                    <p>{{ pagos.count }}</p>
+                </div>
+            </section>
+
+            <!-- TABLA VEHÍCULOS -->
+            <h2 id="vehiculos" style="margin-top:40px;">Gestión de Vehículos</h2>
+
+            <a href="{% url 'agregar_vehiculo' %}" class="btn-agregar">➕ Agregar Vehículo</a>
+
+            <table>
+                <tr>
+                    <th>Imagen</th>
+                    <th>Marca</th>
+                    <th>Modelo</th>
+                    <th>Año</th>
+                    <th>Placa</th>
+                    <th>Capacidad</th>
+                    <th>Precio/Día</th>
+                    <th>Acciones</th>
+                </tr>
+
+                {% for vehiculo in vehiculos %}
+                <tr>
+                    <td>
+                        {% if vehiculo.img_vhi %}
+                            <img src="{{ vehiculo.img_vhi.url }}" alt="imagen">
+                        {% else %}
+                            Sin imagen
+                        {% endif %}
+                    </td>
+
+                    <td>{{ vehiculo.mrc_vhi }}</td>
+                    <td>{{ vehiculo.mdl_vhi }}</td>
+                    <td>{{ vehiculo.fch_vhi }}</td>
+                    <td>{{ vehiculo.plc_vhi }}</td>
+                    <td>{{ vehiculo.cpc_vhi }}</td>
+                    <td>${{ vehiculo.vpd_vhi }}</td>
+
+                    <td>
+                        <a href="{% url 'editar_vehiculo' vehiculo.id %}" class="btn btn-editar">Editar</a>
+                        <a href="{% url 'eliminar_vehiculo' vehiculo.id %}" class="btn btn-eliminar" onclick="return confirm('¿Eliminar este vehículo?')">Eliminar</a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr><td colspan="8">No hay vehículos registrados.</td></tr>
+                {% endfor %}
+            </table>
+
+        </main>
+
+    </div>
+</body>
+</html>

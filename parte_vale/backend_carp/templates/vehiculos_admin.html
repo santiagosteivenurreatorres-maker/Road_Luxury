@@ -1,0 +1,238 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vehículos - Administración</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            background: #f3f4f7;
+            display: flex;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 250px;
+            background: #1e1e2f;
+            color: #fff;
+            height: 100vh;
+            padding: 20px;
+            position: fixed;
+        }
+
+        .logo-container {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .logo-container img {
+            width: 90px;
+        }
+
+        .sidebar h2 {
+            font-size: 20px;
+            margin-top: 10px;
+        }
+
+        .sidebar ul {
+            padding: 0;
+            list-style: none;
+            margin-top: 35px;
+        }
+
+        .sidebar ul li {
+            margin: 20px 0;
+        }
+
+        .sidebar ul li a {
+            text-decoration: none;
+            color: #dcdcdc;
+            font-size: 16px;
+            display: block;
+            padding: 8px 10px;
+            border-radius: 8px;
+            transition: 0.3s;
+        }
+
+        .sidebar ul li a:hover,
+        .active {
+            background: #4c8bf5;
+            color: #fff;
+        }
+
+        .logout {
+            margin-top: 40px;
+            display: block;
+            text-align: center;
+            padding: 10px;
+            background: #ff4e4e;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: 0.3s;
+        }
+
+        .logout:hover {
+            background: #d63b3b;
+        }
+
+        /* Contenido */
+        .main-content {
+            margin-left: 270px;
+            padding: 25px;
+            width: calc(100% - 270px);
+        }
+
+        h1 {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        .btn-agregar {
+            display: inline-block;
+            margin-bottom: 15px;
+            padding: 10px 18px;
+            background: #4c8bf5;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+        }
+
+        .btn-agregar:hover {
+            background: #3a73d3;
+        }
+
+        table {
+            width: 100%;
+            margin-top: 15px;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        th, td {
+            padding: 14px;
+            text-align: center;
+            border-bottom: 1px solid #eee;
+        }
+
+        th {
+            background: #f0f0f0;
+            font-weight: 600;
+        }
+
+        tr:hover {
+            background: #f7f7f7;
+        }
+
+        img {
+            width: 80px;
+            height: 55px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        .btn {
+            padding: 7px 13px;
+            border-radius: 6px;
+            text-decoration: none;
+            color: white;
+            font-size: 14px;
+        }
+
+        .btn-editar {
+            background: #4caf50;
+        }
+
+        .btn-eliminar {
+            background: #e53935;
+        }
+
+        .btn-editar:hover {
+            background: #439a46;
+        }
+
+        .btn-eliminar:hover {
+            background: #c62828;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="logo-container">
+            <img src="{% static 'img/logoroad.png' %}" alt="Logo">
+            <h2>Administrador</h2>
+        </div>
+
+        <ul>
+            <li><a href="{% url 'admin_panel' %}">Panel Principal</a></li>
+            <li><a href="#" class="active">Vehículos</a></li>
+            <li><a href="#">Reservas</a></li>
+            <li><a href="#">Pagos</a></li>
+        </ul>
+
+        <a href="{% url 'logout' %}" class="logout">Cerrar Sesión</a>
+    </aside>
+
+    <!-- Contenido principal -->
+    <main class="main-content">
+        <h1>Lista de Vehículos</h1>
+
+        <a href="{% url 'agregar_vehiculo' %}" class="btn-agregar">➕ Agregar Vehículo</a>
+
+        <table>
+            <tr>
+                <th>Imagen</th>
+                <th>Marca</th>
+                <th>Modelo</th>
+                <th>Año</th>
+                <th>Placa</th>
+                <th>Capacidad</th>
+                <th>Precio / Día</th>
+                <th>Acciones</th>
+            </tr>
+
+            {% for vehiculo in vehiculos %}
+            <tr>
+                <td>
+                    {% if vehiculo.img_vhi %}
+                        <img src="{{ vehiculo.img_vhi.url }}" alt="imagen">
+                    {% else %}
+                        Sin imagen
+                    {% endif %}
+                </td>
+
+                <td>{{ vehiculo.mrc_vhi }}</td>
+                <td>{{ vehiculo.mdl_vhi }}</td>
+                <td>{{ vehiculo.fch_vhi }}</td>
+                <td>{{ vehiculo.plc_vhi }}</td>
+                <td>{{ vehiculo.cpc_vhi }}</td>
+                <td>${{ vehiculo.vpd_vhi }}</td>
+
+                <td>
+                    <a href="{% url 'editar_vehiculo' vehiculo.id %}" class="btn btn-editar">Editar</a>
+                    <a href="{% url 'eliminar_vehiculo' vehiculo.id %}" class="btn btn-eliminar" onclick="return confirm('¿Eliminar este vehículo?')">Eliminar</a>
+                </td>
+            </tr>
+
+            {% empty %}
+            <tr>
+                <td colspan="8">No hay vehículos registrados.</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </main>
+
+</body>
+</html>

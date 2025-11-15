@@ -1,0 +1,202 @@
+{% load static %}
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Catálogo Simulador | Road Luxury</title>
+
+  <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <style>
+    body {
+      margin: 0;python manage.py runserver
+
+      font-family: Arial, sans-serif;
+      background-color: #f8f8f8;
+    }
+
+    /* HEADER */
+    header.topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background-color: #fff;
+      padding: 10px 20px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    .hamburger {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      cursor: pointer;
+    }
+
+    .hamburger div {
+      width: 25px;
+      height: 3px;
+      background-color: #333;
+      border-radius: 2px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+    }
+
+    .brand img {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .brand strong {
+      font-size: 16px;
+    }
+
+    .top-icons {
+      display: flex;
+      gap: 15px;
+      align-items: center;
+    }
+
+    .top-icons button {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 20px;
+      color: #333;
+      transition: color 0.3s;
+    }
+
+    .top-icons button:hover {
+      color: #bfa14a;
+    }
+
+    /* SIDEBAR */
+    .sidebar {
+      position: fixed;
+      left: -240px;
+      top: 0;
+      width: 220px;
+      height: 100%;
+      background-color: #111;
+      color: white;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      z-index: 2000;
+      transition: left 0.3s ease;
+    }
+
+    .sidebar.active {
+      left: 0;
+    }
+
+    .sidebar h3 {
+      margin-top: 0;
+      font-size: 18px;
+      border-bottom: 1px solid #444;
+      padding-bottom: 10px;
+    }
+
+    .sidebar li {
+      list-style: none;
+      padding: 10px 0;
+      border-bottom: 1px solid #333;
+      cursor: pointer;
+      transition: color 0.3s;
+    }
+
+    .sidebar li:hover {
+      color: #bfa14a;
+    }
+
+    /* CATÁLOGO */
+    .catalogo-container {
+      padding: 30px;
+      max-width: 1200px;
+      margin: auto;
+    }
+
+    .catalogo-container h2 {
+      text-align: center;
+      margin-bottom: 30px;
+      color: #333;
+    }
+
+    .filtros {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin-bottom: 30px;
+      flex-wrap: wrap;
+    }
+
+    .filtros select {
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 14px;
+    }
+
+    .vehiculos-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 20px;
+    }
+
+    .vehiculo {
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      overflow: hidden;
+      transition: transform 0.2s;
+    }
+
+    .vehiculo:hover {
+      transform: scale(1.03);
+    }
+
+    .vehiculo img {
+      width: 100%;
+      height: 170px;
+      object-fit: cover;
+    }
+
+    .vehiculo-info {
+      padding: 15px;
+    }
+
+    .vehiculo-info h3 {
+      margin: 0 0 5px;
+      font-size: 18px;
+      color: #222;
+    }
+
+    .vehiculo-info p {
+      margin: 0 0 10px;
+      color: #555;
+      font-size: 14px;
+    }
+
+    .btn-simular {
+      display: inline-block;
+      background-color: #bfa14a;
+      color: white;
+      padding: 8px 15px;
+      border-radius: 6px;
+      text-decoration: none;
+      font-weight: bold;
+      transition: background-color 0.3s;
+    }
+
+    .btn-simular

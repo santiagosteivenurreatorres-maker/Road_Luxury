@@ -1,0 +1,237 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Reserva </title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+
+<style>
+/* -------- ESTILOS GENERALES -------- */
+body {
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  background: linear-gradient(135deg, #f8e7b7 0%, #f0d89d 50%, #ebc972 100%);
+  color: #4b3e22;
+  padding: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 100vh;
+}
+
+/* -------- TARJETA PRINCIPAL -------- */
+.card {
+  width: 900px;
+  background-color: #fffdf3;
+  border-radius: 22px;
+  border: 1px solid #e2d3a2;
+  box-shadow: 0 10px 35px rgba(180, 160, 100, 0.25);
+  padding: 35px;
+  animation: fadeIn 0.6s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* -------- CABECERA DEL AUTO -------- */
+.car-header {
+  display: flex;
+  gap: 25px;
+  padding-bottom: 25px;
+  border-bottom: 2px solid #d6c58a;
+}
+
+.car-header img {
+  width: 250px;
+  border-radius: 15px;
+  box-shadow: 0 8px 25px rgba(184, 158, 92, 0.25);
+  object-fit: cover;
+}
+
+.car-info {
+  flex: 1;
+}
+
+.car-info h2 {
+  margin: 0;
+  font-size: 28px;
+  color: #b89e5c;
+}
+
+.car-info p {
+  color: #5c5134;
+  margin-top: 8px;
+  line-height: 1.5;
+}
+
+.car-details {
+  display: flex;
+  gap: 20px;
+  font-size: 15px;
+  color: #8c7a4d;
+  margin-top: 10px;
+}
+
+.benefits {
+  margin-top: 15px;
+  background: #fdf8d6;
+  border-radius: 10px;
+  padding: 12px 15px;
+  border-left: 4px solid #d6b54b;
+}
+
+.benefits span {
+  display: block;
+  color: #7d6a32;
+  font-size: 14px;
+  margin-bottom: 4px;
+}
+
+/* -------- FORMULARIO -------- */
+form {
+  background: #fffbe2;
+  margin-top: 30px;
+  padding: 30px;
+  border-radius: 20px;
+  border: 1px solid #e2d3a2;
+  box-shadow: 0 6px 18px rgba(180, 160, 100, 0.2);
+}
+
+form h3 {
+  color: #b89e5c;
+  margin-top: 0;
+  margin-bottom: 20px;
+  text-align: center;
+  font-size: 22px;
+}
+
+label {
+  font-weight: 600;
+  color: #4b3e22;
+  display: block;
+  margin-bottom: 6px;
+}
+
+input, select, textarea {
+  width: 100%;
+  padding: 12px 14px;
+  margin-bottom: 18px;
+  border: 1.5px solid #d1b96f;
+  border-radius: 10px;
+  background: #fffaf0;
+  color: #000;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+input:focus, select:focus, textarea:focus {
+  border-color: #b89e5c;
+  box-shadow: 0 0 10px rgba(184, 158, 92, 0.3);
+  outline: none;
+  background: #fff4cc;
+}
+
+textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+button {
+  width: 100%;
+  padding: 14px;
+  background: linear-gradient(45deg, #f4ca4b, #f0b81c);
+  border: none;
+  color: #4b3e22;
+  font-size: 18px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: bold;
+  letter-spacing: 0.5px;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+}
+
+button:hover {
+  background: linear-gradient(45deg, #f0bd17, #d5a723);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(184, 158, 92, 0.3);
+}
+
+/* -------- RESPONSIVE -------- */
+@media (max-width: 768px) {
+  .car-header {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .car-header img {
+    width: 100%;
+  }
+
+  .card {
+    padding: 25px;
+  }
+
+  form {
+    padding: 25px;
+  }
+}
+</style>
+</head>
+
+<body>
+<div class="card">
+
+  <!-- Encabezado del auto -->
+  <div class="car-header">
+      <img src="{{ vehiculo.imagen.url }}" alt="{{ vehiculo.nombre }}">
+      <div class="car-info">
+          <h2>{{ vehiculo.nombre }}</h2>
+          <p>{{ vehiculo.descripcion }}</p>
+
+          <div class="car-details">
+              <span>👥 {{ vehiculo.capacidad }} personas</span>
+              <span>💰 ${{ vehiculo.precio }}</span>
+          </div>
+
+          <div class="benefits">
+              <span>✔ Cancelación gratuita</span>
+              <span>✔ Pago al recoger</span>
+              <span>✔ Kilometraje ilimitado</span>
+              <span>✔ Asistencia 24/7</span>
+          </div>
+      </div>
+  </div>
+
+  <!-- Formulario de reserva -->
+  <form method="POST" action="{% url 'reservar_vehiculo' vehiculo.id %}">
+      {% csrf_token %}
+      <h3>Reserva tu vehículo</h3>
+
+      <label for="fecha_inicio">📅 Fecha y hora de inicio</label>
+      <input type="datetime-local" id="fecha_inicio" name="fecha_inicio" required>
+
+      <label for="fecha_fin">📅 Fecha y hora de fin</label>
+      <input type="datetime-local" id="fecha_fin" name="fecha_fin" required>
+
+      <label for="lugar_retiro">📍 Lugar de recogida</label>
+      <select id="lugar_retiro" name="lugar_retiro" required>
+          <option value="">Selecciona un lugar</option>
+          <option value="oficina_central">Oficina Central</option>
+          <option value="aeropuerto">Aeropuerto</option>
+          <option value="hotel">Hotel</option>
+      </select>
+
+      <label for="comentarios">💬 Comentarios (opcional)</label>
+      <textarea id="comentarios" name="comentarios" placeholder="Escribe aquí cualquier instrucción adicional..."></textarea>
+
+      <button type="submit">Confirmar Reserva</button>
+  </form>
+
+</div>
+</body>
+</html>

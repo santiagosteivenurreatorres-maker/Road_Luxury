@@ -1,0 +1,163 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agregar Vehículo</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f5f5;
+            padding: 40px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: auto;
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        h2, h3 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        label {
+            font-weight: bold;
+            margin-top: 10px;
+            display: block;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+        }
+
+        button {
+            width: 100%;
+            margin-top: 15px;
+            padding: 12px;
+            background: #007bff;
+            border: none;
+            color: white;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #0056b3;
+        }
+
+        a {
+            display: block;
+            text-align: center;
+            margin-top: 15px;
+            text-decoration: none;
+            color: #555;
+        }
+
+        .message {
+            text-align: center;
+            margin-bottom: 20px;
+            color: green;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 25px;
+        }
+
+        table, th, td {
+            border: 1px solid #ccc;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        img {
+            max-width: 100px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h2>Agregar Vehículo</h2>
+
+        <!-- Mensajes de éxito -->
+        {% if messages %}
+            {% for message in messages %}
+                <div class="message">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+
+        <!-- Formulario -->
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Guardar Vehículo</button>
+        </form>
+
+        <a href="{% url 'vehiculos_admin' %}">⬅ Volver a la lista</a>
+
+        <!-- Tabla de vehículos existentes -->
+        <h3>Vehículos existentes</h3>
+        <table>
+            <tr>
+                <th>Imagen</th>
+                <th>Nombre</th>
+                <th>Categoría</th>
+                <th>Año</th>
+                <th>Motor</th>
+                <th>Potencia</th>
+                <th>Transmisión</th>
+                <th>Combustible</th>
+                <th>Precio / Día</th>
+                <th>Disponibilidad</th>
+                <th>Acciones</th>
+            </tr>
+            {% for v in vehiculos %}
+            <tr>
+                <td>
+                    {% if v.image %}
+                        <img src="{{ v.image.url }}">
+                    {% else %}
+                        Sin imagen
+                    {% endif %}
+                </td>
+                <td>{{ v.name }}</td>
+                <td>{{ v.category }}</td>
+                <td>{{ v.year }}</td>
+                <td>{{ v.engine }}</td>
+                <td>{{ v.power }}</td>
+                <td>{{ v.transmission }}</td>
+                <td>{{ v.fuel }}</td>
+                <td>${{ v.price }}</td>
+                <td>{{ v.availability }}</td>
+                <td>
+                    <a href="{% url 'editar_vehiculo' v.id %}">Editar</a> |
+                    <a href="{% url 'eliminar_vehiculo' v.id %}">Eliminar</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="11">No hay vehículos</td></tr>
+            {% endfor %}
+        </table>
+    </div>
+</body>
+</html>
