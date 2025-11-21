@@ -28,12 +28,6 @@ body {
   border: 1px solid #e2d3a2;
   box-shadow: 0 10px 35px rgba(180, 160, 100, 0.25);
   padding: 35px;
-  animation: fadeIn 0.6s ease-in-out;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
 }
 
 /* -------- CABECERA DEL AUTO -------- */
@@ -46,14 +40,13 @@ body {
 
 .car-header img {
   width: 250px;
+  height: 170px;
   border-radius: 15px;
   box-shadow: 0 8px 25px rgba(184, 158, 92, 0.25);
   object-fit: cover;
 }
 
-.car-info {
-  flex: 1;
-}
+.car-info { flex: 1; }
 
 .car-info h2 {
   margin: 0;
@@ -87,7 +80,6 @@ body {
   display: block;
   color: #7d6a32;
   font-size: 14px;
-  margin-bottom: 4px;
 }
 
 /* -------- FORMULARIO -------- */
@@ -97,20 +89,17 @@ form {
   padding: 30px;
   border-radius: 20px;
   border: 1px solid #e2d3a2;
-  box-shadow: 0 6px 18px rgba(180, 160, 100, 0.2);
 }
 
 form h3 {
   color: #b89e5c;
-  margin-top: 0;
-  margin-bottom: 20px;
   text-align: center;
   font-size: 22px;
+  margin-bottom: 20px;
 }
 
 label {
   font-weight: 600;
-  color: #4b3e22;
   display: block;
   margin-bottom: 6px;
 }
@@ -122,21 +111,7 @@ input, select, textarea {
   border: 1.5px solid #d1b96f;
   border-radius: 10px;
   background: #fffaf0;
-  color: #000;
   font-size: 1rem;
-  transition: all 0.3s ease;
-}
-
-input:focus, select:focus, textarea:focus {
-  border-color: #b89e5c;
-  box-shadow: 0 0 10px rgba(184, 158, 92, 0.3);
-  outline: none;
-  background: #fff4cc;
-}
-
-textarea {
-  resize: vertical;
-  min-height: 80px;
 }
 
 button {
@@ -149,36 +124,6 @@ button {
   border-radius: 10px;
   cursor: pointer;
   font-weight: bold;
-  letter-spacing: 0.5px;
-  transition: all 0.3s ease;
-  text-transform: uppercase;
-}
-
-button:hover {
-  background: linear-gradient(45deg, #f0bd17, #d5a723);
-  transform: translateY(-2px);
-  box-shadow: 0 6px 15px rgba(184, 158, 92, 0.3);
-}
-
-/* -------- RESPONSIVE -------- */
-@media (max-width: 768px) {
-  .car-header {
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-  }
-
-  .car-header img {
-    width: 100%;
-  }
-
-  .card {
-    padding: 25px;
-  }
-
-  form {
-    padding: 25px;
-  }
 }
 </style>
 </head>
@@ -188,14 +133,15 @@ button:hover {
 
   <!-- Encabezado del auto -->
   <div class="car-header">
-      <img src="{{ vehiculo.imagen.url }}" alt="{{ vehiculo.nombre }}">
+      <img src="{{ vehiculo.image.url }}" alt="{{ vehiculo.name }}">
       <div class="car-info">
-          <h2>{{ vehiculo.nombre }}</h2>
-          <p>{{ vehiculo.descripcion }}</p>
+          <h2>{{ vehiculo.name }}</h2>
+
+          <p>{{ vehiculo.specs }}</p>
 
           <div class="car-details">
-              <span>👥 {{ vehiculo.capacidad }} personas</span>
-              <span>💰 ${{ vehiculo.precio }}</span>
+              <span>👥 {{ vehiculo.capacity|default:"2" }} personas</span>
+              <span>💰 ${{ vehiculo.price }} / día</span>
           </div>
 
           <div class="benefits">
@@ -212,11 +158,11 @@ button:hover {
       {% csrf_token %}
       <h3>Reserva tu vehículo</h3>
 
-      <label for="fecha_inicio">📅 Fecha y hora de inicio</label>
-      <input type="datetime-local" id="fecha_inicio" name="fecha_inicio" required>
+      <label for="fecha_inicio">📅 Fecha de inicio</label>
+      <input type="date" id="fecha_inicio" name="fecha_inicio" required>
 
-      <label for="fecha_fin">📅 Fecha y hora de fin</label>
-      <input type="datetime-local" id="fecha_fin" name="fecha_fin" required>
+      <label for="fecha_fin">📅 Fecha de fin</label>
+      <input type="date" id="fecha_fin" name="fecha_fin" required>
 
       <label for="lugar_retiro">📍 Lugar de recogida</label>
       <select id="lugar_retiro" name="lugar_retiro" required>
@@ -227,7 +173,7 @@ button:hover {
       </select>
 
       <label for="comentarios">💬 Comentarios (opcional)</label>
-      <textarea id="comentarios" name="comentarios" placeholder="Escribe aquí cualquier instrucción adicional..."></textarea>
+      <textarea id="comentarios" name="comentarios"></textarea>
 
       <button type="submit">Confirmar Reserva</button>
   </form>

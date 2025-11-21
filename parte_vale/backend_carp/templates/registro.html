@@ -3,195 +3,161 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <title>Registro - Road_luxury</title>
+  <title>Registro - Road Luxury</title>
   <link rel="stylesheet" href="{% static 'estilos.css' %}">
- <style>
-  body {
-    font-family: 'Poppins', sans-serif;
-    background: linear-gradient(135deg, #ecc665ff 0%, #e6dcc4 50%, #f0c851ff 100%);
-    margin: 0;
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
 
-  .main-container {
-    display: flex;
-    background: #fcf6d3ff;
-    border-radius: 20px;
-    border: 1px solid #d4c59a;
-    box-shadow: 0 10px 25px rgba(180, 160, 100, 0.25);
-    overflow: hidden;
-    max-width: 900px;
-    width: 100%;
-    backdrop-filter: blur(8px);
-  }
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #ecc665ff 0%, #e6dcc4 50%, #f0c851ff 100%);
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
 
-  .image-side {
-    background: linear-gradient(180deg, #c4aa6aff, #e9dec3);
-    flex: 1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 20px;
-    border-right: 1px solid rgba(180, 160, 100, 0.3);
-  }
-
-  .image-side img {
-    max-width: 90%;
-    filter: drop-shadow(0 0 6px rgba(212, 175, 55, 0.3));
-  }
-
-  .registro-container {
-    padding: 40px 30px;
-    flex: 1;
-    text-align: center;
-    color: #5c5134;
-  }
-
-  .registro-container h2 {
-    margin-bottom: 20px;
-    color: #ecbd44ff;
-    font-size: 1.8rem;
-    letter-spacing: 1px;
-  }
-
-  .registro-container input {
-    width: 100%;
-    padding: 12px;
-    margin: 10px 0;
-    border: 1.5px solid #d1b96fff;
-    border-radius: 10px;
-    background: #eedb8fff;
-    color: #000000ff;
-    font-size: 1rem;
-    transition: all 0.3s ease;
-  }
-
-  .registro-container input::placeholder {
-    color: #9c9173;
-  }
-
-  .registro-container input:focus {
-    border-color: #b89e5c;
-    box-shadow: 0 0 8px rgba(184, 158, 92, 0.3);
-    outline: none;
-    background: #e0c786ff;
-  }
-
-  .registro-container button {
-    width: 100%;
-    padding: 12px;
-    background: linear-gradient(45deg, #f0c95dff, #f3b823ff);
-    border: none;
-    color: #4b3e22;
-    font-size: 16px;
-    border-radius: 10px;
-    cursor: pointer;
-    font-weight: bold;
-    letter-spacing: 0.5px;
-    transition: all 0.3s ease;
-    text-transform: uppercase;
-  }
-
-  .registro-container button:hover {
-    background: linear-gradient(45deg, #f0bd17ff, #c1a95f);
-    transform: translateY(-2px);
-    box-shadow: 0 6px 15px rgba(184, 158, 92, 0.3);
-  }
-
-  .registro-container .link {
-    display: block;
-    margin-top: 15px;
-    color: #b89e5c;
-    text-decoration: none;
-    font-weight: 500;
-    transition: color 0.3s ease;
-  }
-
-  .registro-container .link:hover {
-    color: #8c7a4d;
-  }
-
-  .error-message {
-    color: #a94442;
-    font-size: 14px;
-    margin-top: 10px;
-    background-color: #f5c772ff;
-    padding: 10px;
-    border: 1px solid #f5c6cb;
-    border-radius: 8px;
-  }
-
-  .success-message {
-    color: #3c763d;
-    font-size: 14px;
-    margin-top: 10px;
-    background-color: #f1e577ff;
-    padding: 10px;
-    border: 1px solid #c3e6cb;
-    border-radius: 8px;
-  }
-
-  @media (max-width: 768px) {
     .main-container {
-      flex-direction: column;
+      display: flex;
+      background: #fcf6d3ff;
+      border-radius: 20px;
+      border: 1px solid #d4c59a;
+      box-shadow: 0 10px 25px rgba(180, 160, 100, 0.25);
+      overflow: hidden;
+      max-width: 900px;
+      width: 100%;
     }
 
     .image-side {
-      display: none;
+      background: linear-gradient(180deg, #c4aa6aff, #e9dec3);
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .image-side img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
     }
 
     .registro-container {
-      padding: 30px 20px;
+      padding: 40px 30px;
+      flex: 1;
+      text-align: center;
     }
-  }
-</style>
 
+    h2 {
+      color: #ecbd44ff;
+      font-size: 1.8rem;
+      margin-bottom: 20px;
+    }
 
+    /* 🔥 AQUÍ ESTÁ EL ARREGLO DE ALINEACIÓN */
+    .form-group {
+      width: 100%;
+      max-width: 380px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .form-group label {
+      text-align: left;
+      font-size: 14px;
+      color: #b18c34;
+      margin-bottom: -5px;
+    }
+
+    select, input {
+      width: 100%;
+      padding: 13px;
+      border-radius: 10px;
+      border: 1.5px solid #d1b96fff;
+      background: #eedb8fff;
+      font-size: 15px;
+      outline: none;
+      box-sizing: border-box;
+    }
+
+    button {
+      width: 100%;
+      padding: 14px;
+      margin-top: 15px;
+      border: none;
+      border-radius: 10px;
+      background: linear-gradient(45deg, #f0c95dff, #f3b823ff);
+      color: #4b3e22;
+      font-weight: bold;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    .error {
+      background: #ffe1e1;
+      border: 1px solid #d66;
+      padding: 10px;
+      margin-bottom: 10px;
+      color: #a00;
+      border-radius: 8px;
+      max-width: 380px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .link {
+      display: block;
+      margin-top: 12px;
+      color: #b89e5c;
+      text-decoration: none;
+    }
+  </style>
 </head>
+
 <body>
   <div class="main-container">
     <div class="image-side">
-      <img src="{% static 'img/imagen_login.jpg' %}" alt="Registro">  
+      <img src="{% static 'img/img/Registro.png' %}" alt="Registro">
     </div>
 
     <div class="registro-container">
+
       <h2>Crear Cuenta</h2>
 
       {% if error %}
-        <div class="error-message">{{ error }}</div>
-      {% endif %}
-      {% if success %}
-        <div class="success-message">{{ success }}</div>
+        <div class="error">{{ error }}</div>
       {% endif %}
 
-      <form action="{% url 'register' %}" method="post"><br><br>
+      <form action="{% url 'register' %}" method="post">
         {% csrf_token %}
 
-       
+        <div class="form-group">
 
-        <!-- Nuevos campos agregados -->
-       <label for="tipo_documento">Tipo de documento</label>
-       <select name="tipo_documento" id="tipo_documento" required>
-       <option value="">Selecciona...</option>
-       <option value="CC">Cédula de Ciudadanía</option>
-       <option value="TI">Tarjeta de Identidad</option>
-       <option value="CE">Cédula de Extranjería</option>
-       <option value="P">Pasaporte</option>
-        <input type="text" name="numero_documento" placeholder="Número de documento" required />
+          <label for="tipo_documento">Tipo de documento</label>
+          <select name="tipo_documento" id="tipo_documento" required>
+            <option value="">Seleccione...</option>
+            <option value="CC">Cédula de Ciudadanía</option>
+            <option value="TI">Tarjeta de Identidad</option>
+            <option value="CE">Cédula de Extranjería</option>
+            <option value="P">Pasaporte</option>
+          </select>
 
-        <!-- Campos ya existentes -->
-        <input type="text" name="username" placeholder="Nombre de usuario" required />
-        <input type="email" name="email" placeholder="Correo electrónico" required />
-        <input type="password" name="password" placeholder="Contraseña" required />
+          <input type="text" name="numero_documento" placeholder="Número de documento" required />
+          <input type="text" name="username" placeholder="Nombre de usuario" required />
+          <input type="email" name="email" placeholder="Correo electrónico" required />
+          <input type="password" name="password" placeholder="Contraseña" required />
 
-        <button type="submit">Registrarse</button>
+          <button type="submit">Registrarse</button>
+        </div>
+
       </form>
 
       <a class="link" href="{% url 'login' %}">¿Ya tienes cuenta? Inicia sesión</a>
-      <a class="link" href="{% url 'home' %}">← Volver al inicio</a>
+      <a class="link" href="{% url 'index' %}">← Volver al inicio</a>
+
     </div>
   </div>
 </body>

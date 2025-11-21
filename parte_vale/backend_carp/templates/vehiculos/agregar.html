@@ -8,156 +8,226 @@
 
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background: #f5f5f5;
-            padding: 40px;
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            background: #f0e5c6;
         }
 
         .container {
-            max-width: 900px;
-            margin: auto;
-            background: white;
-            padding: 25px;
-            border-radius: 10px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            width: 90%;
+            max-width: 1100px;
+            margin: 40px auto;
+            background: #fff;
+            padding: 35px;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
         }
 
-        h2, h3 {
+        h1 {
             text-align: center;
-            margin-bottom: 20px;
+            color: #000;
+            font-size: 28px;
+            margin-bottom: 25px;
         }
 
+        /* Botón guardar */
+        .btn-guardar {
+            width: 100%;
+            background: #d4af37;
+            color: #000;
+            padding: 14px;
+            font-size: 16px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+
+        .btn-guardar:hover {
+            background: #b89225;
+        }
+
+        /* Botón volver panel admin */
+        .btn-panel {
+            width: 100%;
+            background: #f0d77a;
+            color: #000;
+            padding: 12px;
+            font-size: 15px;
+            border: none;
+            margin-top: 12px;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+
+        .btn-panel:hover {
+            background: #e1c568;
+        }
+
+        /* Labels */
         label {
             font-weight: bold;
-            margin-top: 10px;
             display: block;
+            margin-top: 10px;
+            color: #333;
         }
 
         input, select, textarea {
             width: 100%;
             padding: 10px;
-            margin-top: 5px;
-            border-radius: 6px;
+            margin-top: 6px;
+            border-radius: 8px;
             border: 1px solid #ccc;
         }
 
-        button {
-            width: 100%;
-            margin-top: 15px;
-            padding: 12px;
-            background: #007bff;
-            border: none;
-            color: white;
-            border-radius: 6px;
-            cursor: pointer;
-        }
-
-        button:hover {
-            background: #0056b3;
-        }
-
-        a {
-            display: block;
-            text-align: center;
-            margin-top: 15px;
-            text-decoration: none;
-            color: #555;
-        }
-
-        .message {
-            text-align: center;
-            margin-bottom: 20px;
-            color: green;
-        }
-
+        /* Tabla */
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 25px;
-        }
-
-        table, th, td {
-            border: 1px solid #ccc;
-        }
-
-        th, td {
-            padding: 10px;
-            text-align: left;
+            margin-top: 40px;
+            background: #fff;
         }
 
         th {
-            background-color: #f2f2f2;
+            background: #d4af37;
+            color: #000;
+            padding: 8px 5px;
+            font-size: 14px;
+            font-weight: 600;
+            height: 38px;
+            line-height: 38px;
+            text-align: center;
+        }
+
+        td {
+            padding: 12px 8px;
+            text-align: center;
+            border-bottom: 1px solid #ddd;
+            font-size: 14px;
+        }
+
+        tr {
+            height: 70px;
         }
 
         img {
-            max-width: 100px;
+            width: 90px;
+            height: 60px;
+            border-radius: 8px;
+            object-fit: cover;
         }
+
+        /* Botones editar/eliminar */
+        .btn-editar {
+            background: #f0ad4e;
+            padding: 7px 14px;
+            color: #fff;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            display: inline-block;
+        }
+
+        .btn-editar:hover {
+            background: #d68f2e;
+        }
+
+        .btn-eliminar {
+            background: #d9534f;
+            padding: 7px 14px;
+            color: #fff;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            display: inline-block;
+            margin-top: 5px;
+        }
+
+        .btn-eliminar:hover {
+            background: #b1403c;
+        }
+
     </style>
 </head>
 
 <body>
-    <div class="container">
-        <h2>Agregar Vehículo</h2>
 
-        <!-- Mensajes de éxito -->
-        {% if messages %}
-            {% for message in messages %}
-                <div class="message">{{ message }}</div>
-            {% endfor %}
-        {% endif %}
+<div class="container">
 
-        <!-- Formulario -->
-        <form method="POST" enctype="multipart/form-data">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit">Guardar Vehículo</button>
-        </form>
+    <h1>Agregar Vehículo</h1>
 
-        <a href="{% url 'vehiculos_admin' %}">⬅ Volver a la lista</a>
+    {% if messages %}
+        {% for message in messages %}
+            <div style="background:#d4af37;color:#000;padding:10px;border-radius:8px;margin-bottom:10px;text-align:center;">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
 
-        <!-- Tabla de vehículos existentes -->
-        <h3>Vehículos existentes</h3>
-        <table>
-            <tr>
-                <th>Imagen</th>
-                <th>Nombre</th>
-                <th>Categoría</th>
-                <th>Año</th>
-                <th>Motor</th>
-                <th>Potencia</th>
-                <th>Transmisión</th>
-                <th>Combustible</th>
-                <th>Precio / Día</th>
-                <th>Disponibilidad</th>
-                <th>Acciones</th>
-            </tr>
-            {% for v in vehiculos %}
-            <tr>
-                <td>
-                    {% if v.image %}
-                        <img src="{{ v.image.url }}">
-                    {% else %}
-                        Sin imagen
-                    {% endif %}
-                </td>
-                <td>{{ v.name }}</td>
-                <td>{{ v.category }}</td>
-                <td>{{ v.year }}</td>
-                <td>{{ v.engine }}</td>
-                <td>{{ v.power }}</td>
-                <td>{{ v.transmission }}</td>
-                <td>{{ v.fuel }}</td>
-                <td>${{ v.price }}</td>
-                <td>{{ v.availability }}</td>
-                <td>
-                    <a href="{% url 'editar_vehiculo' v.id %}">Editar</a> |
-                    <a href="{% url 'eliminar_vehiculo' v.id %}">Eliminar</a>
-                </td>
-            </tr>
-            {% empty %}
-            <tr><td colspan="11">No hay vehículos</td></tr>
-            {% endfor %}
-        </table>
-    </div>
+    <!-- Formulario -->
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+
+        <button type="submit" class="btn-guardar">Guardar Vehículo</button>
+    </form>
+
+    <a href="{% url 'admin_panel' %}">
+        <button class="btn-panel">⬅ Volver al Panel del Administrador</button>
+    </a>
+
+    <h2 style="text-align:center;margin-top:40px;color:#000;">Vehículos Registrados</h2>
+
+    <!-- Tabla -->
+    <table>
+        <tr>
+            <th>Imagen</th>
+            <th>Nombre</th>
+            <th>Categoría</th>
+            <th>Año</th>
+            <th>Motor</th>
+            <th>Potencia</th>
+            <th>Transmisión</th>
+            <th>Combustible</th>
+            <th>Precio/Día</th>
+            <th>Disponibilidad</th>
+            <th>Acciones</th>
+        </tr>
+
+        {% for v in vehiculos %}
+        <tr>
+
+            <td>
+                {% if v.image %}
+                    <img src="{{ v.image.url }}">
+                {% else %}
+                    Sin imagen
+                {% endif %}
+            </td>
+
+            <td>{{ v.name }}</td>
+            <td>{{ v.category }}</td>
+            <td>{{ v.year }}</td>
+            <td>{{ v.engine }}</td>
+            <td>{{ v.power }}</td>
+            <td>{{ v.transmission }}</td>
+            <td>{{ v.fuel }}</td>
+            <td>${{ v.price }}</td>
+            <td>{{ v.availability }}</td>
+
+            <td>
+                <a href="{% url 'editar_vehiculo' v.id %}" class="btn-editar">Editar</a><br>
+                <a href="{% url 'eliminar_vehiculo' v.id %}" class="btn-eliminar">Eliminar</a>
+            </td>
+
+        </tr>
+        {% empty %}
+        <tr><td colspan="11">No hay vehículos registrados.</td></tr>
+        {% endfor %}
+    </table>
+
+</div>
+
 </body>
 </html>

@@ -1,7 +1,10 @@
 from django.db import models
-from django.utils import timezone  # ✅ Import necesario para usar timezone.now
+from django.utils import timezone
 
 
+# -----------------------------
+#          ROLES
+# -----------------------------
 class Rol(models.Model):
     nom_rl = models.CharField(max_length=20)
 
@@ -9,17 +12,23 @@ class Rol(models.Model):
         return self.nom_rl
 
 
+# -----------------------------
+#          USUARIOS
+# -----------------------------
 class Usuario(models.Model):
     nom_usr = models.CharField(max_length=50)
     ema_usr = models.EmailField(unique=True)
     tel_usr = models.CharField(max_length=15)
-    psw_usr = models.CharField(max_length=128)  # para login
+    psw_usr = models.CharField(max_length=128)
     rol = models.ForeignKey(Rol, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.nom_usr
 
 
+# -----------------------------
+#          VEHÍCULOS
+# -----------------------------
 class Vehiculo(models.Model):
     name = models.CharField(max_length=100, null=True, blank=True)
     category = models.CharField(max_length=50, null=True, blank=True)
@@ -33,11 +42,13 @@ class Vehiculo(models.Model):
     specs = models.TextField(null=True, blank=True)
     image = models.ImageField(upload_to='vehiculos/', null=True, blank=True)
 
-
     def __str__(self):
         return f"{self.name} ({self.year})"
 
 
+# -----------------------------
+#          RESERVAS
+# -----------------------------
 class Reserva(models.Model):
     fci_rsv = models.DateField(verbose_name="Fecha inicio")
     fch_rsv = models.DateField(verbose_name="Fecha fin")
@@ -49,19 +60,60 @@ class Reserva(models.Model):
         return f"Reserva #{self.id} - {self.usuario.nom_usr}"
 
 
+# -----------------------------
+#          PAGOS
+# -----------------------------
 class Pago(models.Model):
     mnt_pag = models.DecimalField(max_digits=15, decimal_places=2)
     mtd_pag = models.CharField(max_length=20)
-    fecha_pag = models.DateTimeField(default=timezone.now)  # ✅ ahora funciona correctamente
+    fecha_pag = models.DateTimeField(default=timezone.now)
     reserva = models.ForeignKey(Reserva, on_delete=models.CASCADE)
     procesado_por = models.ForeignKey(
-        Usuario, on_delete=models.SET_NULL, null=True, blank=True, related_name='pagos_procesados'
+        Usuario,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='pagos_procesados'
     )
 
     def __str__(self):
         return f"Pago #{self.id} - {self.mnt_pag}"
 
 
+# -----------------------------
+#          CONTRATOS
+# -----------------------------
+class Contrato(models.Model):
+    reserva = models.OneToOneField(
+        Reserva,
+        on_delete=models.CASCADE,
+        related_name="contrato"
+    )
+
+    usuario = models.ForeignKey(
+        Usuario,
+        on_delete=models.CASCADE,
+        related_name="contratos"
+    )
+
+    archivo_pdf = models.FileField(
+        upload_to="contratos/",
+        null=True,
+        blank=True
+    )
+
+    firmado = models.BooleanField(default=False)
+
+    fecha_creacion = models.DateTimeField(default=timezone.now)
+    fecha_firma = models.DateTimeField(null=True, blank=True)
+
+    def __str__(self):
+        return f"Contrato #{self.id} - {self.usuario.nom_usr}"
+
+
+# -----------------------------
+#          SOPORTE
+# -----------------------------
 class Seguimiento(models.Model):
     rsp_sgm = models.CharField(max_length=50)
 

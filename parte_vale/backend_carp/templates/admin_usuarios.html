@@ -1,0 +1,83 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Usuarios - Panel Admin</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+
+    <style>
+        body { font-family: 'Poppins', sans-serif; background: #fff; margin: 0; }
+        .container { display: flex; height: 100vh; }
+
+        .sidebar {
+            width: 260px; background: #000; color: white; padding: 20px;
+            display: flex; flex-direction: column; align-items: center;
+        }
+
+        .sidebar img { width: 90px; margin-bottom: 10px; }
+        .sidebar h2 { color: #d4af37; margin-bottom: 30px; }
+
+        .sidebar a { color: white; text-decoration: none; padding: 10px 20px; margin: 10px 0; display: block; border-radius: 5px;}
+        .sidebar a:hover { background: #d4af37; color: black; }
+        .logout { margin-top: auto; background: #d4af37; color: black; padding: 10px 20px; border-radius: 6px; }
+
+        .main { flex-grow: 1; padding: 30px; overflow-y: auto; }
+        h1 { border-left: 5px solid #d4af37; padding-left: 10px; }
+
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th { background: #d4af37; color: black; padding: 10px; }
+        td { padding: 10px; border-bottom: 1px solid #ccc; text-align: center; }
+
+    </style>
+</head>
+
+<body>
+<div class="container">
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <img src="{% static 'img/img/logo_rl.jpg' %}" alt="logo">
+        <h2>Administrador</h2>
+
+        <a href="{% url 'admin_panel' %}">Dashboard</a>
+        <a href="{% url 'admin_usuarios' %}" style="background:#d4af37; color:black;">Usuarios</a>
+        <a href="{% url 'admin_reservas' %}">Reservas</a>
+        <a href="{% url 'admin_pagos' %}">Pagos</a>
+        <a href="{% url 'vehiculos_admin' %}">Vehículos</a>
+
+        <a href="{% url 'logout' %}" class="logout">Cerrar Sesión</a>
+    </aside>
+
+    <!-- Contenido -->
+    <main class="main">
+        <h1>Usuarios registrados</h1>
+
+        <table>
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Correo</th>
+                <th>Teléfono</th>
+                <th>Rol</th>
+            </tr>
+
+            {% for u in usuarios %}
+            <tr>
+                <td>{{ u.id }}</td>
+                <td>{{ u.nom_usr }}</td>
+                <td>{{ u.ema_usr }}</td>
+                <td>{{ u.tel_usr }}</td>
+                <td>{{ u.rol.nom_rl }}</td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="5">No hay usuarios registrados.</td></tr>
+            {% endfor %}
+        </table>
+
+    </main>
+
+</div>
+</body>
+</html>

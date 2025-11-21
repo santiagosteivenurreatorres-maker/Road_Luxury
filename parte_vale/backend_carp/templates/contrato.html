@@ -1,0 +1,282 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Contrato de alquiler - Road Luxury</title>
+    <style>
+        body {
+            font-family: 'Poppins', Arial, sans-serif;
+            margin: 0;
+            padding: 40px;
+            background: #111;
+            color: #f5f5f5;
+        }
+
+        .page {
+            max-width: 900px;
+            margin: auto;
+            background: #fffdf5;
+            color: #222;
+            padding: 40px 50px;
+            border-radius: 16px;
+            box-shadow: 0 0 30px rgba(0,0,0,0.4);
+        }
+
+        h1 {
+            text-align: center;
+            color: #b88a1c;
+            margin-bottom: 5px;
+        }
+
+        .subtitulo {
+            text-align: center;
+            font-size: 0.9rem;
+            color: #555;
+            margin-bottom: 25px;
+        }
+
+        h2 {
+            color: #333;
+            margin-top: 22px;
+            margin-bottom: 8px;
+            font-size: 1.05rem;
+        }
+
+        p {
+            font-size: 0.95rem;
+            line-height: 1.5;
+            margin-bottom: 8px;
+        }
+
+        .resumen {
+            border: 1px solid #e0cd8f;
+            background: #fff8dd;
+            padding: 12px 14px;
+            border-radius: 10px;
+            margin-bottom: 18px;
+            font-size: 0.92rem;
+        }
+
+        .resumen span {
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .label {
+            font-weight: 600;
+        }
+
+        .importante {
+            margin-top: 20px;
+            padding: 12px 14px;
+            border-radius: 10px;
+            background: #fff0c5;
+            border: 1px solid #d4af37;
+            font-weight: 600;
+            color: #704b00;
+        }
+
+        .firmas {
+            margin-top: 40px;
+            display: flex;
+            justify-content: space-between;
+            gap: 40px;
+        }
+
+        .firma-box {
+            width: 45%;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+
+        .linea-firma {
+            margin-top: 40px;
+            border-top: 1px solid #000;
+            padding-top: 6px;
+        }
+
+        .botones {
+            margin-top: 30px;
+            text-align: center;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 10px 18px;
+            border-radius: 10px;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            margin: 4px;
+            text-decoration: none;
+            font-size: 0.95rem;
+        }
+
+        .btn-print {
+            background: #d4af37;
+            color: #000;
+        }
+
+        .btn-print:hover {
+            filter: brightness(1.05);
+        }
+
+        .btn-back {
+            background: #222;
+            color: #f5f5f5;
+        }
+
+        .btn-back:hover {
+            background: #333;
+        }
+
+        @media print {
+            body {
+                background: #fff;
+                padding: 0;
+            }
+            .page {
+                box-shadow: none;
+                border-radius: 0;
+                margin: 0;
+                max-width: 100%;
+            }
+            .botones {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="page">
+
+    <h1>Contrato de arrendamiento de vehículo</h1>
+    <div class="subtitulo">Road Luxury S.A.S. · NIT 901.765.432-1 · Bogotá D.C.</div>
+
+    <!-- Resumen de reserva -->
+    <div class="resumen">
+        <span><span class="label">Cliente:</span> {{ usuario.nom_usr }} · {{ usuario.ema_usr }}</span>
+        <span><span class="label">Vehículo:</span> {{ vehiculo.name }} ({{ vehiculo.year }}) · {{ vehiculo.engine }} · {{ vehiculo.transmission }}</span>
+        <span><span class="label">Fechas:</span> {{ reserva.fci_rsv }} hasta {{ reserva.fch_rsv }} ({{ dias }} día(s))</span>
+        <span><span class="label">Precio por día:</span> ${{ vehiculo.price }}</span>
+        <span><span class="label">Total del alquiler:</span> ${{ total }}</span>
+    </div>
+
+    <p>
+        Entre <strong>ROAD LUXURY S.A.S.</strong>, sociedad dedicada al alquiler de vehículos, en adelante
+        <strong>EL ARRENDADOR</strong>, y <strong>{{ usuario.nom_usr }}</strong>, en adelante
+        <strong>EL ARRENDATARIO</strong>, se celebra el presente contrato de arrendamiento de vehículo,
+        el cual se regirá por las siguientes cláusulas:
+    </p>
+
+    <h2>1. Objeto del contrato</h2>
+    <p>
+        El ARRENDADOR entrega en calidad de arrendamiento al ARRENDATARIO el vehículo descrito en el
+        resumen de reserva, para su uso exclusivamente particular durante el período indicado.
+    </p>
+
+    <h2>2. Período de arrendamiento</h2>
+    <p>
+        El período de arrendamiento inicia el día <strong>{{ reserva.fci_rsv }}</strong> y finaliza el día
+        <strong>{{ reserva.fch_rsv }}</strong>. Cualquier extensión deberá ser solicitada y autorizada
+        previamente por el ARRENDADOR, pudiendo generar cargos adicionales.
+    </p>
+
+    <h2>3. Precio, forma de pago y depósito de seguridad</h2>
+    <p>
+        El ARRENDATARIO declara conocer y aceptar el valor diario del vehículo por
+        <strong>${{ vehiculo.price }}</strong>, para un total estimado de
+        <strong>${{ total }}</strong> por el período contratado.
+    </p>
+    <p>
+        El ARRENDADOR podrá exigir un depósito de seguridad de
+        <strong>$300.000 COP</strong>, el cual será devuelto al finalizar el contrato
+        si el vehículo se entrega en condiciones normales de uso, sin daños, ni faltantes.
+    </p>
+
+    <h2>4. Responsabilidades del arrendatario</h2>
+    <p>El ARRENDATARIO se compromete a:</p>
+    <p>- Conducir respetando las normas de tránsito vigentes en Colombia.</p>
+    <p>- No permitir que el vehículo sea conducido por personas no autorizadas o sin licencia vigente.</p>
+    <p>- No utilizar el vehículo para actividades ilícitas, competencia, carga excesiva o transporte irregular de pasajeros.</p>
+    <p>- Mantener niveles adecuados de combustible, aceite y refrigerante.</p>
+    <p>- Asumir el pago de cualquier multa, comparendo o sanción derivada del uso del vehículo durante el período de alquiler.</p>
+
+    <h2>5. Seguro y daños</h2>
+    <p>
+        El vehículo cuenta con SOAT y el seguro básico obligatorio que exige la ley. En caso de accidente
+        o siniestro, el ARRENDATARIO deberá informar de inmediato al ARRENDADOR y seguir las instrucciones
+        que este le indique.
+    </p>
+    <p>
+        Los daños ocasionados por negligencia, conducción bajo efectos de alcohol o sustancias psicoactivas,
+        participación en riñas o actos ilícitos, serán responsabilidad total del ARRENDATARIO.
+    </p>
+    <p>
+        En caso de daños graves al vehículo, se podrá aplicar una penalización desde
+        <strong>$500.000 COP</strong>, sin perjuicio de los costos adicionales de reparación.
+    </p>
+
+    <h2>6. Retraso en la devolución</h2>
+    <p>
+        Si el vehículo no es devuelto en la fecha y hora pactadas, el ARRENDADOR podrá cobrar un recargo
+        de <strong>$50.000 COP por día de retraso</strong>, además de los días adicionales de alquiler,
+        según la tarifa vigente.
+    </p>
+
+    <h2>7. Combustible</h2>
+    <p>
+        El vehículo se entrega con un nivel de combustible determinado, el cual deberá ser igual al momento
+        de la devolución. Si se entrega con un nivel inferior, se cobrará el faltante según el precio comercial
+        del combustible y un cargo administrativo.
+    </p>
+
+    <h2>8. Prohibiciones</h2>
+    <p>- Conducir el vehículo bajo efectos de alcohol o sustancias psicoactivas.</p>
+    <p>- Utilizar el vehículo para transporte público sin autorización.</p>
+    <p>- Sacar el vehículo del país sin autorización escrita del ARRENDADOR.</p>
+
+    <h2>9. Terminación del contrato</h2>
+    <p>
+        El ARRENDADOR podrá dar por terminado el contrato de manera anticipada si se evidencia
+        uso indebido del vehículo, incumplimiento de pagos, intento de fraude o cualquier situación
+        que ponga en riesgo el bien o la seguridad de terceros.
+    </p>
+
+    <h2>10. Aceptación</h2>
+    <p>
+        EL ARRENDATARIO declara haber leído y entendido las condiciones de este contrato, acepta
+        su contenido y reconoce que el vehículo es un bien ajeno que debe ser cuidado y devuelto
+        en buen estado.
+    </p>
+
+    <div class="importante">
+        IMPORTANTE: Este contrato debe ser IMPRESO y firmado de manera física por el ARRENDATARIO
+        al momento de recibir el vehículo. La entrega del vehículo está sujeta a la firma física
+        de este documento.
+    </div>
+
+    <div class="firmas">
+        <div class="firma-box">
+            <div class="linea-firma"></div>
+            <strong>ARRENDADOR</strong><br>
+            ROAD LUXURY S.A.S.
+        </div>
+        <div class="firma-box">
+            <div class="linea-firma"></div>
+            <strong>ARRENDATARIO</strong><br>
+            {{ usuario.nom_usr }}
+        </div>
+    </div>
+
+    <div class="botones">
+        <button class="btn btn-print" onclick="window.print()">🖨 Imprimir contrato</button>
+        <a href="{% url 'catalogo' %}" class="btn btn-back">Volver al catálogo</a>
+    </div>
+
+</div>
+
+</body>
+</html>

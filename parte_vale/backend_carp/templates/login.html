@@ -4,202 +4,110 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Login Admin / Cliente</title>
- <style>
-  /* --- RESET GENERAL --- */
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  <title>Login Cliente</title>
 
-  body {
-    font-family: 'Poppins', sans-serif;
-    background: linear-gradient(135deg, #ecc665ff 0%, #e6dcc4 50%, #f0c851ff 100%);
-    height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 24px;
-  }
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-  /* --- CONTENEDOR PRINCIPAL --- */
-  .login-container {
-    width: 400px;
-    background: #fcf6d3ff;
-    border: 2px solid #d4c59a;
-    border-radius: 16px;
-    padding: 30px;
-    box-shadow: 0 8px 20px rgba(180, 160, 100, 0.25);
-    text-align: center;
-  }
-
-  .login-logo {
-    width: 70px;
-    margin-bottom: 10px;
-  }
-
-  /* --- TABS --- */
-  .tab-container {
-    display: flex;
-    width: 100%;
-    margin-bottom: 16px;
-    border-bottom: 1px solid rgba(180, 160, 100, 0.3);
-  }
-
-  .tab {
-    flex: 1;
-    padding: 12px 0;
-    cursor: pointer;
-    font-weight: 700;
-    color: #9a8a1f;
-    border-bottom: 3px solid transparent;
-    transition: color .2s, border-color .2s;
-  }
-
-  .tab.active {
-    color: #ecbd44ff;
-    border-bottom-color: #ecbd44ff;
-  }
-
-  /* --- TITULOS --- */
-  .section-title {
-    font-size: 1.3rem;
-    font-weight: 700;
-    color: #5c5134;
-    margin-bottom: 12px;
-  }
-
-  /* --- FORMULARIOS --- */
-  form {
-    display: none;
-  }
-
-  form.active {
-    display: block;
-  }
-
-  .field {
-    margin-bottom: 14px;
-    text-align: left;
-  }
-
-  input[type="text"],
-  input[type="email"],
-  input[type="password"] {
-    width: 100%;
-    padding: 12px;
-    border-radius: 10px;
-    border: 1.5px solid #d1b96fff;
-    background: #eedb8fff;
-    color: #000000ff;
-    font-size: 1rem;
-    transition: all 0.3s ease;
-  }
-
-  input::placeholder {
-    color: #9c9173;
-  }
-
-  input:focus {
-    border-color: #b89e5c;
-    box-shadow: 0 0 8px rgba(184, 158, 92, 0.3);
-    background: #e0c786ff;
-    outline: none;
-  }
-
-  /* --- BOTONES --- */
-  .btn {
-    width: 100%;
-    padding: 12px;
-    border-radius: 10px;
-    border: none;
-    font-weight: 700;
-    cursor: pointer;
-    margin-top: 8px;
-    background: linear-gradient(45deg, #f0c95dff, #f3b823ff);
-    color: #4b3e22;
-    text-transform: uppercase;
-    transition: all 0.3s ease;
-  }
-
-  .btn:hover {
-    background: linear-gradient(45deg, #f0bd17ff, #c1a95f);
-    transform: translateY(-2px);
-    box-shadow: 0 6px 15px rgba(184, 158, 92, 0.3);
-  }
-
-  .btn.secondary {
-    background: #f1e577ff;
-    color: #6b5a1e;
-  }
-
-  .btn.secondary:hover {
-    background: #e6d56d;
-  }
-
-  /* --- ENLACES Y MENSAJES --- */
-  .link-back {
-    display: block;
-    margin-top: 15px;
-    color: #b89e5c;
-    text-decoration: none;
-    font-weight: 500;
-    transition: color 0.3s ease;
-  }
-
-  .link-back:hover {
-    color: #8c7a4d;
-  }
-
-  .error-msg {
-    color: #a94442;
-    font-weight: bold;
-    background-color: #f5c772ff;
-    border: 1px solid #f5c6cb;
-    border-radius: 8px;
-    padding: 10px;
-    margin-bottom: 12px;
-  }
-
-  @media (max-width: 420px) {
-    .login-container {
-      width: 95%;
-      padding: 20px;
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #ecc665ff 0%, #e6dcc4 50%, #f0c851ff 100%);
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
     }
-  }
-</style>
 
+    .login-container {
+      width: 400px;
+      background: #fcf6d3ff;
+      border: 2px solid #d4c59a;
+      border-radius: 16px;
+      padding: 30px;
+      box-shadow: 0 8px 20px rgba(180, 160, 100, 0.25);
+      text-align: center;
+    }
+
+    .login-logo { width: 70px; margin-bottom: 15px; }
+
+    .section-title {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: #5c5134;
+      margin-bottom: 12px;
+    }
+
+    .field { margin-bottom: 14px; text-align: left; }
+
+    input, select {
+      width: 100%;
+      padding: 12px;
+      border-radius: 10px;
+      border: 1.5px solid #d1b96fff;
+      background: #eedb8fff;
+      font-size: 1rem;
+    }
+
+    .btn {
+      width: 100%;
+      padding: 12px;
+      margin-top: 10px;
+      border-radius: 10px;
+      border: none;
+      font-weight: 700;
+      cursor: pointer;
+      background: linear-gradient(45deg, #f0c95dff, #f3b823ff);
+      color: #4b3e22;
+    }
+
+    .btn.secondary {
+      background: #f1e577ff;
+      color: #6b5a1e;
+    }
+
+    .link-back {
+      display: block;
+      margin-top: 15px;
+      color: #b89e5c;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .error-msg {
+      color: #a94442;
+      font-weight: bold;
+      background-color: #f5c772ff;
+      border: 1px solid #f5c6cb;
+      padding: 10px;
+      margin-bottom: 12px;
+    }
+
+    .forget {
+      margin-top: 8px;
+      display: block;
+      color: #8c7a4d;
+      font-size: 14px;
+      text-decoration: underline;
+    }
+  </style>
 </head>
+
 <body>
   <div class="login-container">
-    <!-- Logo -->
-   <img class="login-logo" src="{% static 'img/logo_rl.jpg' %}" alt="Logo">
+    <img class="login-logo" src="{% static 'img/img/logo_rl.jpg' %}" alt="Logo">
 
-
-    <!-- Tabs -->
-    <div class="tab-container" role="tablist">
-      <div class="tab active" id="tab-admin" role="tab" aria-controls="form-admin">Administrador</div>
-      <div class="tab" id="tab-cliente" role="tab" aria-controls="form-cliente">Cliente</div>
-    </div>
-
-    <!-- Mensaje de error (Django) -->
     {% if error %}
       <div class="error-msg">{{ error }}</div>
     {% endif %}
 
-    <!-- Form Admin -->
-    <form id="form-admin" class="active" method="POST" action="{% url 'login' %}" autocomplete="on">
+    <form method="POST" action="{% url 'login' %}">
       {% csrf_token %}
-      <div class="section-title">Acceso Administrador</div>
-      <div class="field"><input name="username" type="text" placeholder="Usuario administrador" required></div>
-      <div class="field"><input name="password" type="password" placeholder="Contraseña" required></div>
-      <button type="submit" class="btn">Entrar</button>
-      <a href="{% url 'index' %}" class="link-back">Volver al inicio</a>
-    </form>
+      <div class="section-title">Iniciar sesión</div>
 
-    <!-- Form Cliente -->
-    <form id="form-cliente" method="POST" action="{% url 'login' %}" autocomplete="on">
-      {% csrf_token %}
-      <div class="section-title">Iniciar sesión Cliente</div>
-      <div class="field">
-        <select name="tipo_doc" required>
+      <!-- CAMPOS NORMALES SOLO PARA CLIENTES -->
+      <div class="field" id="campo_tipo_doc">
+        <select name="tipo_doc" id="tipo_doc">
           <option value="">Seleccione tipo de documento</option>
           <option value="cc">Cédula de ciudadanía</option>
           <option value="ti">Tarjeta de identidad</option>
@@ -207,44 +115,68 @@
           <option value="pp">Pasaporte</option>
         </select>
       </div>
-      <div class="field"><input name="num_doc" type="text" placeholder="Número de documento" required></div>
-      <div class="field"><input name="username" type="text" placeholder="Nombre de usuario" required></div>
-      <div class="field"><input name="email" type="email" placeholder="Correo electrónico" required></div>
-      <div class="field"><input name="password" type="password" placeholder="Contraseña" required></div>
 
-      <button type="submit" class="btn">Entrar</button><br><br>
+      <div class="field" id="campo_num_doc">
+        <input name="num_doc" type="text" placeholder="Número de documento" id="num_doc">
+      </div>
+
+      <div class="field">
+        <input name="username" type="text" placeholder="Nombre de usuario" required id="username">
+      </div>
+
+      <div class="field" id="campo_email">
+        <input name="email" type="email" placeholder="Correo electrónico" id="email">
+      </div>
+
+      <div class="field">
+        <input name="password" type="password" placeholder="Contraseña" required>
+      </div>
+
+      <button type="submit" class="btn">Entrar</button>
+
+      <!-- NUEVO BOTÓN -->
+      <a href="#" class="forget">¿Olvidaste tu contraseña?</a>
+
+      <br>
+
       <a href="{% url 'register' %}" class="btn secondary">Registrarse</a>
       <a href="{% url 'index' %}" class="link-back">Volver al inicio</a>
     </form>
   </div>
 
+  <!-- SCRIPT PARA DETECTAR ADMIN -->
   <script>
-    (function(){
-      const tabAdmin = document.getElementById('tab-admin');
-      const tabCliente = document.getElementById('tab-cliente');
-      const formAdmin = document.getElementById('form-admin');
-      const formCliente = document.getElementById('form-cliente');
+    const usernameInput = document.getElementById("username");
 
-      function activate(which) {
-        if (which === 'admin') {
-          tabAdmin.classList.add('active');
-          tabCliente.classList.remove('active');
-          formAdmin.classList.add('active');
-          formCliente.classList.remove('active');
-        } else {
-          tabCliente.classList.add('active');
-          tabAdmin.classList.remove('active');
-          formCliente.classList.add('active');
-          formAdmin.classList.remove('active');
-        }
-      }
+    usernameInput.addEventListener("input", () => {
+        const username = usernameInput.value.trim();
 
-      tabAdmin.addEventListener('click', () => activate('admin'));
-      tabCliente.addEventListener('click', () => activate('cliente'));
+        if (!username) return;
 
-      tabAdmin.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') activate('admin'); });
-      tabCliente.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') activate('cliente'); });
-    })();
+        fetch(`/api/check-admin/${username}/`)
+          .then(res => res.json())
+          .then(data => {
+              const isAdmin = data.is_admin;
+
+              const campos = {
+                tipoDoc: document.getElementById("campo_tipo_doc"),
+                numDoc: document.getElementById("campo_num_doc"),
+                email: document.getElementById("campo_email"),
+              };
+
+              if (isAdmin) {
+                campos.tipoDoc.style.display = "none";
+                campos.numDoc.style.display = "none";
+                campos.email.style.display = "none";
+              } else {
+                campos.tipoDoc.style.display = "block";
+                campos.numDoc.style.display = "block";
+                campos.email.style.display = "block";
+              }
+          })
+          .catch(err => console.log(err));
+    });
   </script>
+
 </body>
 </html>

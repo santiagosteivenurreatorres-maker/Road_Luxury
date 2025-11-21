@@ -1,0 +1,92 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Pago exitoso</title>
+
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #111;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .card {
+            background: #1c1c1c;
+            padding: 40px;
+            width: 450px;
+            text-align: center;
+            border-radius: 18px;
+            border: 1px solid #d4af37;
+            box-shadow: 0 0 25px rgba(212, 175, 55, 0.25);
+            animation: fadeIn 0.9s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        .icon {
+            font-size: 80px;
+            color: #d4af37;
+            margin-bottom: 20px;
+        }
+
+        h2 {
+            color: #d4af37;
+            font-weight: 600;
+        }
+
+        p {
+            font-size: 16px;
+            color: #ddd;
+            margin-top: 10px;
+            line-height: 1.6;
+        }
+
+        .btn {
+            display: block;
+            margin-top: 30px;
+            background: #d4af37;
+            padding: 14px;
+            text-decoration: none;
+            color: #111;
+            font-weight: 600;
+            border-radius: 10px;
+            transition: 0.3s;
+        }
+
+        .btn:hover {
+            background: #b8962f;
+        }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    
+    <div class="icon">✔</div>
+
+    <h2>¡Pago realizado con éxito!</h2>
+
+    <p><strong>Vehículo:</strong> {{ reserva.vehiculo.name }}</p>
+    <p><strong>Total pagado:</strong> ${{ total }}</p>
+
+    <p>
+        Tu reserva ha sido confirmada.<br>
+        Gracias por confiar en <strong>Road Luxury</strong>.
+    </p>
+
+    <a href="{% url 'catalogo' %}" class="btn">Volver al catálogo</a>
+
+</div>
+
+</body>
+</html>
