@@ -1,0 +1,218 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>{% block title %}Road Luxury{% endblock %}</title>
+
+    <!-- FAVICON -->
+    <link rel="icon" type="image/x-icon" href="{% static 'img/img/logo_rl.ico' %}">
+
+    <!-- ICONOS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            margin: 0;
+            padding-top: 80px;
+            background: #111;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        /* HEADER */
+        .luxury-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 18px 40px;
+            background: #0d0d0d;
+            border-bottom: 2px solid #d4af37;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 9999;
+            box-shadow: 0 0 10px rgba(212,175,55,0.25);
+        }
+
+        .luxury-header img {
+            height: 42px;
+        }
+
+        .luxury-header nav a {
+            font-size: 1rem;
+            margin: 0 15px;
+            text-decoration: none;
+            font-weight: 600;
+            color: white;
+            transition: .3s;
+        }
+
+        .luxury-header nav a:hover {
+            color: #d4af37;
+        }
+
+        .logout-btn {
+            color: #ff4d4d !important;
+        }
+
+        .logout-btn:hover {
+            color: #ff7b7b !important;
+        }
+
+        /* PANEL RESERVAS */
+        #reservasPanel {
+            position: fixed;
+            top: 80px;
+            right: 40px;
+            width: 380px;
+            background: #0d0d0d;
+            border: 2px solid #d4af37;
+            border-radius: 12px;
+            padding: 18px;
+            display: none;
+            z-index: 99999;
+            color: white;
+            box-shadow: 0 0 15px rgba(212,175,55,0.45);
+        }
+
+        .reserva-box {
+            background: #1b1b1b;
+            padding: 12px 15px;
+            border-radius: 10px;
+            border-left: 4px solid #d4af37;
+            margin-bottom: 12px;
+        }
+
+        /* PANEL PERFIL */
+        #perfilPanel {
+            position: fixed;
+            top: 80px;
+            right: 450px;
+            width: 350px;
+            background: #0d0d0d;
+            color: white;
+            border: 2px solid #d4af37;
+            border-radius: 12px;
+            padding: 18px;
+            display: none;
+            z-index: 99999;
+            box-shadow: 0 0 15px rgba(212,175,55,0.45);
+        }
+
+        .close-panel {
+            float: right;
+            color: #ff4d4d;
+            cursor: pointer;
+            font-size: 18px;
+            margin-top: -5px;
+        }
+    </style>
+
+<script>
+function toggleReservas() {
+    const p = document.getElementById("reservasPanel");
+    p.style.display = (p.style.display === "block") ? "none" : "block";
+}
+
+function togglePerfil() {
+    const p = document.getElementById("perfilPanel");
+    p.style.display = (p.style.display === "block") ? "none" : "block";
+}
+</script>
+
+</head>
+
+<body>
+
+<!-- HEADER -->
+<header class="luxury-header">
+    <div style="display:flex;align-items:center;gap:12px;">
+        <img src="{% static 'img/img/logo_rl.png' %}">
+        <span style="color:#d4af37; font-size:1.2rem; font-weight:700;">Road Luxury</span>
+    </div>
+
+    <nav>
+
+        {% if user.is_authenticated and not user.is_staff %}
+            <a href="#" onclick="togglePerfil()">
+                <i class="fa-solid fa-user"></i> Mi cuenta
+            </a>
+
+            <a href="#" onclick="toggleReservas()">
+                <i class="fa-solid fa-calendar-check"></i> Mis reservas
+            </a>
+
+            <a href="{% url 'logout' %}" class="logout-btn">
+                <i class="fa-solid fa-right-from-bracket"></i> Cerrar sesión
+            </a>
+
+        {% elif user.is_authenticated and user.is_staff %}
+            <a href="{% url 'admin_panel' %}">
+                <i class="fa-solid fa-gauge"></i> Panel Admin
+            </a>
+
+            <a href="{% url 'logout' %}" class="logout-btn">
+                <i class="fa-solid fa-right-from-bracket"></i> Cerrar sesión
+            </a>
+
+        {% else %}
+            <a href="{% url 'login' %}">
+                <i class="fa-solid fa-right-to-bracket"></i> Iniciar sesión
+            </a>
+            <a href="{% url 'register' %}">
+                <i class="fa-solid fa-user-plus"></i> Registrarse
+            </a>
+        {% endif %}
+    </nav>
+</header>
+
+
+<!-- PANEL DE RESERVAS -->
+<div id="reservasPanel">
+    <span class="close-panel" onclick="toggleReservas()">✖</span>
+    <h3 style="color:#d4af37;margin-top:0;"><i class="fa-solid fa-calendar-check"></i> Mis reservas</h3>
+
+    {% if reservas_user %}
+        {% for r in reservas_user %}
+            <div class="reserva-box">
+                <p><strong>Vehículo:</strong> {{ r.vehiculo.name }}</p>
+                <p><strong>Fechas:</strong> {{ r.fci_rsv }} → {{ r.fch_rsv }}</p>
+                <p><strong>Estado:</strong> {{ r.estado }}</p>
+
+                <form method="POST" action="{% url 'cancelar_reserva_cliente' r.id %}">
+                    {% csrf_token %}
+                    <button style="margin-top:10px;background:#c0392b;color:white;padding:5px 10px;border:none;border-radius:6px;cursor:pointer;">
+                        Cancelar reserva
+                    </button>
+                </form>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>No tienes reservas activas.</p>
+    {% endif %}
+</div>
+
+
+<!-- PANEL DE PERFIL -->
+<div id="perfilPanel">
+    <span class="close-panel" onclick="togglePerfil()">✖</span>
+    <h3 style="color:#d4af37;margin-top:0;"><i class="fa-solid fa-user"></i> Mi cuenta</h3>
+
+    <p><strong>Usuario:</strong> {{ user.username }}</p>
+    <p><strong>Email:</strong> {{ user.email }}</p>
+
+    <a href="{% url 'logout' %}" class="logout-btn" style="text-decoration:none;">
+        <i class="fa-solid fa-right-from-bracket"></i> Cerrar sesión
+    </a>
+</div>
+
+
+<!-- CONTENIDO -->
+<main>
+    {% block content %}{% endblock %}
+</main>
+
+</body>
+</html>

@@ -46,8 +46,20 @@
     .sidebar li:hover { color: #bfa14a; }
 
     /* HERO */
-    .hero { position: relative; overflow: hidden; }
-    .hero-slide img { width: 100%; height: auto; display: block; }
+    .hero-slide {
+    position: relative;
+}
+
+.caption {
+    position: absolute;
+    top: 20%;  /* ⬅️ SUBE EL CUADRO */
+    left: 5%;
+    transform: translateY(-20%);
+    background: rgba(255, 255, 255, 0.9);
+    padding: 25px;
+    border-radius: 15px;
+    max-width: 350px;
+}
 
     .caption {
       position: absolute;
@@ -132,7 +144,7 @@
     <div id="hamb" class="hamburger"><div></div><div></div><div></div></div>
 
     <div class="brand" onclick="location.href='{% url 'index' %}'">
-  <img src="{% static 'img/img/logo_rl.jpg' %}" alt="Logo Road Luxury">
+  <img src="{% static 'img/img/logo_rl.png' %}" alt="Logo Road Luxury">
   <div>
     <strong>Road Luxury</strong>
     <div>Alquiler de vehículos premium</div>
@@ -151,7 +163,8 @@
       <div class="caption">
         <h1>Viaja con estilo y comodidad</h1>
         <p>Selección premium de vehículos para cada ocasión.</p>
-        <a class="btn-gold" href="{% url 'cotizador' %}">Cotiza ahora</a>
+        <a class="btn-gold" href="{% url 'catalogo_simulador' %}">Cotiza ahora</a>
+
       </div>
     </div>
   </section>

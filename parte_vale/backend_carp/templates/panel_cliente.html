@@ -1,0 +1,46 @@
+{% load static %}
+
+<div style="color:white; padding:10px;">
+
+    <h3 style="color:#d4af37; font-size:20px; display:flex; align-items:center; gap:6px;">
+        👤 Mi cuenta
+    </h3>
+
+    <p><strong style="color:#d4af37;">Usuario:</strong> {{ usuario.nom_usr }}</p>
+    <p><strong style="color:#d4af37;">Correo:</strong> {{ usuario.ema_usr }}</p>
+    <p><strong style="color:#d4af37;">Teléfono:</strong> {{ usuario.tel_usr }}</p>
+
+    <hr style="border-color:#333; margin:18px 0;">
+
+    <button id="btn-ver-reservas" style="
+        width:100%;
+        background:#d4af37;
+        color:black;
+        padding:12px;
+        border:none;
+        border-radius:10px;
+        cursor:pointer;
+        font-weight:700;
+        font-size:15px;
+        margin-top:5px;
+    ">
+        📅 Ver mis reservas
+    </button>
+
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    const btn = document.getElementById("btn-ver-reservas");
+
+    if (btn) {
+        btn.addEventListener("click", () => {
+            fetch("/cliente/reservas/")
+                .then(res => res.text())
+                .then(html => {
+                    document.getElementById("popup-content").innerHTML = html;
+                });
+        });
+    }
+});
+</script>

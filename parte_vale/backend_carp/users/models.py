@@ -1,5 +1,7 @@
 from django.db import models
 from django.utils import timezone
+from datetime import timedelta
+
 
 
 # -----------------------------
@@ -58,6 +60,26 @@ class Reserva(models.Model):
 
     def __str__(self):
         return f"Reserva #{self.id} - {self.usuario.nom_usr}"
+
+    # =============================
+    # PROPIEDADES CALCULADAS
+    # =============================
+
+    @property
+    def dias(self):
+        """Retorna cuántos días dura la reserva."""
+        try:
+            return (self.fch_rsv - self.fci_rsv).days
+        except:
+            return 0
+
+    @property
+    def total(self):
+        """Retorna el costo total del arriendo."""
+        try:
+            return self.dias * self.vehiculo.price
+        except:
+            return 0
 
 
 # -----------------------------

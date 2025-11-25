@@ -14,7 +14,6 @@
       display: flex;
     }
 
-    /* === MENÚ LATERAL === */
     .sidebar {
       width: 220px;
       background-color: #fff;
@@ -24,13 +23,6 @@
       left: 0;
       top: 0;
       padding: 20px;
-    }
-
-    .sidebar h2 {
-      font-weight: 600;
-      margin-bottom: 20px;
-      color: #333;
-      font-size: 1.3rem;
     }
 
     .sidebar a {
@@ -43,22 +35,16 @@
       transition: 0.3s;
     }
 
-    .sidebar a:hover {
+    .sidebar a:hover,
+    .sidebar a.active {
       background-color: #d4af37;
       color: white;
     }
 
-    /* === CONTENIDO PRINCIPAL === */
     main {
       margin-left: 240px;
       padding: 40px;
       flex: 1;
-    }
-
-    h1 {
-      font-weight: 700;
-      margin-bottom: 30px;
-      color: #333;
     }
 
     .cotizador-card {
@@ -71,7 +57,7 @@
       margin: 0 auto;
     }
 
-    select, input[type="date"] {
+    input[type="date"] {
       border: 1px solid #ccc;
       border-radius: 10px;
       padding: 10px;
@@ -89,141 +75,79 @@
       transition: 0.3s;
     }
 
-    .btn-cotizar:hover {
-      background-color: #b8962e;
-    }
-
-    /* === VISTA DEL VEHÍCULO === */
-    .vehiculo-preview {
-      display: flex;
-      align-items: center;
-      gap: 20px;
-      margin-top: 20px;
-      border-top: 1px solid #ddd;
-      padding-top: 20px;
-    }
-
     .vehiculo-preview img {
-      width: 200px;
-      height: 130px;
+      width: 220px;
       border-radius: 12px;
       object-fit: cover;
-    }
-
-    .vehiculo-info {
-      text-align: left;
-    }
-
-    .vehiculo-info h3 {
-      font-weight: 600;
-      color: #222;
-    }
-
-    .vehiculo-info p {
-      margin: 5px 0;
-      color: #555;
-    }
-
-    footer {
-      text-align: center;
-      padding: 25px 0;
-      color: #555;
-      margin-top: 50px;
     }
   </style>
 </head>
 <body>
 
-  <!-- MENU LATERAL -->
   <div class="sidebar">
     <h2>Road Luxury</h2>
     <a href="{% url 'index' %}">Inicio</a>
-    <a href="{% url 'catalogo' %}">Catálogo</a>
-    <a href="{% url 'cotizador' %}" style="background-color:#d4af37; color:white;">Cotizador</a>
-    <a href="{% url 'quienes_somos' %}">Quienes somos</a>
+    <a class="active" href="#">Cotizador</a>
+    <a href="{% url 'quienes_somos' %}">Quiénes somos</a>
   </div>
 
-  <!-- CONTENIDO -->
   <main>
-    <h1>Cotiza tu vehículo de lujo</h1>
+    <h1>Cotizando: {{ vehiculo.name }}</h1>
 
     <div class="cotizador-card">
-      <form id="formCotizador">
-        <select id="vehiculo" required>
-          <option value="" disabled selected>Selecciona un vehículo</option>
-          <option value="120000" data-img="{% static 'img/img/kia_picanto.jpg' %}" data-desc="Compacto urbano eficiente y cómodo.">Kia Picanto — $120.000 / día</option>
-          <option value="180000" data-img="{% static 'img/img/Ranger-Rover-Vogue.jpg' %}" data-desc="SUV de lujo con tracción 4x4 y gran confort.">Range Rover Vogue — $180.000 / día</option>
-          <option value="250000" data-img="{% static 'img/img/Mercedes-Benz-S-Class.jpg' %}" data-desc="Sedán ejecutivo con 610 HP y acabado premium.">Mercedes-Benz S-Class — $250.000 / día</option>
-          <option value="270000" data-img="{% static 'img/img/Audi RS5 Sportback.jpg' %}" data-desc="Sportback deportivo y elegante: potente motor, manejo ágil y diseño coupé de 5 puertas.">Audi RS5 Sportback — $270.000 / día</option>
-        </select>
 
-        <div class="row">
+      <div class="vehiculo-preview">
+        <img src="{{ vehiculo.image.url }}" alt="Vehículo">
+        <div style="text-align:left;">
+          <h3>{{ vehiculo.name }}</h3>
+          <p>{{ vehiculo.specs|default:"Sin descripción" }}</p>
+          <p style="font-weight:600;color:#d4af37;">
+            Precio por día: ${{ vehiculo.price }}
+          </p>
+        </div>
+      </div>
+
+      <form id="formCotizador">
+
+        <div class="row mt-4">
           <div class="col-md-6">
             <label>Fecha inicio:</label>
-            <input type="date" id="fechaInicio" required>
+            <input type="date" id="fechaInicio" required min="{{ today }}">
           </div>
           <div class="col-md-6">
             <label>Fecha fin:</label>
-            <input type="date" id="fechaFin" required>
+            <input type="date" id="fechaFin" required min="{{ today }}">
           </div>
         </div>
 
         <button type="submit" class="btn-cotizar mt-3">Calcular</button>
-        <button type="submit" class="btn-cotizar mt-3">Proceder al pago</button>
       </form>
 
-      <div id="previewVehiculo" class="vehiculo-preview" style="display:none;">
-        <img id="imgVehiculo" src="" alt="Vehículo">
-        <div class="vehiculo-info">
-          <h3 id="nombreVehiculo"></h3>
-          <p id="descripcionVehiculo"></p>
-          <p id="precioVehiculo" style="font-weight:600; color:#d4af37;"></p>
-        </div>
-      </div>
-
       <div id="resultado"></div>
-    </div>
 
-    <footer>© 2025 Road Luxury</footer>
+    </div>
   </main>
 
   <script>
-    const form = document.getElementById('formCotizador');
-    const selectVehiculo = document.getElementById('vehiculo');
-    const preview = document.getElementById('previewVehiculo');
-    const imgVehiculo = document.getElementById('imgVehiculo');
-    const nombreVehiculo = document.getElementById('nombreVehiculo');
-    const descripcionVehiculo = document.getElementById('descripcionVehiculo');
-    const precioVehiculo = document.getElementById('precioVehiculo');
-
-    // Mostrar preview al seleccionar vehículo
-    selectVehiculo.addEventListener('change', function() {
-      const selected = selectVehiculo.options[selectVehiculo.selectedIndex];
-      imgVehiculo.src = selected.dataset.img;
-      nombreVehiculo.textContent = selected.text.split(" — ")[0];
-      descripcionVehiculo.textContent = selected.dataset.desc;
-      precioVehiculo.textContent = selected.text.split(" — ")[1];
-      preview.style.display = "flex";
-    });
-
-    // Calcular costo total
-    form.addEventListener('submit', function(e) {
+    document.getElementById("formCotizador").addEventListener("submit", e => {
       e.preventDefault();
-      const valor = parseInt(selectVehiculo.value);
-      const inicio = new Date(document.getElementById('fechaInicio').value);
-      const fin = new Date(document.getElementById('fechaFin').value);
-      const resultado = document.getElementById('resultado');
 
-      const dias = (fin - inicio) / (1000 * 60 * 60 * 24);
+      const inicio = new Date(document.getElementById("fechaInicio").value);
+      const fin = new Date(document.getElementById("fechaFin").value);
+      const precioDia = {{ vehiculo.price }};
+      const salida = document.getElementById("resultado");
 
-      if (dias < 1 || isNaN(dias)) {
-        resultado.textContent = "Selecciona fechas válidas (mínimo 1 día).";
+      if (fin <= inicio) {
+        salida.innerHTML = "<br><span style='color:red'>La fecha fin debe ser mayor que inicio</span>";
         return;
       }
 
-      const total = valor * dias;
-      resultado.innerHTML = `<br><strong>Total a pagar por ${dias} día(s):</strong> $${total.toLocaleString('es-CO')}`;
+      const dias = (fin - inicio) / (1000*60*60*24);
+      const total = dias * precioDia;
+
+      salida.innerHTML = `<br><strong>Total por ${dias} día(s): </strong> $${total.toLocaleString("es-CO")}`;
     });
   </script>
+
 </body>
 </html>

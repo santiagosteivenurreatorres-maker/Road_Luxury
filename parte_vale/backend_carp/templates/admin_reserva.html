@@ -2,102 +2,211 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reservas - Panel Admin</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+<meta charset="UTF-8">
+<title>Reservas Registradas</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 
-    <style>
-        body { font-family: 'Poppins', sans-serif; background: #fff; margin: 0; }
-        .container { display: flex; height: 100vh; }
+<style>
+    body {
+        margin: 0;
+        font-family: 'Poppins', sans-serif;
+        background: #f5f5f5;
+    }
 
-        .sidebar {
-            width: 260px; background: #000; color: white; padding: 20px;
-            display: flex; flex-direction: column; align-items: center;
-        }
+    .container {
+        display: flex;
+        height: 100vh;
+    }
 
-        .sidebar img { width: 90px; margin-bottom: 10px; }
-        .sidebar h2 { color: #d4af37; margin-bottom: 30px; }
+    /* SIDEBAR */
+    .sidebar {
+        width: 260px;
+        background: black;
+        color: white;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 25px 0;
+    }
 
-        .sidebar a {
-            color: white; text-decoration: none; padding: 10px 20px;
-            display: block; margin: 10px 0; border-radius: 5px;
-        }
+    .sidebar img {
+        width: 90px;
+        margin-bottom: 20px;
+    }
 
-        .sidebar a:hover {
-            background: #d4af37; color: black;
-        }
+    .sidebar h2 {
+        color: #d4af37;
+        margin-bottom: 30px;
+        font-size: 20px;
+    }
 
-        .logout {
-            margin-top: auto; background: #d4af37; color: black;
-            padding: 10px 20px; border-radius: 6px;
-        }
+    .sidebar a {
+        color: white;
+        text-decoration: none;
+        padding: 12px 25px;
+        margin: 8px 0;
+        width: 80%;
+        text-align: center;
+        border-radius: 6px;
+        font-size: 15px;
+    }
 
-        .main { flex-grow: 1; padding: 30px; overflow-y: auto; }
-        h1 { border-left: 5px solid #d4af37; padding-left: 10px; }
+    .sidebar a:hover {
+        background: #d4af37;
+        color: black;
+    }
 
-        table {
-            width: 100%; border-collapse: collapse; margin-top: 20px;
-        }
+    .active-item {
+        background: #d4af37;
+        color: black;
+    }
 
-        th {
-            background: #d4af37; color: black; padding: 10px;
-        }
+    /* MAIN CONTENT */
+    .main {
+        flex-grow: 1;
+        padding: 40px 50px;
+        overflow-y: auto;
+    }
 
-        td {
-            padding: 10px; border-bottom: 1px solid #ccc; text-align: center;
-        }
+    h1 {
+        color: black;
+        border-left: 6px solid #d4af37;
+        padding-left: 12px;
+        font-size: 32px;
+        font-weight: 600;
+    }
 
-    </style>
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 25px;
+        background: white;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08); /* IGUAL QUE USUARIOS */
+    }
+
+    thead {
+        background: #d4af37;
+        color: black;
+        font-weight: 600;
+    }
+
+    th, td {
+        padding: 15px;
+        text-align: center;
+        border-bottom: 1px solid #eee;
+        font-size: 15px;
+    }
+
+    tr:hover {
+        background: #fafafa;
+    }
+
+    .btn-cancel {
+        padding: 8px 14px;
+        border: none;
+        border-radius: 5px;
+        background: #e67e22;
+        color: white;
+        font-size: 14px;
+        cursor: pointer;
+    }
+
+    .btn-cancel:hover {
+        background: #d35400;
+    }
+
+    .btn-delete {
+        padding: 8px 14px;
+        border: none;
+        border-radius: 5px;
+        background: #c0392b;
+        color: white;
+        font-size: 14px;
+        cursor: pointer;
+        margin-left: 6px;
+    }
+
+    .btn-delete:hover {
+        background: #922b21;
+    }
+
+</style>
 </head>
 
 <body>
+
 <div class="container">
 
-    <!-- Sidebar -->
+    <!-- SIDEBAR -->
     <aside class="sidebar">
-        <img src="{% static 'img/img/logo_rl.jpg' %}" alt="logo">
+        <img src="{% static 'img/img/logo_rl.png' %}">
         <h2>Administrador</h2>
 
         <a href="{% url 'admin_panel' %}">Dashboard</a>
         <a href="{% url 'admin_usuarios' %}">Usuarios</a>
-        <a href="{% url 'admin_reservas' %}" style="background:#d4af37; color:black;">Reservas</a>
-        <a href="{% url 'admin_pagos' %}">Pagos</a>
+        <a href="{% url 'admin_reservas' %}" class="active-item">Reservas</a>
         <a href="{% url 'vehiculos_admin' %}">Vehículos</a>
 
-        <a href="{% url 'logout' %}" class="logout">Cerrar Sesión</a>
+        <a href="{% url 'logout' %}" style="margin-top:auto; background:#d4af37; color:black;">
+            Cerrar Sesión
+        </a>
     </aside>
 
-    <!-- Contenido -->
+    <!-- MAIN -->
     <main class="main">
+
         <h1>Reservas Registradas</h1>
 
         <table>
-            <tr>
-                <th>ID</th>
-                <th>Cliente</th>
-                <th>Vehículo</th>
-                <th>Fecha Inicio</th>
-                <th>Fecha Fin</th>
-                <th>Estado</th>
-            </tr>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Cliente</th>
+                    <th>Vehículo</th>
+                    <th>Fecha Inicio</th>
+                    <th>Fecha Fin</th>
+                    <th>Estado</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
 
-            {% for r in reservas %}
-            <tr>
-                <td>{{ r.id }}</td>
-                <td>{{ r.usuario.nom_usr }}</td>
-                <td>{{ r.vehiculo.name }}</td>
-                <td>{{ r.fci_rsv }}</td>
-                <td>{{ r.fch_rsv }}</td>
-                <td>{{ r.estado }}</td>
-            </tr>
-            {% empty %}
-            <tr><td colspan="6">No hay reservas registradas.</td></tr>
-            {% endfor %}
+            <tbody>
+                {% for reserva in reservas %}
+                <tr>
+                    <td>{{ reserva.id }}</td>
+                    <td>{{ reserva.usuario.nom_usr }}</td>
+                    <td>{{ reserva.vehiculo.name }}</td>
+                    <td>{{ reserva.fci_rsv|date:"d \\d\\e F \\d\\e Y" }}</td>
+                    <td>{{ reserva.fch_rsv|date:"d \\d\\e F \\d\\e Y" }}</td>
+                    <td>{{ reserva.estado }}</td>
+
+                    <td>
+                        <form method="POST" action="{% url 'cancelar_reserva' reserva.id %}" style="display:inline;">
+                            {% csrf_token %}
+                            <button type="submit" class="btn-cancel">Cancelar</button>
+                        </form>
+
+                        <form method="POST" action="{% url 'eliminar_reserva' reserva.id %}" style="display:inline;">
+                            {% csrf_token %}
+                            <button type="submit" class="btn-delete">Eliminar</button>
+                        </form>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="7" style="padding: 20px; font-size: 16px;">
+                        No hay reservas registradas.
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
         </table>
 
     </main>
 
 </div>
+
 </body>
 </html>

@@ -1,0 +1,90 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eliminar Vehículo</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+
+    <style>
+        body { font-family:'Poppins', sans-serif; margin:0; background:white; }
+        .container { display:flex; height:100vh; }
+
+        /* Sidebar */
+        .sidebar {
+            width:260px; background:black; color:white; padding:20px;
+            display:flex; flex-direction:column; align-items:center;
+        }
+        .sidebar img { width:90px; }
+        .sidebar h2 { color:#d4af37; margin:20px 0; }
+        .sidebar a {
+            color:white; text-decoration:none; padding:10px 20px;
+            display:block; margin:10px 0; border-radius:5px;
+        }
+        .sidebar a:hover { background:#d4af37; color:black; }
+        .logout { margin-top:auto; background:#d4af37; color:black;
+                 padding:10px 20px; border-radius:6px; }
+
+        /* Main */
+        .main { flex-grow:1; padding:40px; }
+
+        .box {
+            max-width:600px; margin:50px auto; padding:30px;
+            border:1px solid #ccc; border-radius:10px; text-align:center;
+            background:white;
+        }
+        h1 { color:#c0392b; font-size:26px; margin-bottom:20px; }
+        p { font-size:18px; }
+
+        .btn-danger {
+            background:#e74c3c; border:none; color:white;
+            padding:10px 25px; border-radius:6px; cursor:pointer;
+            margin-right:10px; font-weight:600;
+        }
+        .btn-danger:hover { background:#c0392b; }
+
+        .btn-cancel {
+            background:#bdc3c7; color:black; border:none;
+            padding:10px 25px; border-radius:6px; cursor:pointer;
+            font-weight:600;
+        }
+        .btn-cancel:hover { background:#95a5a6; }
+    </style>
+</head>
+
+<body>
+<div class="container">
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <img src="{% static 'img/img/logo_rl.jpg' %}">
+        <h2>Administrador</h2>
+
+        <a href="{% url 'admin_panel' %}">Dashboard</a>
+        <a href="{% url 'vehiculos_admin' %}" style="background:#d4af37; color:black;">Vehículos</a>
+
+        <a href="{% url 'logout' %}" class="logout">Cerrar Sesión</a>
+    </aside>
+
+    <!-- Main -->
+    <main class="main">
+        <div class="box">
+            <h1>¿Eliminar este vehículo?</h1>
+
+            <p><strong>{{ vehiculo.name }}</strong> ({{ vehiculo.year }})</p>
+            <p style="color:#7f8c8d;">Esta acción no se puede deshacer.</p>
+
+            <form method="POST">
+                {% csrf_token %}
+                <button type="submit" class="btn-danger">Sí, eliminar</button>
+                <a href="{% url 'vehiculos_admin' %}">
+                    <button type="button" class="btn-cancel">Cancelar</button>
+                </a>
+            </form>
+        </div>
+    </main>
+
+</div>
+</body>
+</html>

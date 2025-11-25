@@ -11,13 +11,11 @@
 
   <style>
     body {
-      margin: 0;python manage.py runserver
-
+      margin: 0;
       font-family: Arial, sans-serif;
       background-color: #f8f8f8;
     }
 
-    /* HEADER */
     header.topbar {
       display: flex;
       align-items: center;
@@ -30,58 +28,15 @@
       z-index: 1000;
     }
 
-    .hamburger {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-      cursor: pointer;
-    }
+    .hamburger { display: flex; flex-direction: column; gap: 4px; cursor: pointer; }
+    .hamburger div { width: 25px; height: 3px; background-color: #333; border-radius: 2px; }
 
-    .hamburger div {
-      width: 25px;
-      height: 3px;
-      background-color: #333;
-      border-radius: 2px;
-    }
+    .brand { display: flex; align-items: center; gap: 10px; cursor: pointer; }
+    .brand img { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; }
 
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      cursor: pointer;
-    }
+    .top-icons { display: flex; gap: 15px; align-items: center; }
+    .top-icons button { background:none; border:none; cursor:pointer; font-size:20px; color:#333; }
 
-    .brand img {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      object-fit: cover;
-    }
-
-    .brand strong {
-      font-size: 16px;
-    }
-
-    .top-icons {
-      display: flex;
-      gap: 15px;
-      align-items: center;
-    }
-
-    .top-icons button {
-      background: none;
-      border: none;
-      cursor: pointer;
-      font-size: 20px;
-      color: #333;
-      transition: color 0.3s;
-    }
-
-    .top-icons button:hover {
-      color: #bfa14a;
-    }
-
-    /* SIDEBAR */
     .sidebar {
       position: fixed;
       left: -240px;
@@ -97,56 +52,13 @@
       transition: left 0.3s ease;
     }
 
-    .sidebar.active {
-      left: 0;
-    }
+    .sidebar.active { left: 0; }
 
-    .sidebar h3 {
-      margin-top: 0;
-      font-size: 18px;
-      border-bottom: 1px solid #444;
-      padding-bottom: 10px;
-    }
+    .sidebar h3 { margin-top: 0; font-size: 18px; border-bottom: 1px solid #444; padding-bottom: 10px; }
+    .sidebar li { list-style:none; padding:10px 0; border-bottom:1px solid #333; cursor:pointer; }
 
-    .sidebar li {
-      list-style: none;
-      padding: 10px 0;
-      border-bottom: 1px solid #333;
-      cursor: pointer;
-      transition: color 0.3s;
-    }
-
-    .sidebar li:hover {
-      color: #bfa14a;
-    }
-
-    /* CATÁLOGO */
-    .catalogo-container {
-      padding: 30px;
-      max-width: 1200px;
-      margin: auto;
-    }
-
-    .catalogo-container h2 {
-      text-align: center;
-      margin-bottom: 30px;
-      color: #333;
-    }
-
-    .filtros {
-      display: flex;
-      justify-content: center;
-      gap: 15px;
-      margin-bottom: 30px;
-      flex-wrap: wrap;
-    }
-
-    .filtros select {
-      padding: 10px;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-      font-size: 14px;
-    }
+    .catalogo-container { padding:30px; max-width:1200px; margin:auto; }
+    .catalogo-container h2 { text-align:center; margin-bottom:30px; }
 
     .vehiculos-grid {
       display: grid;
@@ -162,9 +74,7 @@
       transition: transform 0.2s;
     }
 
-    .vehiculo:hover {
-      transform: scale(1.03);
-    }
+    .vehiculo:hover { transform: scale(1.03); }
 
     .vehiculo img {
       width: 100%;
@@ -172,21 +82,8 @@
       object-fit: cover;
     }
 
-    .vehiculo-info {
-      padding: 15px;
-    }
-
-    .vehiculo-info h3 {
-      margin: 0 0 5px;
-      font-size: 18px;
-      color: #222;
-    }
-
-    .vehiculo-info p {
-      margin: 0 0 10px;
-      color: #555;
-      font-size: 14px;
-    }
+    .vehiculo-info { padding:15px; }
+    .vehiculo-info h3 { margin:0 0 5px; font-size:18px; }
 
     .btn-simular {
       display: inline-block;
@@ -199,4 +96,70 @@
       transition: background-color 0.3s;
     }
 
-    .btn-simular
+    .btn-simular:hover { background-color:#a88f3c; }
+  </style>
+</head>
+
+<body>
+
+<!-- TOPBAR -->
+<header class="topbar">
+  <div id="hamb" class="hamburger">
+    <div></div><div></div><div></div>
+  </div>
+
+  <div class="brand" onclick="location.href='/'">
+    <img src="{% static 'img/img/logo_rl.png' %}">
+    <div>
+      <strong>Road Luxury</strong><br>
+      <span style="font-size:12px;color:#777;">Alquiler de vehículos premium</span>
+    </div>
+  </div>
+
+  
+  
+  
+</header>
+
+<!-- SIDEBAR -->
+<div id="sidebar" class="sidebar">
+  <h3>Categorías</h3>
+  <li onclick="location.href='{% url 'index' %}'">inicio</li>
+  <li onclick="location.href='{% url 'quienes_somos' %}'">Quiénes somos</li>
+</div>
+
+<!-- CATÁLOGO -->
+<section class="catalogo-container">
+  <h2>Simulador de Vehículos</h2>
+
+  <div class="vehiculos-grid">
+
+    {% for v in vehiculos %}
+    <div class="vehiculo">
+      <img src="{{ v.image.url }}" alt="Vehículo">
+      <div class="vehiculo-info">
+        <h3>{{ v.name }}</h3>
+        <p>Desde ${{ v.price }} / día</p>
+
+        <!-- ✔ URL corregida -->
+        <a class="btn-simular" href="{% url 'cotizador' v.id %}">
+
+
+       Simular
+
+        </a>
+      </div>
+    </div>
+    {% endfor %}
+
+  </div>
+</section>
+
+<script>
+  const hamb = document.getElementById("hamb");
+  const sidebar = document.getElementById("sidebar");
+  hamb.onclick = () => sidebar.classList.toggle("active");
+</script>
+
+</body>
+</html>

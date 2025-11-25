@@ -1,160 +1,139 @@
+{% extends "base.html" %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Catálogo de Vehículos</title>
 
-    <style>
-        body {
-            font-family: 'Poppins', sans-serif;
-            background: #111;
-            color: white;
-            margin: 0;
-            padding: 20px;
-        }
+{% block title %}Catálogo | Road Luxury{% endblock %}
 
-        h1 {
-            text-align: center;
-            color: #d4af37;
-            margin-bottom: 40px;
-            font-size: 2.2rem;
-        }
+{% block content %}
 
-        .catalog-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(310px, 1fr));
-            gap: 30px;
-            padding: 10px;
-            max-width: 1300px;
-            margin: auto;
-        }
+<style>
 
-        .card {
-            background: #1a1a1a;
-            border: 2px solid #d4af37;
-            border-radius: 14px;
-            overflow: hidden;
-            box-shadow: 0 0 25px rgba(212,175,55,0.2);
-            transition: transform .3s ease, box-shadow .3s ease;
-        }
+.catalog-container {
+    max-width: 1300px;
+    margin: 40px auto;
+    padding: 0 20px;
+}
 
-        .card:hover {
-            transform: translateY(-6px);
-            box-shadow: 0 0 35px rgba(212,175,55,0.45);
-        }
+.catalog-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(330px, 1fr));
+    gap: 35px;
+}
 
-        .card img {
-            width: 100%;
-            height: 200px;
-            object-fit: cover;
-            background: #000;
-        }
+.card {
+    background: #151515;
+    border-radius: 14px;
+    overflow: hidden;
+    border: 1px solid #d4af37;
+    box-shadow: 0 0 20px rgba(212, 175, 55, 0.18);
+    transition: .3s ease;
+}
 
-        .info {
-            padding: 20px;
-        }
+.card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 0 28px rgba(212, 175, 55, 0.35);
+}
 
-        .info h3 {
-            color: #d4af37;
-            margin-bottom: 10px;
-            font-size: 1.3rem;
-        }
+.card-img {
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+    background: #000;
+}
 
-        .info p {
-            margin: 3px 0;
-            font-size: 0.95rem;
-            color: #ddd;
-        }
+.card-body {
+    padding: 22px;
+}
 
-        .price {
-            margin-top: 8px;
-            font-weight: bold;
-            color: #d4af37;
-            font-size: 1.1rem;
-        }
+.card-body h3 {
+    color: #d4af37;
+    font-size: 1.4rem;
+    margin-bottom: 10px;
+    font-weight: 600;
+}
 
-        .btn {
-            display: block;
-            width: 100%;
-            background: #d4af37;
-            border: none;
-            padding: 12px;
-            text-align: center;
-            color: black;
-            margin-top: 10px;
-            font-weight: bold;
-            border-radius: 8px;
-            cursor: pointer;
-            text-decoration: none;
-            transition: .3s;
-        }
+.card-body p {
+    color: #ddd;
+    font-size: 0.95rem;
+    margin: 3px 0;
+}
 
-        .btn:hover {
-            background: #b89328;
-        }
+.price {
+    font-size: 1.15rem;
+    color: #d4af37;
+    margin-top: 12px;
+    font-weight: 600;
+}
 
-        .calc-btn {
-            background: #007bff;
-            color: white;
-        }
+.btn-luxury {
+    margin-top: 15px;
+    display: block;
+    text-align: center;
+    padding: 12px;
+    border-radius: 10px;
+    text-decoration: none;
+    background: #d4af37;
+    color: #000;
+    font-weight: 700;
+    transition: .3s;
+}
 
-        .calc-btn:hover {
-            background: #005fcc;
-        }
+.btn-luxury:hover {
+    background: #b99229;
+}
 
-        .tag {
-            background: #28a745;
-            display: inline-block;
-            padding: 4px 12px;
-            font-size: 0.8rem;
-            border-radius: 8px;
-            margin-bottom: 10px;
-        }
-    </style>
+.tag {
+    display: inline-block;
+    background: #28a745;
+    padding: 4px 12px;
+    border-radius: 8px;
+    font-size: 0.8rem;
+    margin-bottom: 10px;
+}
 
-</head>
-<body>
+</style>
 
-<h1>Catálogo de Vehículos</h1>
+
 
 <div class="catalog-container">
 
-    {% for vehiculo in vehiculos %}
+    <h1 style="text-align:center; color:#d4af37; font-size:2.4rem; margin-bottom:40px;">
+        Catálogo de Vehículos
+    </h1>
 
-    <div class="card">
+    <div class="catalog-grid">
 
-        {% if vehiculo.image %}
-            <img src="{{ vehiculo.image.url }}">
-        {% else %}
-            <img src="{% static 'img/default_car.jpg' %}">
-        {% endif %}
+        {% for vehiculo in vehiculos %}
 
-        <div class="info">
+        <div class="card">
 
-            <span class="tag">Disponible</span>
+            <img src="{{ vehiculo.image.url }}" class="card-img">
 
-            <h3>{{ vehiculo.name }}</h3>
+            <div class="card-body">
 
-            <p><strong>Año:</strong> {{ vehiculo.year }}</p>
-            <p><strong>Motor:</strong> {{ vehiculo.engine }}</p>
-            <p><strong>Potencia:</strong> {{ vehiculo.power }}</p>
-            <p><strong>Transmisión:</strong> {{ vehiculo.transmission }}</p>
-            <p><strong>Combustible:</strong> {{ vehiculo.fuel }}</p>
+                <span class="tag">Disponible</span>
 
-            <p class="price">Precio/día: ${{ vehiculo.price }}</p>
+                <h3>{{ vehiculo.name }}</h3>
 
-            <a href="#" class="btn calc-btn">Calcular Alquiler</a>
+                <p><strong>Año:</strong> {{ vehiculo.year }}</p>
+                <p><strong>Motor:</strong> {{ vehiculo.engine }}</p>
+                <p><strong>Potencia:</strong> {{ vehiculo.power }}</p>
+                <p><strong>Transmisión:</strong> {{ vehiculo.transmission }}</p>
+                <p><strong>Combustible:</strong> {{ vehiculo.fuel }}</p>
 
-            <a href="{% url 'reservar_vehiculo' vehiculo.id %}" class="btn">Hacer Reserva</a>
+                <p class="price">Precio/día: ${{ vehiculo.price }}</p>
+
+                <a href="{% url 'reservar' vehiculo.id %}" class="btn-luxury">
+                    Hacer Reserva
+                </a>
+
+            </div>
 
         </div>
-    </div>
 
-    {% endfor %}
+        {% endfor %}
+
+    </div>
 
 </div>
 
-</body>
-</html>
+{% endblock %}

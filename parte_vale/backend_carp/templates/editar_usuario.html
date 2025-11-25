@@ -1,0 +1,67 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Editar Usuario</title>
+    <style>
+        body { 
+            font-family: 'Poppins', sans-serif; 
+            background: #f5f5f5; 
+            padding: 40px; 
+        }
+        .card {
+            width: 420px; margin: auto; background: white;
+            padding: 25px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+        h2 { border-left: 5px solid #d4af37; padding-left: 10px; }
+        label { font-weight: bold; }
+        input, select {
+            width: 100%; padding: 10px; margin: 10px 0;
+            border-radius: 8px; border: 1px solid #ccc;
+        }
+        .btn-submit {
+            width: 100%; padding: 12px; background: #000;
+            color: #d4af37; border: none; border-radius: 8px;
+            font-weight: bold; cursor: pointer;
+        }
+        .btn-cancel {
+            display: block; text-align: center; margin-top: 15px;
+            text-decoration: none; color: #555;
+        }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <h2>Editar Usuario</h2>
+
+    <form method="POST">
+        {% csrf_token %}
+
+        <label>Nombre:</label>
+        <input type="text" name="nom_usr" value="{{ usuario.nom_usr }}">
+
+        <label>Correo:</label>
+        <input type="email" name="ema_usr" value="{{ usuario.ema_usr }}">
+
+        <label>Teléfono:</label>
+        <input type="text" name="tel_usr" value="{{ usuario.tel_usr }}">
+
+        <label>Rol:</label>
+        <select name="rol_id">
+            {% for r in roles %}
+                <option value="{{ r.id }}" {% if usuario.rol.id == r.id %}selected{% endif %}>
+                    {{ r.nom_rl }}
+                </option>
+            {% endfor %}
+        </select>
+
+        <button class="btn-submit" type="submit">Guardar Cambios</button>
+
+        <a href="{% url 'admin_usuarios' %}" class="btn-cancel">Volver</a>
+    </form>
+</div>
+
+</body>
+</html>

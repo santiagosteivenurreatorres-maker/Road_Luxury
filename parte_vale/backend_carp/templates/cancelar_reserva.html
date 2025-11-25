@@ -1,0 +1,129 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cancelar Reserva</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+
+    <style>
+        body { 
+            font-family: 'Poppins', sans-serif; 
+            background: #fff; 
+            margin: 0; 
+        }
+
+        .container { 
+            display: flex; 
+            height: 100vh; 
+        }
+
+        .sidebar {
+            width: 260px; 
+            background: #000; 
+            color: white; 
+            padding: 20px;
+            display: flex; 
+            flex-direction: column; 
+            align-items: center;
+        }
+
+        .sidebar img { width: 90px; margin-bottom: 10px; }
+        .sidebar h2 { color: #d4af37; margin-bottom: 30px; }
+
+        .sidebar a {
+            color: white; 
+            text-decoration: none; 
+            padding: 10px 20px; 
+            margin: 10px 0;
+            display: block; 
+            border-radius: 5px;
+        }
+        .sidebar a:hover { background: #d4af37; color: black; }
+
+        .logout { 
+            margin-top: auto; 
+            background: #d4af37; 
+            color: black; 
+            padding: 10px 20px; 
+            border-radius: 6px; 
+        }
+
+        .main {
+            flex-grow: 1; 
+            padding: 40px;
+        }
+
+        h1 {
+            border-left: 5px solid #d4af37;
+            padding-left: 10px;
+        }
+
+        .box {
+            width: 60%;
+            background: #f4f4f4;
+            padding: 25px;
+            border-radius: 10px;
+            border-left: 6px solid #d4af37;
+            margin-top: 30px;
+        }
+
+        .btn {
+            padding: 12px 22px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .danger { background: #ff4444; color: white; }
+        .secondary { background: #ccc; }
+
+        .btn:hover { opacity: 0.85; }
+    </style>
+</head>
+
+<body>
+<div class="container">
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <img src="{% static 'img/img/logo_rl.png' %}" alt="logo">
+        <h2>Administrador</h2>
+
+        <a href="{% url 'admin_panel' %}">Dashboard</a>
+        <a href="{% url 'admin_usuarios' %}">Usuarios</a>
+        <a href="{% url 'admin_reservas' %}">Reservas</a>
+        <a href="{% url 'admin_pagos' %}">Pagos</a>
+        <a href="{% url 'vehiculos_admin' %}">Vehículos</a>
+
+        <a href="{% url 'logout' %}" class="logout">Cerrar Sesión</a>
+    </aside>
+
+    <!-- Main -->
+    <main class="main">
+        <h1>Cancelar Reserva</h1>
+
+        <div class="box">
+            <p><strong>Cliente:</strong> {{ reserva.usuario.nom_usr }}</p>
+            <p><strong>Vehículo:</strong> {{ reserva.vehiculo.name }}</p>
+            <p><strong>Fecha Inicio:</strong> {{ reserva.fci_rsv }}</p>
+            <p><strong>Fecha Fin:</strong> {{ reserva.fch_rsv }}</p>
+            <p><strong>Estado actual:</strong> {{ reserva.estado }}</p>
+
+            <hr>
+
+            <h3 style="color:#b30000;">¿Estás seguro de cancelar esta reserva?</h3>
+
+            <form method="POST">
+                {% csrf_token %}
+                <button type="submit" class="btn danger">Sí, Cancelar Reserva</button>
+                <a href="{% url 'admin_reservas' %}" class="btn secondary">Volver</a>
+            </form>
+        </div>
+    </main>
+
+</div>
+</body>
+</html>

@@ -2,21 +2,29 @@
 Django settings for backend project.
 """
 
-from pathlib import Path
 import os
-from datetime import timedelta  # necesario para configurar el token
+from pathlib import Path
+from datetime import timedelta
 
-# BASE DIR 
+# ------------------------
+# BASE DIR
+# ------------------------
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# CONFIGURACIÓN GENERAL 
+
+# ------------------------
+# CONFIGURACIÓN GENERAL
+# ------------------------
 SECRET_KEY = 'django-insecure-waf*a8z8*n*9zb*jyuh4vu52q&)hk4a2*tvvbjb_%^^9!b9x$e'
 DEBUG = True
 ALLOWED_HOSTS = []
 
-# APLICACIONES INSTALADAS 
+
+# ------------------------
+# APPS INSTALADAS
+# ------------------------
 INSTALLED_APPS = [
-    # apps de Django
+    # apps Django
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -26,14 +34,16 @@ INSTALLED_APPS = [
 
     # apps externas
     'rest_framework',
-    'rest_framework_simplejwt',  
+    'rest_framework_simplejwt',
 
-    # tus apps
+    # tu app
     'users.apps.UsersConfig',
-
 ]
 
-# MIDDLEWARE 
+
+# ------------------------
+# MIDDLEWARE
+# ------------------------
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -44,29 +54,44 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-# --- URL PRINCIPAL ---
+
+# ------------------------
+# URL PRINCIPAL
+# ------------------------
 ROOT_URLCONF = 'backend.urls'
 
-# --- PLANTILLAS ---
+
+# ------------------------
+# TEMPLATES
+# ------------------------
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates'],
+        'DIRS': [ BASE_DIR / 'templates' ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+
+                # 👉 AGREGA ESTE
+                'users.context_processors.reservas_usuario',
             ],
         },
     },
 ]
 
-# WSGI 
+
+# ------------------------
+# WSGI
+# ------------------------
 WSGI_APPLICATION = 'backend.wsgi.application'
 
-# BASE DE DATOS 
+
+# ------------------------
+# BASE DE DATOS
+# ------------------------
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -74,40 +99,59 @@ DATABASES = {
     }
 }
 
-# VALIDACIÓN DE CONTRASEÑAS 
+
+# ------------------------
+# VALIDADORES DE CONTRASEÑA
+# ------------------------
 AUTH_PASSWORD_VALIDATORS = [
-    {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',},
-    {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',},
-    {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',},
-    {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',},
+    {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
 ]
 
-# INTERNACIONALIZACIÓN 
+
+# ------------------------
+# INTERNACIONALIZACIÓN
+# ------------------------
 LANGUAGE_CODE = 'es-co'
 TIME_ZONE = 'America/Bogota'
 USE_I18N = True
 USE_TZ = True
 
-# ARCHIVOS ESTÁTICOS (CSS, JS, íconos)
+
+# ARCHIVOS ESTÁTICOS
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [BASE_DIR / "static"]
-STATIC_ROOT = BASE_DIR / "staticfiles"  # para producción con collectstatic
+STATIC_ROOT = BASE_DIR / "staticfiles"
 
-# ARCHIVOS DE MEDIA (imágenes subidas)
+# ARCHIVOS DE MEDIA (IMÁGENES SUBIDAS)
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / "media"
 
+
+
+# ------------------------
 # DEFAULT AUTO FIELD
+# ------------------------
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# CONFIGURACIÓN DEL FRAMEWORK REST 
+
+# ------------------------
+# CONFIG REST FRAMEWORK
+# ------------------------
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     )
 }
 
-# CONFIGURACIÓN DE JWT 
+
+# ------------------------
+# CONFIG JWT
+# ------------------------
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(hours=1),  # token dura 1 hora
+    'ACCESS_TOKEN_LIFETIME': timedelta(hours=1),
 }
+
+LOGIN_URL = 'login'

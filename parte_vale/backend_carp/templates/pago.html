@@ -1,139 +1,126 @@
+{% extends "base.html" %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <title>Pago</title>
 
-    <style>
-        body {
-            font-family: 'Poppins', sans-serif;
-            background: #f0f0f3;
-            padding: 40px;
-        }
-        .card {
-            background: white;
-            padding: 30px;
-            max-width: 550px;
-            margin: auto;
-            border-radius: 18px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-        }
-        h2 {
-            font-weight: 600;
-            color: #333;
-        }
-        .label {
-            margin-top: 15px;
-            font-weight: 600;
-        }
-        .input-group {
-            margin-top: 8px;
-            margin-bottom: 18px;
-        }
-        input, select {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid #cfcfcf;
-            border-radius: 8px;
-            font-size: 15px;
-        }
-        .qr {
-            width: 260px;
-            display: none;
-            margin: 20px auto;
-        }
-        button {
-            width: 100%;
-            padding: 14px;
-            background: #d4af37;
-            border: none;
-            border-radius: 10px;
-            color: white;
-            font-size: 18px;
-            cursor: pointer;
-            margin-top: 25px;
-        }
-        button:hover {
-            background: #c39a2f;
-        }
+{% block title %}Confirmar reserva{% endblock %}
 
-        /* FORM TARJETA */
-        #form-tarjeta input {
-            margin-bottom: 13px;
-        }
-    </style>
-</head>
-<body>
+{% block content %}
 
-<div class="card">
-    <h2>Pago de la reserva</h2>
+<style>
 
-    <p><strong>Vehículo:</strong> {{ reserva.vehiculo.name }}</p>
-    <p><strong>Total a pagar:</strong> ${{ total }}</p>
+.payment-container {
+    max-width: 900px;
+    margin: 40px auto;
+    background: white;
+    padding: 35px;
+    border-radius: 20px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+    font-family: 'Poppins', sans-serif;
+}
 
-    <form method="POST">
+h1 {
+    text-align: center;
+    color: #d4af37;
+    font-size: 2rem;
+    margin-bottom: 25px;
+}
+
+.box-info {
+    background: #fff6d7;
+    border-left: 6px solid #d4af37;
+    padding: 20px;
+    border-radius: 12px;
+    margin-bottom: 25px;
+}
+
+.box-info strong {
+    color: #9c7a1f;
+    font-weight: 600;
+}
+
+.details {
+    margin-top: 20px;
+    color: #444;
+    line-height: 1.6;
+}
+
+ul {
+    padding-left: 18px;
+}
+
+ul li {
+    margin-bottom: 8px;
+}
+
+.btn-gold {
+    width: 100%;
+    background: #d4af37;
+    padding: 15px;
+    border-radius: 10px;
+    text-align: center;
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: .3s;
+}
+
+.btn-gold:hover {
+    background: #b89328;
+}
+
+.btn-cancel {
+    width: 100%;
+    background: #c0392b;
+    padding: 14px;
+    border: none;
+    margin-top: 10px;
+    border-radius: 10px;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.btn-cancel:hover {
+    background: #9f2d22;
+}
+
+</style>
+
+
+<div class="payment-container">
+
+    <h1>Confirmar reserva</h1>
+
+    <div class="box-info">
+        <p><strong>Vehículo:</strong> {{ reserva.vehiculo.name }}</p>
+        <p><strong>Fechas:</strong> {{ reserva.fci_rsv }} → {{ reserva.fch_rsv }}</p>
+        <p><strong>Total a pagar:</strong> ${{ total }}</p>
+    </div>
+
+    <div class="details">
+        <p><strong>Importante antes de continuar:</strong></p>
+        <ul>
+            <li>📌 El pago se realizará <strong>en efectivo</strong> al momento de recibir el vehículo.</li>
+            <li>📌 No se pedirá anticipo ni transferencia.</li>
+            <li>📌 Debes presentar tu documento de identidad al recoger el vehículo.</li>
+            <li>📌 La reserva será válida únicamente si llegas dentro del horario acordado.</li>
+        </ul>
+    </div>
+
+    <!-- Botón confirmar -->
+    <form method="POST" action="{% url 'contrato_reserva' reserva.id %}">
         {% csrf_token %}
-
-        <label class="label">Método de pago:</label>
-        <select name="metodo_pago" id="metodo_pago" required>
-            <option value="">Seleccione…</option>
-            <option value="Tarjeta">Tarjeta de crédito</option>
-            <option value="Nequi">Nequi</option>
-            <option value="Daviplata">Daviplata</option>
-            <option value="Efectivo">Efectivo</option>
-        </select>
-
-        <!-- FORMULARIO PARA TARJETA -->
-        <div id="form-tarjeta" style="display:none;">
-            <label class="label">Número de tarjeta</label>
-            <input type="text" maxlength="16" placeholder="1234 5678 9012 3456">
-
-            <label class="label">Nombre del titular</label>
-            <input type="text" placeholder="Nombre en la tarjeta">
-
-            <label class="label">Fecha de expiración</label>
-            <input type="month">
-
-            <label class="label">CVV</label>
-            <input type="password" maxlength="4" placeholder="123">
-        </div>
-
-        <!-- QR NEQUI -->
-       <img id="qr-nequi" class="qr" src="{% static 'img/img/qr_nequi.jpg' %}">
-
-
-        <!-- QR DAVIPLATA -->
-        <img id="qr-daviplata" class="qr" src="https://i.postimg.cc/fyWMRz60/qr-daviplata.png">
-
-        <!-- EFECTIVO -->
-        <div id="pago-efectivo" style="display:none; margin-top:20px;">
-            <p>💵 Paga en efectivo al recoger tu vehículo en la oficina de Road Luxury.</p>
-        </div>
-
-        <button type="submit">Confirmar pago</button>
+        <button type="submit" class="btn-gold">Confirmar reserva</button>
     </form>
+
+    <!-- Botón cancelar (te devuelve al catálogo) -->
+    <form method="POST" action="{% url 'cancelar_reserva_cliente' reserva.id %}">
+        {% csrf_token %}
+        <button type="submit" class="btn-cancel">Cancelar reserva</button>
+    </form>
+
 </div>
 
-<script>
-const metodo = document.getElementById("metodo_pago");
-const tarjeta = document.getElementById("form-tarjeta");
-const qrNequi = document.getElementById("qr-nequi");
-const qrDaviplata = document.getElementById("qr-daviplata");
-const efectivo = document.getElementById("pago-efectivo");
-
-metodo.addEventListener("change", () => {
-    tarjeta.style.display = "none";
-    qrNequi.style.display = "none";
-    qrDaviplata.style.display = "none";
-    efectivo.style.display = "none";
-
-    if (metodo.value === "Tarjeta") tarjeta.style.display = "block";
-    if (metodo.value === "Nequi") qrNequi.style.display = "block";
-    if (metodo.value === "Daviplata") qrDaviplata.style.display = "block";
-    if (metodo.value === "Efectivo") efectivo.style.display = "block";
-});
-</script>
-
-</body>
-</html>
+{% endblock %}

@@ -1,0 +1,47 @@
+{% load static %}
+
+<div style="color:white; padding:10px;">
+
+    <h3 style="color:#d4af37; font-size:20px; display:flex; align-items:center; gap:6px;">
+        📅 Mis reservas
+    </h3>
+
+    {% if reservas %}
+        {% for r in reservas %}
+            <div style="
+                padding:12px; 
+                background:#1a1a1a;
+                border:1px solid #333;
+                border-radius:10px;
+                margin-bottom:12px;
+            ">
+                <p><strong style="color:#d4af37;">Vehículo:</strong> {{ r.vehiculo.name }}</p>
+                <p><strong style="color:#d4af37;">Fechas:</strong> {{ r.fci_rsv }} → {{ r.fch_rsv }}</p>
+                <p><strong style="color:#d4af37;">Estado:</strong> {{ r.estado }}</p>
+
+                {% if r.estado != "Cancelada" %}
+                <form method="POST" action="{% url 'cancelar_reserva_cliente' r.id %}">
+                    {% csrf_token %}
+                    <button type="submit" style="
+                        background:#e74c3c;
+                        color:white;
+                        border:none;
+                        padding:8px 12px;
+                        border-radius:8px;
+                        cursor:pointer;
+                        font-size:14px;
+                        margin-top:8px;
+                        width:100%;
+                    ">
+                        Cancelar reserva
+                    </button>
+                </form>
+                {% endif %}
+            </div>
+        {% endfor %}
+
+    {% else %}
+        <p style="margin-top:15px;">No tienes reservas activas.</p>
+    {% endif %}
+
+</div>

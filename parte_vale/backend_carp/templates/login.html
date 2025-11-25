@@ -81,6 +81,7 @@
       border: 1px solid #f5c6cb;
       padding: 10px;
       margin-bottom: 12px;
+      border-radius: 8px;
     }
 
     .forget {
@@ -95,7 +96,7 @@
 
 <body>
   <div class="login-container">
-    <img class="login-logo" src="{% static 'img/img/logo_rl.jpg' %}" alt="Logo">
+    <img class="login-logo" src="{% static 'img/img/logo_rl.png' %}" alt="Logo">
 
     {% if error %}
       <div class="error-msg">{{ error }}</div>
@@ -105,7 +106,7 @@
       {% csrf_token %}
       <div class="section-title">Iniciar sesión</div>
 
-      <!-- CAMPOS NORMALES SOLO PARA CLIENTES -->
+      <!-- CAMPOS SOLO CLIENTE -->
       <div class="field" id="campo_tipo_doc">
         <select name="tipo_doc" id="tipo_doc">
           <option value="">Seleccione tipo de documento</option>
@@ -134,9 +135,7 @@
 
       <button type="submit" class="btn">Entrar</button>
 
-      <!-- NUEVO BOTÓN -->
       <a href="#" class="forget">¿Olvidaste tu contraseña?</a>
-
       <br>
 
       <a href="{% url 'register' %}" class="btn secondary">Registrarse</a>
@@ -144,13 +143,12 @@
     </form>
   </div>
 
-  <!-- SCRIPT PARA DETECTAR ADMIN -->
+  <!-- SCRIPT: Detectar Admin y ocultar campos -->
   <script>
     const usernameInput = document.getElementById("username");
 
     usernameInput.addEventListener("input", () => {
         const username = usernameInput.value.trim();
-
         if (!username) return;
 
         fetch(`/api/check-admin/${username}/`)
@@ -168,7 +166,8 @@
                 campos.tipoDoc.style.display = "none";
                 campos.numDoc.style.display = "none";
                 campos.email.style.display = "none";
-              } else {
+              } 
+              else {
                 campos.tipoDoc.style.display = "block";
                 campos.numDoc.style.display = "block";
                 campos.email.style.display = "block";
