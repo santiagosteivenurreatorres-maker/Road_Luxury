@@ -6,9 +6,11 @@ from django.contrib.admin.views.decorators import staff_member_required
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from datetime import date
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
+from django.contrib.auth.decorators import user_passes_test
+from django.utils import timezone
 
-from .models import Usuario, Vehiculo, Reserva, Pago, Rol
+from .models import Usuario, Vehiculo, Reserva, Pago, Rol, Soporte, Seguimiento
 from .forms import VehiculoForm
 
 
@@ -120,6 +122,24 @@ def login_page(request):
 
     return render(request, "login.html")
 
+def recuperar(request):
+    mensaje = ""
+
+    if request.method == "POST":
+        email = request.POST.get("email")
+        try:
+            usuario = Usuario.objects.get(ema_usr=email)
+
+            # Aquí usamos el campo correcto
+            mensaje = f"Tu contraseña es: {usuario.psw_usr}"
+
+        except Usuario.DoesNotExist:
+            mensaje = "Este correo no está registrado."
+
+    return render(request, "recuperar.html", {"mensaje": mensaje})
+
+
+
 
 # ======================================================
 # LOGOUT
@@ -152,10 +172,6 @@ def catalogo_simulador(request):
     })
 
 
-def soporte(request):
-    return render(request, "soporte.html", {
-        "mis_reservas": obtener_reservas_activas(request)
-    })
 
 
 def cotizador(request, vehiculo_id):
@@ -229,7 +245,6 @@ def pago_view(request, reserva_id):
     if request.method == "POST":
         reserva.estado = "Activa"
         reserva.save()
-
         return redirect("contrato_reserva", reserva_id=reserva.id)
 
     return render(request, "pago.html", {
@@ -267,24 +282,29 @@ def cancelar_reserva_cliente(request, reserva_id):
 
     reserva.delete()
 
-    # Si la cancelación viene del panel flotante NO redirige, solo responde OK
     if request.headers.get("HX-Request"):
-        return HttpResponse("")  # HTMX solo actualiza el panel
+        return HttpResponse("")
 
-    # Si es un clic normal
     return redirect("catalogo")
 
+
 # ======================================================
-# ADMIN PANEL
+# PANEL ADMIN
 # ======================================================
 @staff_member_required
 def admin_panel(request):
+    from .models import Soporte  
+
     return render(request, "admin_panel.html", {
         "usuarios": Usuario.objects.all(),
         "reservas": Reserva.objects.all(),
         "pagos": Pago.objects.all(),
-        "vehiculos": Vehiculo.objects.all()
+        "vehiculos": Vehiculo.objects.all(),
+        "soportes": Soporte.objects.all(),     # lista completa
+        "total_soporte": Soporte.objects.count()  # ✔ número total
     })
+
+    
 
 
 @staff_member_required
@@ -308,8 +328,21 @@ def admin_pagos(request):
     })
 
 
+@user_passes_test(lambda u: u.is_staff)
+def eliminar_reserva_admin(request, reserva_id):
+    if request.method == "POST":
+        try:
+            reserva = Reserva.objects.get(id=reserva_id)
+            reserva.delete()
+            return JsonResponse({"success": True})
+        except Reserva.DoesNotExist:
+            return JsonResponse({"success": False, "error": "Reserva no encontrada"})
+    
+    return JsonResponse({"success": False, "error": "Método no permitido"})
+
+
 # ======================================================
-# CRUD Usuarios
+# CRUD USUARIOS
 # ======================================================
 @staff_member_required
 def editar_usuario(request, usuario_id):
@@ -374,14 +407,26 @@ def toggle_estado_vehiculo(request, vehiculo_id):
 # ======================================================
 # PANEL CLIENTE
 # ======================================================
+
 @login_required
 def panel_cliente(request):
     usuario_custom = Usuario.objects.filter(ema_usr=request.user.email).first()
 
+    # Traer reportes del cliente con todos los campos
+    reportes = Soporte.objects.filter(usuario=usuario_custom).order_by("-id")
+
+    # Enviar todos los datos, incluyendo la respuesta
     return render(request, "panel_cliente.html", {
         "usuario": usuario_custom,
-        "mis_reservas": obtener_reservas_activas(request)
+        "reportes": reportes,
+        "mis_reservas": obtener_reservas_activas(request),
+        "respuesta_admin": [r.respuesta_admin for r in reportes],
     })
+
+
+@login_required
+def soporte_panel(request):
+    return render(request, "partials/soporte_form.html")
 
 
 @login_required
@@ -394,3 +439,63 @@ def reservas_cliente(request):
         "reservas": reservas,
         "mis_reservas": obtener_reservas_activas(request)
     })
+
+
+# ======================================================
+# SOPORTE - CLIENTE
+# ======================================================
+from datetime import date
+
+@login_required
+def enviar_soporte(request):
+    usuario_custom = Usuario.objects.filter(ema_usr=request.user.email).first()
+
+    if request.method == "POST":
+        tipo = request.POST.get("tipo")
+        fecha = request.POST.get("fecha")
+        descripcion = request.POST.get("descripcion")
+
+        seguimiento_default, _ = Seguimiento.objects.get_or_create(rsp_sgm="Recibido")
+
+        Soporte.objects.create(
+            tp_spt=tipo,
+            fch_spt=fecha,
+            dsc_spt=descripcion,
+            est_spt="Pendiente",
+            usuario=usuario_custom,
+            seguimiento=seguimiento_default
+        )
+
+        # 🔥 Después de enviar → vuelve al catálogo sin cerrar el popup
+        return redirect("catalogo")
+
+    # 🔥 Esto se usa cuando se abre el popup de soporte
+    return render(request, "partials/soporte_form.html", {
+        "today": date.today().isoformat(),
+        "mis_reservas": obtener_reservas_activas(request)
+    })
+
+
+
+# ======================================================
+# SOPORTE - ADMIN
+# ======================================================
+@staff_member_required
+def admin_soporte_view(request):
+    solicitudes = Soporte.objects.all().order_by("-id")
+    return render(request, "admin_soporte.html", {"solicitudes": solicitudes})
+
+
+@staff_member_required
+def responder_soporte(request, soporte_id):
+    soporte = get_object_or_404(Soporte, id=soporte_id)
+
+    if request.method == "POST":
+        soporte.respuesta_admin = request.POST.get("respuesta")
+        soporte.est_spt = "Respondido"
+        soporte.fch_respuesta = timezone.now()
+        soporte.save()
+        return redirect("admin_soporte_view")
+
+    return render(request, "admin_responder_soporte.html", {"soporte": soporte})
+

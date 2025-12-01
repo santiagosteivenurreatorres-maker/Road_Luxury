@@ -1,0 +1,112 @@
+<h3 style="
+    color:#d4af37;
+    margin-top:0;
+    display:flex;
+    align-items:center;
+    gap:8px;
+    font-size:22px;
+">
+    🛠️ Enviar reporte al soporte
+</h3>
+
+<form method="POST" action="/soporte/enviar/" style="margin-top:15px;">
+    {% csrf_token %}
+
+    <!-- TIPO -->
+    <label style="color:#d4af37; font-weight:600;">Tipo de reporte</label>
+    <select name="tipo" required style="
+        width:100%;
+        padding:12px;
+        margin-top:6px;
+        border-radius:10px;
+        background:#1b1b1b;
+        border:1px solid #d4af37;
+        color:white;
+        font-size:15px;
+        outline:none;
+        box-sizing:border-box;
+    ">
+        <option value="" disabled selected>Selecciona una opción</option>
+        <option value="Problema con reserva">Problema con la reserva</option>
+        <option value="Problema con pago">Problema con el pago</option>
+        <option value="Error del sistema">Error del sistema</option>
+        <option value="Sugerencia">Sugerencia</option>
+    </select>
+
+    <!-- FECHA -->
+    <label style="
+        color:#d4af37; 
+        font-weight:600; 
+        margin-top:15px; 
+        display:block;
+    ">Fecha del evento</label>
+
+    <input type="date" name="fecha" required 
+        min="{{ today }}"
+        style="
+            width:100%;
+            padding:12px;
+            border-radius:10px;
+            background:#1b1b1b;
+            border:1px solid #d4af37;
+            color:white;
+            font-size:15px;
+            outline:none;
+            margin-top:6px;
+            box-sizing:border-box;
+        ">
+
+    <!-- DESCRIPCIÓN -->
+    <label style="
+        color:#d4af37; 
+        font-weight:600; 
+        margin-top:15px; 
+        display:block;
+    ">Descripción</label>
+
+    <textarea name="descripcion" required placeholder="Describe tu situación..." 
+        style="
+            width:100%;
+            height:110px;
+            padding:12px;
+            border-radius:10px;
+            background:#1b1b1b;
+            border:1px solid #d4af37;
+            color:white;
+            font-size:15px;
+            resize:none;
+            outline:none;
+            margin-top:6px;
+            box-sizing:border-box;
+        ">
+    </textarea>
+
+    <!-- BOTÓN -->
+    <button type="submit" style="
+        width:100%;
+        margin-top:18px;
+        padding:12px;
+        background:#d4af37;
+        border:none;
+        color:black;
+        font-size:17px;
+        font-weight:700;
+        border-radius:10px;
+        cursor:pointer;
+        transition:0.2s;
+        box-sizing:border-box;
+    ">
+        Enviar reporte
+    </button>
+</form>
+
+<style>
+button:hover {
+    background:#f0d878 !important;
+}
+
+select:focus, input:focus, textarea:focus {
+    border-color:#f0d878 !important;
+    box-shadow:0 0 10px #d4af37;
+}
+</style>

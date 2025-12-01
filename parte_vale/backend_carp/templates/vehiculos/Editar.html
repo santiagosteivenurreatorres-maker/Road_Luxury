@@ -8,42 +8,135 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
 
     <style>
-        body { font-family:'Poppins', sans-serif; margin:0; background:white; }
-        .container { display:flex; height:100vh; }
+    body { 
+        font-family:'Poppins', sans-serif; 
+        margin:0; 
+        background:white; 
+    }
 
-        .sidebar {
-            width:260px; background:black; color:white; padding:20px;
-            display:flex; flex-direction:column; align-items:center;
-        }
-        .sidebar img { width:90px; }
-        .sidebar h2 { color:#d4af37; margin:20px 0; }
-        .sidebar a {
-            color:white; text-decoration:none; padding:10px 20px;
-            display:block; margin:10px 0; border-radius:5px;
-        }
-        .sidebar a:hover { background:#d4af37; color:black; }
-        .logout { margin-top:auto; background:#d4af37; color:black; padding:10px 20px; border-radius:6px; }
+    .container { 
+        display:flex; 
+        height:100vh; 
+    }
 
-        .main { flex-grow:1; padding:30px; overflow-y:auto; }
-        h1 { border-left:5px solid #d4af37; padding-left:12px; }
+    /* --- SIDEBAR --- */
+    .sidebar {
+        width:260px; 
+        background:black; 
+        color:white; 
+        padding:20px;
+        display:flex; 
+        flex-direction:column; 
+        align-items:center;
+        box-shadow:4px 0 12px rgba(0,0,0,0.25);
+    }
 
-        form {
-            background:white; padding:20px;
-            border:1px solid #ddd; border-radius:10px; max-width:600px;
-        }
-        label { font-weight:600; margin-top:10px; display:block; }
-        input, select, textarea {
-            width:100%; padding:10px; border-radius:6px;
-            border:1px solid #ccc; margin-top:5px;
-        }
+    .sidebar img { width:90px; }
+    .sidebar h2 { color:#d4af37; margin:20px 0; }
 
-        .btn {
-            margin-top:20px; padding:10px 20px; background:#3498db;
-            border:none; color:white; border-radius:6px; cursor:pointer;
-            font-weight:600;
-        }
-        .btn:hover { background:#216fa9; }
-    </style>
+    .sidebar a {
+        color:white; 
+        text-decoration:none; 
+        padding:12px 22px;
+        display:block; 
+        margin:10px 0; 
+        border-radius:8px;
+        transition:0.3s;
+        font-weight:500;
+    }
+
+    .sidebar a:hover { 
+        background:#d4af37; 
+        color:black; 
+        transform:translateX(4px);
+    }
+
+    .logout { 
+        margin-top:auto; 
+        background:#d4af37; 
+        color:black; 
+        padding:10px 20px; 
+        border-radius:8px; 
+        font-weight:600;
+    }
+
+    /* --- CONTENIDO PRINCIPAL --- */
+    .main { 
+        flex-grow:1; 
+        padding:30px; 
+        overflow-y:auto; 
+        background:white;
+    }
+
+    h1 { 
+        border-left:5px solid #d4af37; 
+        padding-left:12px; 
+        margin-bottom:25px;
+        color:black;
+        font-size:32px;
+        font-weight:700;
+    }
+
+    /* --- FORMULARIO --- */
+    form {
+        background:white; 
+        padding:30px;
+        border:1px solid #d8c894;
+        border-radius:14px; 
+        max-width:650px;
+        box-shadow:0 5px 20px rgba(0,0,0,0.08);
+        transition:0.2s;
+    }
+
+    form:hover {
+        box-shadow:0 6px 25px rgba(0,0,0,0.12);
+    }
+
+    label { 
+        font-weight:600; 
+        margin-top:18px; 
+        display:block;
+        color:#333;
+    }
+
+    input, select, textarea {
+        width:100%; 
+        padding:12px; 
+        border-radius:8px;
+        border:1px solid #ccc; 
+        margin-top:6px;
+        font-size:15px;
+        transition:0.2s;
+        background:#fafafa;
+    }
+
+    input:focus, select:focus, textarea:focus {
+        border-color:#d4af37;
+        box-shadow:0 0 6px rgba(212,175,55,0.4);
+        outline:none;
+        background:white;
+    }
+
+    /* --- BOTÓN --- */
+    .btn {
+        margin-top:25px; 
+        padding:12px 26px; 
+        background:#d4af37;
+        border:none; 
+        color:black; 
+        border-radius:8px; 
+        cursor:pointer;
+        font-weight:700;
+        font-size:16px;
+        transition:0.3s;
+    }
+
+    .btn:hover { 
+        background:#b8952c; 
+        transform:scale(1.04);
+        box-shadow:0 4px 10px rgba(0,0,0,0.25);
+    }
+</style>
 </head>
 
 <body>

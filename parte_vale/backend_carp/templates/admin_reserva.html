@@ -83,7 +83,7 @@
         background: white;
         border-radius: 10px;
         overflow: hidden;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.08); /* IGUAL QUE USUARIOS */
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
     }
 
     thead {
@@ -103,20 +103,6 @@
         background: #fafafa;
     }
 
-    .btn-cancel {
-        padding: 8px 14px;
-        border: none;
-        border-radius: 5px;
-        background: #e67e22;
-        color: white;
-        font-size: 14px;
-        cursor: pointer;
-    }
-
-    .btn-cancel:hover {
-        background: #d35400;
-    }
-
     .btn-delete {
         padding: 8px 14px;
         border: none;
@@ -125,7 +111,6 @@
         color: white;
         font-size: 14px;
         cursor: pointer;
-        margin-left: 6px;
     }
 
     .btn-delete:hover {
@@ -174,7 +159,7 @@
 
             <tbody>
                 {% for reserva in reservas %}
-                <tr>
+                <tr id="reserva-{{ reserva.id }}">
                     <td>{{ reserva.id }}</td>
                     <td>{{ reserva.usuario.nom_usr }}</td>
                     <td>{{ reserva.vehiculo.name }}</td>
@@ -183,15 +168,9 @@
                     <td>{{ reserva.estado }}</td>
 
                     <td>
-                        <form method="POST" action="{% url 'cancelar_reserva' reserva.id %}" style="display:inline;">
-                            {% csrf_token %}
-                            <button type="submit" class="btn-cancel">Cancelar</button>
-                        </form>
-
-                        <form method="POST" action="{% url 'eliminar_reserva' reserva.id %}" style="display:inline;">
-                            {% csrf_token %}
-                            <button type="submit" class="btn-delete">Eliminar</button>
-                        </form>
+                        <button onclick="eliminarReserva({{ reserva.id }})" class="btn-delete">
+                            Eliminar
+                        </button>
                     </td>
                 </tr>
                 {% empty %}
@@ -207,6 +186,29 @@
     </main>
 
 </div>
+
+
+<!-- JS AJAX -->
+<script>
+function eliminarReserva(id) {
+    if (!confirm("¿Seguro que deseas eliminar esta reserva?")) return;
+
+    fetch(`/dashboard/eliminar-reserva/${id}/`, {
+        method: "POST",
+        headers: {
+            "X-CSRFToken": "{{ csrf_token }}"
+        }
+    })
+    .then(r => r.json())
+    .then(data => {
+        if (data.success) {
+            document.getElementById("reserva-" + id).remove(); // ← Se borra sin recargar
+        } else {
+            alert("Error eliminando la reserva.");
+        }
+    });
+}
+</script>
 
 </body>
 </html>

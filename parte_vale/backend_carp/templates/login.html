@@ -38,7 +38,7 @@
       margin-bottom: 12px;
     }
 
-    .field { margin-bottom: 14px; text-align: left; }
+    .field { margin-bottom: 14px; text-align: left; position: relative; }
 
     input, select {
       width: 100%;
@@ -47,6 +47,17 @@
       border: 1.5px solid #d1b96fff;
       background: #eedb8fff;
       font-size: 1rem;
+    }
+
+    /* Icono ver contraseña */
+    .toggle-password {
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      cursor: pointer;
+      font-size: 18px;
+      color: #6b5a1e;
     }
 
     .btn {
@@ -85,13 +96,18 @@
     }
 
     .forget {
-      margin-top: 8px;
-      display: block;
-      color: #8c7a4d;
-      font-size: 14px;
-      text-decoration: underline;
+    display: block;
+    margin-top: 15px;
+    margin-bottom: 10px;
+    font-size: 14px;
+    color: #8c7a4d;
+    text-decoration: underline;
+    font-weight: 500;
     }
+
   </style>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 
 <body>
@@ -108,7 +124,7 @@
 
       <!-- CAMPOS SOLO CLIENTE -->
       <div class="field" id="campo_tipo_doc">
-        <select name="tipo_doc" id="tipo_doc">
+        <select name="tipo_doc" id="tipo_doc" required>
           <option value="">Seleccione tipo de documento</option>
           <option value="cc">Cédula de ciudadanía</option>
           <option value="ti">Tarjeta de identidad</option>
@@ -118,7 +134,7 @@
       </div>
 
       <div class="field" id="campo_num_doc">
-        <input name="num_doc" type="text" placeholder="Número de documento" id="num_doc">
+        <input name="num_doc" type="text" placeholder="Número de documento" id="num_doc" required>
       </div>
 
       <div class="field">
@@ -126,16 +142,18 @@
       </div>
 
       <div class="field" id="campo_email">
-        <input name="email" type="email" placeholder="Correo electrónico" id="email">
+        <input name="email" type="email" placeholder="Correo electrónico" id="email" required>
       </div>
 
       <div class="field">
-        <input name="password" type="password" placeholder="Contraseña" required>
+        <input name="password" type="password" placeholder="Contraseña" id="password" required>
+        <i class="fa-solid fa-eye toggle-password" onclick="togglePassword()"></i>
       </div>
 
       <button type="submit" class="btn">Entrar</button>
 
-      <a href="#" class="forget">¿Olvidaste tu contraseña?</a>
+      <a href="{% url 'recuperar' %}" class="forget">¿Olvidaste tu contraseña?</a>
+
       <br>
 
       <a href="{% url 'register' %}" class="btn secondary">Registrarse</a>
@@ -166,15 +184,29 @@
                 campos.tipoDoc.style.display = "none";
                 campos.numDoc.style.display = "none";
                 campos.email.style.display = "none";
+
+                document.getElementById("tipo_doc").required = false;
+                document.getElementById("num_doc").required = false;
+                document.getElementById("email").required = false;
               } 
               else {
                 campos.tipoDoc.style.display = "block";
                 campos.numDoc.style.display = "block";
                 campos.email.style.display = "block";
+
+                document.getElementById("tipo_doc").required = true;
+                document.getElementById("num_doc").required = true;
+                document.getElementById("email").required = true;
               }
           })
           .catch(err => console.log(err));
     });
+
+    /* Mostrar / ocultar contraseña */
+    function togglePassword() {
+      const input = document.getElementById("password");
+      input.type = input.type === "password" ? "text" : "password";
+    }
   </script>
 
 </body>

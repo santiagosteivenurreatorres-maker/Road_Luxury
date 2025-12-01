@@ -1,0 +1,125 @@
+{% load static %}
+
+<style>
+    body {
+        margin: 0;
+        font-family: 'Poppins', sans-serif;
+        background: linear-gradient(135deg, #ecc665ff 0%, #e6dcc4 50%, #f0c851ff 100%);
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .card {
+        width: 420px;
+        background: #fcf6d3ff;
+        padding: 35px;
+        border-radius: 15px;
+        text-align: center;
+        border: 2px solid #e0d5ad;
+        box-shadow: 0 8px 20px rgba(180,160,120,0.3);
+        animation: fadeInUp .4s ease-in-out;
+    }
+
+    @keyframes fadeInUp {
+        from { opacity: 0; transform: translateY(20px); }
+        to   { opacity: 1; transform: translateY(0); }
+    }
+
+    h2 {
+        color: #7a5c00;
+        margin-bottom: 25px;
+        font-size: 22px;
+    }
+
+    .input-box {
+        width: 100%;
+        background: #f0dda5;
+        border: none;
+        outline: none;
+        padding: 12px;
+        margin-bottom: 15px;
+        border-radius: 8px;
+        font-size: 14px;
+    }
+
+    .btn {
+        width: 100%;
+        padding: 12px;
+        background: linear-gradient(90deg, #f2c037, #d4a638);
+        border: none;
+        border-radius: 8px;
+        font-size: 15px;
+        font-weight: bold;
+        cursor: pointer;
+        color: black;
+        margin-top: 5px;
+        transition: .2s;
+    }
+
+    .btn:hover {
+        opacity: .9;
+    }
+
+    /* --- ALERTA PREMIUM DORADA --- */
+    .mensaje-box {
+        margin-top: 20px;
+        padding: 15px;
+        background: linear-gradient(90deg, #f5e4b5, #e8cc82);
+        border-left: 5px solid #d4a638;
+        border-radius: 10px;
+        color: #6b4e00;
+        font-size: 14px;
+        font-weight: bold;
+        animation: fadeIn .4s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(8px); }
+        to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .mensaje-box strong {
+        color: #5a3e00;
+        font-weight: 800;
+    }
+
+    a {
+        text-decoration: none;
+        color: #7a5c00;
+        font-size: 14px;
+        display: block;
+        margin-top: 20px;
+    }
+
+    a:hover {
+        text-decoration: underline;
+    }
+</style>
+
+
+<div class="card">
+
+    <img src="{% static 'img/img/logo_rl.png' %}" 
+         style="width:80px; margin-bottom:10px;">
+
+    <h2>Recuperar contraseña</h2>
+
+    <form method="POST">
+        {% csrf_token %}
+
+        <input type="email" name="email" class="input-box" 
+               placeholder="Correo electrónico" required>
+
+        <button type="submit" class="btn">Recuperar</button>
+    </form>
+
+    {% if mensaje %}
+        <div class="mensaje-box">
+            <strong>Resultado:</strong> {{ mensaje }}
+        </div>
+    {% endif %}
+
+    <a href="{% url 'login' %}">Volver al inicio</a>
+</div>

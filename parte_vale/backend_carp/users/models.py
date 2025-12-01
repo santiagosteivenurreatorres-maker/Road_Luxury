@@ -2,8 +2,6 @@ from django.db import models
 from django.utils import timezone
 from datetime import timedelta
 
-
-
 # -----------------------------
 #          ROLES
 # -----------------------------
@@ -61,13 +59,8 @@ class Reserva(models.Model):
     def __str__(self):
         return f"Reserva #{self.id} - {self.usuario.nom_usr}"
 
-    # =============================
-    # PROPIEDADES CALCULADAS
-    # =============================
-
     @property
     def dias(self):
-        """Retorna cuántos días dura la reserva."""
         try:
             return (self.fch_rsv - self.fci_rsv).days
         except:
@@ -75,7 +68,6 @@ class Reserva(models.Model):
 
     @property
     def total(self):
-        """Retorna el costo total del arriendo."""
         try:
             return self.dias * self.vehiculo.price
         except:
@@ -91,10 +83,7 @@ class Pago(models.Model):
     fecha_pag = models.DateTimeField(default=timezone.now)
     reserva = models.ForeignKey(Reserva, on_delete=models.CASCADE)
     procesado_por = models.ForeignKey(
-        Usuario,
-        on_delete=models.SET_NULL,
-        null=True,
-        blank=True,
+        Usuario, on_delete=models.SET_NULL, null=True, blank=True,
         related_name='pagos_procesados'
     )
 
@@ -107,25 +96,13 @@ class Pago(models.Model):
 # -----------------------------
 class Contrato(models.Model):
     reserva = models.OneToOneField(
-        Reserva,
-        on_delete=models.CASCADE,
-        related_name="contrato"
+        Reserva, on_delete=models.CASCADE, related_name="contrato"
     )
-
     usuario = models.ForeignKey(
-        Usuario,
-        on_delete=models.CASCADE,
-        related_name="contratos"
+        Usuario, on_delete=models.CASCADE, related_name="contratos"
     )
-
-    archivo_pdf = models.FileField(
-        upload_to="contratos/",
-        null=True,
-        blank=True
-    )
-
+    archivo_pdf = models.FileField(upload_to="contratos/", null=True, blank=True)
     firmado = models.BooleanField(default=False)
-
     fecha_creacion = models.DateTimeField(default=timezone.now)
     fecha_firma = models.DateTimeField(null=True, blank=True)
 
@@ -144,13 +121,25 @@ class Seguimiento(models.Model):
 
 
 class Soporte(models.Model):
-    tp_spt = models.CharField(max_length=30)
+    TIPO_CHOICES = [
+        ("queja", "Queja"),
+        ("reclamo", "Reclamo"),
+        ("novedad", "Novedad"),
+        ("solicitud", "Solicitud"),
+    ]
+
+    tp_spt = models.CharField(max_length=30, choices=TIPO_CHOICES)
     fch_spt = models.DateField()
     dsc_spt = models.TextField()
-    est_spt = models.CharField(max_length=15)
+
+    est_spt = models.CharField(max_length=15, default="Pendiente")  # Pendiente / Respondido
     cre_spt = models.DateField(auto_now_add=True)
+
     usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE)
     seguimiento = models.ForeignKey(Seguimiento, on_delete=models.CASCADE)
+
+    respuesta_admin = models.TextField(null=True, blank=True)
+    fch_respuesta = models.DateTimeField(null=True, blank=True)
 
     def __str__(self):
         return f"Soporte #{self.id} - {self.tp_spt}"

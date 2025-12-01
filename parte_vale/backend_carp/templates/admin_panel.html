@@ -105,16 +105,20 @@
 
             <nav>
                 <ul>
-                   <li><a href="{% url 'admin_usuarios' %}">Gestión de Usuarios</a></li>
-                   <li><a href="{% url 'admin_reservas' %}">Reservas</a></li>
-                   <li><a href="{% url 'admin_pagos' %}">Pagos</a></li>
-                   <li><a href="{% url 'vehiculos_admin' %}">Vehículos</a></li>
+                    <li><a href="{% url 'admin_usuarios' %}">Gestión de Usuarios</a></li>
+                    <li><a href="{% url 'admin_reservas' %}">Reservas</a></li>
+                    <li><a href="{% url 'admin_pagos' %}">Pagos</a></li>
+                    <li><a href="{% url 'vehiculos_admin' %}">Vehículos</a></li>
+
+                    <!-- 🔥 NUEVA OPCIÓN DE SOPORTE -->
+                    <li><a href="{% url 'admin_soporte_view' %}">Soporte</a></li>
 
                 </ul>
             </nav>
 
             <a href="{% url 'logout' %}" class="logout">Cerrar Sesión</a>
         </aside>
+
 
         <!-- CONTENIDO -->
         <main class="main-content">
@@ -123,79 +127,34 @@
                 <h1>Panel de Administración</h1>
             </header>
 
-            <!-- TARJETAS ACTIVAS -->
             <section class="dashboard">
 
                 <a href="{% url 'admin_usuarios' %}" style="text-decoration:none;">
-                    <div class="card">
-                        <h3>Usuarios</h3>
-                        <p>{{ usuarios.count }}</p>
-                    </div>
+                    <div class="card"><h3>Usuarios</h3><p>{{ usuarios.count }}</p></div>
                 </a>
 
                 <a href="{% url 'admin_reservas' %}" style="text-decoration:none;">
-                    <div class="card">
-                        <h3>Reservas Activas</h3>
-                        <p>{{ reservas.count }}</p>
-                    </div>
+                    <div class="card"><h3>Reservas Activas</h3><p>{{ reservas.count }}</p></div>
                 </a>
 
                 <a href="{% url 'admin_pagos' %}" style="text-decoration:none;">
-                    <div class="card">
-                        <h3>Pagos Pendientes</h3>
-                        <p>{{ pagos.count }}</p>
-                    </div>
+                    <div class="card"><h3>Pagos Pendientes</h3><p>{{ pagos.count }}</p></div>
                 </a>
 
                 <a href="{% url 'vehiculos_admin' %}" style="text-decoration:none;">
+                    <div class="card"><h3>Vehículos</h3><p>{{ vehiculos.count }}</p></div>
+                </a>
+
+                <!-- 🔥 NUEVA TARJETA SOPORTE -->
+                <a href="{% url 'admin_soporte_view' %}" style="text-decoration:none;">
                     <div class="card">
-                        <h3>Vehículos</h3>
-                        <p>{{ vehiculos.count }}</p>
+                     <h3>Soporte</h3>
+                     <p class="number">{{ total_soporte }}</p>
                     </div>
+
                 </a>
 
             </section>
-
-            <!-- TABLA VEHÍCULOS -->
-            <h2 id="vehiculos" style="margin-top: 40px;">Gestión de Vehículos</h2>
-
-            <a href="{% url 'agregar_vehiculo' %}" class="btn-agregar">➕ Agregar Vehículo</a>
-
-            <table>
-                <tr>
-                    <th>Imagen</th>
-                    <th>Nombre</th>
-                    <th>Año</th>
-                    <th>Categoría</th>
-                    <th>Motor</th>
-                    <th>Precio/Día</th>
-                    <th>Acciones</th>
-                </tr>
-
-                {% for vehiculo in vehiculos %}
-                <tr>
-                    <td>
-                        {% if vehiculo.image %}
-                        <img src="{{ vehiculo.image.url }}" alt="">
-                        {% else %}
-                        Sin imagen
-                        {% endif %}
-                    </td>
-
-                    <td>{{ vehiculo.name }}</td>
-                    <td>{{ vehiculo.year }}</td>
-                    <td>{{ vehiculo.category }}</td>
-                    <td>{{ vehiculo.engine }}</td>
-                    <td>${{ vehiculo.price }}</td>
-
-                    <td>
-                        <a href="{% url 'editar_vehiculo' vehiculo.id %}" class="btn btn-editar">Editar</a>
-                        <a href="{% url 'eliminar_vehiculo' vehiculo.id %}" class="btn btn-eliminar"
-                           onclick="return confirm('¿Eliminar este vehículo?')">Eliminar</a>
-                    </td>
-                </tr>
-                {% endfor %}
-            </table>
 
         </main>
     </div>

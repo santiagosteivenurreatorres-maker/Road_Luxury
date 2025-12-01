@@ -12,22 +12,50 @@
 
     <hr style="border-color:#333; margin:18px 0;">
 
-    <button id="btn-ver-reservas" style="
-        width:100%;
-        background:#d4af37;
-        color:black;
-        padding:12px;
-        border:none;
-        border-radius:10px;
-        cursor:pointer;
-        font-weight:700;
-        font-size:15px;
-        margin-top:5px;
-    ">
-        📅 Ver mis reservas
-    </button>
+
+    <!-- ========================================================= -->
+    <!-- 🔥 SECCIÓN DE REPORTES ENVIADOS POR EL CLIENTE -->
+    <!-- ========================================================= -->
+
+    <h3 style="color:#d4af37; margin-top:25px;">🧾 Mis reportes enviados</h3>
+
+    {% if reportes %}
+        {% for r in reportes %}
+            <div style="
+                background:#1b1b1b;
+                border-left:4px solid #d4af37;
+                padding:12px 15px;
+                margin-top:12px;
+                border-radius:10px;
+            ">
+                <p><strong style="color:#d4af37;">Tipo:</strong> {{ r.tp_spt }}</p>
+                <p><strong style="color:#d4af37;">Fecha:</strong> {{ r.fch_spt }}</p>
+
+                <p>
+                    <strong style="color:#d4af37;">Estado:</strong>
+                    {% if r.est_spt == "Respondido" %}
+                        <span style="color:#00ff99;">Respondido ✔</span>
+                    {% else %}
+                        <span style="color:#ff5050;">Pendiente ⏳</span>
+                    {% endif %}
+                </p>
+
+                <!-- 🔥 ESTA ES LA PARTE QUE NO TENÍAS (Muestra respuesta del admin) -->
+                {% if r.respuesta_admin %}
+                    <p style="margin-top:10px;">
+                        <strong style="color:#d4af37;">Respuesta del administrador:</strong><br>
+                        <span style="color:#ccc;">{{ r.respuesta_admin }}</span>
+                    </p>
+                {% endif %}
+
+            </div>
+        {% endfor %}
+    {% else %}
+        <p style="color:#ccc; margin-top:12px;">No has enviado ningún reporte.</p>
+    {% endif %}
 
 </div>
+
 
 <script>
 document.addEventListener("DOMContentLoaded", () => {

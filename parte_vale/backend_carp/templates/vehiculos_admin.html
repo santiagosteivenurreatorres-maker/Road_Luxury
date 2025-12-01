@@ -7,40 +7,132 @@
     <title>Vehículos - Panel Admin</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
 
-    <style>
-        body { font-family: 'Poppins', sans-serif; margin:0; background:white; }
-        .container { display:flex; height:100vh; }
+<style>
+    body { font-family: 'Poppins', sans-serif; margin:0; background:white; }
+    .container { display:flex; height:100vh; }
 
-        .sidebar {
-            width:260px; background:black; color:white;
-            padding:20px; display:flex; flex-direction:column; align-items:center;
-        }
+    /* SIDEBAR */
+    .sidebar {
+        width:260px; background:black; color:white;
+        padding:20px; display:flex; flex-direction:column; align-items:center;
+    }
 
-        .sidebar img { width:90px; margin-bottom:10px; }
-        .sidebar h2 { color:#d4af37; margin-bottom:20px; }
+    .sidebar img { width:90px; margin-bottom:10px; }
+    .sidebar h2 { color:#d4af37; margin-bottom:20px; }
 
-        .sidebar a {
-            color:white; text-decoration:none; padding:10px 20px;
-            margin:10px 0; display:block; border-radius:5px;
-        }
-        .sidebar a:hover { background:#d4af37; color:black; }
+    .sidebar a {
+        color:white; 
+        text-decoration:none; 
+        padding:10px 20px;
+        margin:10px 0; 
+        display:block; 
+        border-radius:6px;
+        transition:0.3s;
+    }
+    .sidebar a:hover { background:#d4af37; color:black; }
 
-        .logout { margin-top:auto; background:#d4af37; color:black; padding:10px 20px; border-radius:6px; }
+    .logout { 
+        margin-top:auto; 
+        background:#d4af37; 
+        color:black !important; 
+        padding:10px 20px; 
+        border-radius:6px; 
+    }
 
-        .main { flex-grow:1; padding:30px; overflow-y:auto; }
+    /* CONTENIDO */
+    .main { 
+        flex-grow:1; 
+        padding:30px; 
+        overflow-y:auto; 
+        background:white;
+    }
 
-        h1 { border-left:5px solid #d4af37; padding-left:12px; }
+    h1 { 
+        border-left:5px solid #d4af37; 
+        padding-left:12px; 
+        color:black;
+    }
 
-        table { width:100%; border-collapse:collapse; margin-top:20px; }
-        th { background:#d4af37; color:black; padding:10px; }
-        td { padding:10px; border-bottom:1px solid #ccc; text-align:center; }
+    /* TABLA */
+    table { 
+        width:100%; 
+        border-collapse:separate; 
+        border-spacing:0;
+        margin-top:20px; 
+        border:1px solid #d4af37;
+        border-radius:10px;
+        overflow:hidden;
+    }
 
-        .btn { padding:7px 14px; border-radius:6px; text-decoration:none; }
-        .editar { background:#3498db; color:white; }
-        .eliminar { background:#e74c3c; color:white; }
-        .estado { background:#f1c40f; color:black; }
-        .agregar { background:#2ecc71; color:white; padding:10px 20px; display:inline-block; margin-bottom:15px; }
-    </style>
+    th { 
+        background:#d4af37; 
+        color:black; 
+        padding:12px;
+        font-weight:600;
+        border-bottom:2px solid #b8942c;
+    }
+
+    td { 
+        padding:12px; 
+        border-bottom:1px solid #eee;
+        text-align:center;
+    }
+
+    tr:hover {
+        background:#f9f4e4;
+    }
+
+    /* BOTONES */
+   .acciones {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;           /* espacio entre botones */
+}
+
+    .btn {
+    padding: 8px 16px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 600;
+    display: inline-flex;     /* ← clave para alinear */
+    align-items: center;      /* ← iguala la altura */
+    justify-content: center;  /* centra el texto */
+    transition: 0.2s;
+    min-width: 95px;          /* ← MISMO ANCHO */
+    text-align: center;
+}
+
+
+    .btn:hover {
+        transform:scale(1.07);
+        box-shadow:0 3px 8px rgba(0,0,0,0.15);
+    }
+
+    .editar { background:#3498db; color:white; }
+    .eliminar { background:#e74c3c; color:white; }
+    .estado { background:#f1c40f; color:black; }
+
+    .agregar { 
+        background:#2ecc71; 
+        color:white; 
+        padding:12px 20px; 
+        border-radius:8px;
+        box-shadow:0 3px 6px rgba(0,0,0,0.15);
+        transition:0.3s;
+    }
+
+    .agregar:hover {
+        transform:scale(1.05);
+    }
+
+    /* IMAGENES */
+    td img {
+        border-radius:8px;
+        border:2px solid #d4af37;
+    }
+</style>
 </head>
 
 <body>
@@ -101,14 +193,16 @@
                     {% endif %}
                 </td>
 
-                <td>
-                    <a href="{% url 'editar_vehiculo' v.id %}" class="btn editar">Editar</a>
-                    <a href="{% url 'eliminar_vehiculo' v.id %}" class="btn eliminar">Eliminar</a>
-                    <a href="{% url 'toggle_estado_vehiculo' v.id %}" class="btn estado">
+               <td>
+            <div class="acciones">
+             <a href="{% url 'editar_vehiculo' v.id %}" class="btn editar">Editar</a>
+             <a href="{% url 'eliminar_vehiculo' v.id %}" class="btn eliminar">Eliminar</a>
+             <a href="{% url 'toggle_estado_vehiculo' v.id %}" class="btn estado">
+            {% if v.availability == "available" %}Desactivar{% else %}Activar{% endif %}
+        </a>
+         </div>
+          </td>
 
-                        {% if v.availability == "available" %}Desactivar{% else %}Activar{% endif %}
-                    </a>
-                </td>
             </tr>
             {% empty %}
             <tr><td colspan="8">No hay vehículos registrados.</td></tr>

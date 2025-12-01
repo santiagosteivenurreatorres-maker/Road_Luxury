@@ -56,13 +56,12 @@
         .logout-btn {
             color: #ff4d4d !important;
         }
-
         .logout-btn:hover {
             color: #ff7b7b !important;
         }
 
-        /* PANEL RESERVAS */
-        #reservasPanel {
+        /* PANEL FLOTANTE GENERAL */
+        .popup-panel {
             position: fixed;
             top: 80px;
             right: 40px;
@@ -77,50 +76,21 @@
             box-shadow: 0 0 15px rgba(212,175,55,0.45);
         }
 
-        .reserva-box {
-            background: #1b1b1b;
-            padding: 12px 15px;
-            border-radius: 10px;
-            border-left: 4px solid #d4af37;
-            margin-bottom: 12px;
-        }
-
-        /* PANEL PERFIL */
-        #perfilPanel {
-            position: fixed;
-            top: 80px;
-            right: 450px;
-            width: 350px;
-            background: #0d0d0d;
-            color: white;
-            border: 2px solid #d4af37;
-            border-radius: 12px;
-            padding: 18px;
-            display: none;
-            z-index: 99999;
-            box-shadow: 0 0 15px rgba(212,175,55,0.45);
-        }
-
         .close-panel {
             float: right;
             color: #ff4d4d;
             cursor: pointer;
             font-size: 18px;
-            margin-top: -5px;
+        }
+
+        .reserva-box {
+            background: #1b1b1b;
+            padding: 12px;
+            border-radius: 10px;
+            border-left: 4px solid #d4af37;
+            margin-bottom: 10px;
         }
     </style>
-
-<script>
-function toggleReservas() {
-    const p = document.getElementById("reservasPanel");
-    p.style.display = (p.style.display === "block") ? "none" : "block";
-}
-
-function togglePerfil() {
-    const p = document.getElementById("perfilPanel");
-    p.style.display = (p.style.display === "block") ? "none" : "block";
-}
-</script>
 
 </head>
 
@@ -134,14 +104,18 @@ function togglePerfil() {
     </div>
 
     <nav>
-
         {% if user.is_authenticated and not user.is_staff %}
-            <a href="#" onclick="togglePerfil()">
+
+            <a href="#" onclick="openPanel('perfil')">
                 <i class="fa-solid fa-user"></i> Mi cuenta
             </a>
 
-            <a href="#" onclick="toggleReservas()">
+            <a href="#" onclick="openPanel('reservas')">
                 <i class="fa-solid fa-calendar-check"></i> Mis reservas
+            </a>
+
+            <a href="#" onclick="openPanel('soporte')">
+                <i class="fa-solid fa-headset"></i> Soporte
             </a>
 
             <a href="{% url 'logout' %}" class="logout-btn">
@@ -149,6 +123,7 @@ function togglePerfil() {
             </a>
 
         {% elif user.is_authenticated and user.is_staff %}
+
             <a href="{% url 'admin_panel' %}">
                 <i class="fa-solid fa-gauge"></i> Panel Admin
             </a>
@@ -169,9 +144,9 @@ function togglePerfil() {
 </header>
 
 
-<!-- PANEL DE RESERVAS -->
-<div id="reservasPanel">
-    <span class="close-panel" onclick="toggleReservas()">✖</span>
+<!-- PANEL: RESERVAS -->
+<div id="reservasPanel" class="popup-panel">
+    <span class="close-panel" onclick="closePanel('reservasPanel')">✖</span>
     <h3 style="color:#d4af37;margin-top:0;"><i class="fa-solid fa-calendar-check"></i> Mis reservas</h3>
 
     {% if reservas_user %}
@@ -183,7 +158,7 @@ function togglePerfil() {
 
                 <form method="POST" action="{% url 'cancelar_reserva_cliente' r.id %}">
                     {% csrf_token %}
-                    <button style="margin-top:10px;background:#c0392b;color:white;padding:5px 10px;border:none;border-radius:6px;cursor:pointer;">
+                    <button style="margin-top:10px;background:#c0392b;color:white;padding:6px 10px;border:none;border-radius:6px;cursor:pointer;">
                         Cancelar reserva
                     </button>
                 </form>
@@ -195,21 +170,57 @@ function togglePerfil() {
 </div>
 
 
-<!-- PANEL DE PERFIL -->
-<div id="perfilPanel">
-    <span class="close-panel" onclick="togglePerfil()">✖</span>
-    <h3 style="color:#d4af37;margin-top:0;"><i class="fa-solid fa-user"></i> Mi cuenta</h3>
 
-    <p><strong>Usuario:</strong> {{ user.username }}</p>
-    <p><strong>Email:</strong> {{ user.email }}</p>
+<!-- PANEL: PERFIL (dinámico) -->
+<div id="perfilPanel" class="popup-panel"></div>
 
-    <a href="{% url 'logout' %}" class="logout-btn" style="text-decoration:none;">
-        <i class="fa-solid fa-right-from-bracket"></i> Cerrar sesión
-    </a>
-</div>
+<!-- PANEL: SOPORTE (dinámico) -->
+<div id="soportePanel" class="popup-panel"></div>
 
 
-<!-- CONTENIDO -->
+
+<!-- SCRIPT DE LOS PANELES -->
+<script>
+function closeAllPanels() {
+    document.querySelectorAll('.popup-panel').forEach(p => p.style.display = 'none');
+}
+
+function closePanel(id) {
+    document.getElementById(id).style.display = 'none';
+}
+
+function openPanel(type) {
+    closeAllPanels();
+
+    let panelId = "";
+    let url = "";
+
+    if (type === "perfil") {
+        panelId = "perfilPanel";
+        url = "/cliente/";
+    }
+    if (type === "reservas") {
+        panelId = "reservasPanel";
+        document.getElementById(panelId).style.display = "block";
+        return;
+    }
+    if (type === "soporte") {
+        panelId = "soportePanel";
+        url = "/soporte/";
+    }
+
+    fetch(url)
+        .then(res => res.text())
+        .then(html => {
+            const panel = document.getElementById(panelId);
+            panel.innerHTML = `<span class="close-panel" onclick="closePanel('${panelId}')">✖</span>` + html;
+            panel.style.display = "block";
+        });
+}
+</script>
+
+
+<!-- CONTENIDO PRINCIPAL -->
 <main>
     {% block content %}{% endblock %}
 </main>

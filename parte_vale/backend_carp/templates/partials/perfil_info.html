@@ -1,0 +1,23 @@
+<h3 style="color:#d4af37; margin-top:0; display:flex; align-items:center; gap:8px;">
+    👤 Mi cuenta
+</h3>
+
+<p><strong>Usuario:</strong> {{ usuario.nom_usr }}</p>
+<p><strong>Email:</strong> {{ usuario.ema_usr }}</p>
+
+<hr style="border-color:#333; margin:15px 0;">
+
+
+<h4 style="color:#d4af37;">🧾 Mis reportes enviados</h4>
+
+{% if reportes %}
+    {% for r in reportes %}
+        <div style="background:#1b1b1b; padding:10px; margin-top:10px; border-left:4px solid #d4af37; border-radius:8px;">
+            <p><strong>Tipo:</strong> {{ r.tp_spt }}</p>
+            <p><strong>Fecha:</strong> {{ r.fch_spt }}</p>
+            <p><strong>Estado:</strong> {{ r.est_spt }}</p>
+        </div>
+    {% endfor %}
+{% else %}
+    <p>No has enviado reportes.</p>
+{% endif %}
