@@ -17,7 +17,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # ------------------------
 SECRET_KEY = 'django-insecure-waf*a8z8*n*9zb*jyuh4vu52q&)hk4a2*tvvbjb_%^^9!b9x$e'
 DEBUG = True
-ALLOWED_HOSTS = []
+
+# Para Render (permite acceso externo)
+ALLOWED_HOSTS = ['*']
 
 
 # ------------------------
@@ -36,7 +38,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework_simplejwt',
 
-    # tu app
+    # tu app personalizada
     'users.apps.UsersConfig',
 ]
 
@@ -46,6 +48,10 @@ INSTALLED_APPS = [
 # ------------------------
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+
+    # ⭐ Permite servir archivos estáticos en producción (Render)
+    'whitenoise.middleware.WhiteNoiseMiddleware',
+
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -75,7 +81,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
 
-                # 👉 AGREGA ESTE
+                # contexto extra para reservas
                 'users.context_processors.reservas_usuario',
             ],
         },
@@ -120,15 +126,26 @@ USE_I18N = True
 USE_TZ = True
 
 
+# ------------------------
 # ARCHIVOS ESTÁTICOS
+# ------------------------
 STATIC_URL = '/static/'
+
+# Archivos estáticos del proyecto
 STATICFILES_DIRS = [BASE_DIR / "static"]
+
+# Carpeta donde Django guardará los archivos recopilados
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
-# ARCHIVOS DE MEDIA (IMÁGENES SUBIDAS)
+# ⭐ WhiteNoise: servir archivos comprimidos en Render
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+
+# ------------------------
+# ARCHIVOS MULTIMEDIA (IMÁGENES)
+# ------------------------
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / "media"
-
 
 
 # ------------------------
@@ -155,3 +172,4 @@ SIMPLE_JWT = {
 }
 
 LOGIN_URL = 'login'
+
