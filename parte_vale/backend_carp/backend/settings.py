@@ -6,6 +6,7 @@ import os
 import dj_database_url
 from pathlib import Path
 from datetime import timedelta
+DEBUG = os.getenv("RENDER", False) != "1"
 
 # ------------------------
 # BASE DIR
@@ -94,18 +95,30 @@ TEMPLATES = [
 # WSGI
 # ------------------------
 WSGI_APPLICATION = 'backend.wsgi.application'
-
-
 # ------------------------
 # BASE DE DATOS
 # ------------------------
-DATABASES = {
-    'default': dj_database_url.config(
-        default='sqlite:///db.sqlite3',
-        conn_max_age=600,
-        ssl_require=True
-             )
-}
+
+# Render define la variable de entorno RENDER=1
+IS_RENDER = os.getenv("RENDER") == "1"
+
+if IS_RENDER:
+    # Producción → PostgreSQL en Render
+    DATABASES = {
+        'default': dj_database_url.config(
+            conn_max_age=600,
+            ssl_require=True
+        )
+    }
+else:
+    # Local → SQLite sin errores
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / "db.sqlite3",
+        }
+    }
+
 # ------------------------
 # VALIDADORES DE CONTRASEÑA
 # ------------------------
