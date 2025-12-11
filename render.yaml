@@ -2,6 +2,12 @@ services:
   - type: web
     name: Road_Luxury
     env: python
+
+    # Ruta donde está manage.py
     rootDir: parte_vale/backend_carp
-    buildCommand: pip install -r requirements.txt && python manage.py migrate --noinput
+
+    buildCommand: |
+      pip install -r ../../requirements.txt
+      python manage.py migrate --noinput
+
     startCommand: gunicorn backend.wsgi:application
